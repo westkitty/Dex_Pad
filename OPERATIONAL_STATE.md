@@ -23,7 +23,10 @@ working_scope: isolated synthetic-data browser development slice and full implem
 
 ## Verified in local runtime (empirically proven)
 
-- Pure domain Node tests (128/128) across workspace, gateway, build, feature registry, synthetic DEX//RELAY ingestion, encrypted vault cryptography, cross-device sync engine, backup & recovery, Standard Notes migration, continuity superpowers, original-source ledger, media annotations, external anchors, local retrieval, offline kits, and quiet alerts.
+- Pure domain Node tests (132/132) across workspace, gateway, build, feature registry, synthetic DEX//RELAY ingestion, encrypted vault cryptography, cross-device sync engine, backup & recovery, Standard Notes migration, continuity superpowers, original-source ledger, media annotations, external anchors, local retrieval, offline kits, quiet alerts, procedural micro-acoustics, and knowledge topology graph metrics.
+- Tactile Acoustic Feedback & Knowledge Topology Observatory (`src/ui/audio.js`, `src/ui/graph-lens.js`, `tests/audio.test.mjs`, `tests/graph-lens.test.mjs`):
+  1. Procedural micro-acoustic synthesis: Web Audio triangle click (2ms), resonant magnetic commit impulse (65Hz decay), dual-tone peer confirmation bell (880/1320Hz), and muted amber warning ping with zero external audio assets; graceful degradation in headless/unsupported environments.
+  2. Knowledge Topology Observatory: dark-field 2D constellation map rendering interconnected nodes, wikilink relations, superseding decision vectors, and broken citation voids with interactive HUD inspection and one-tap node focus navigation.
 - Independent Encrypted Backup & Recovery Subsystem (`src/core/crypto/backup.js`, `tests/backup-recovery.test.mjs`):
   1. Deterministic encrypted backup archive creation (`dex-backup.v1`) with SHA-256 cryptographic checksum binding over all encrypted record envelopes and manifest metadata.
   2. Bit-level tamper detection: modified ciphertext envelopes or altered record counts are rejected with `CorruptBackupError`.

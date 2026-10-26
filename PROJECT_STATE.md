@@ -138,6 +138,14 @@ Concluded implementation campaign across the canonical 50-feature program in `pl
 - Full check suite: documentation checks, feature matrix sync, and static build pass (`npm run check`).
 - Native browser runtime: Chromium smoke suite passes end-to-end (`tests/browser_smoke.py`).
 
-Local evidence: `npm run check` passed (128/128 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
+### 2026-10-26 — Transformative project uplift: Knowledge Topology Observatory & procedural micro-acoustics
+
+Delivered cohesive experiential, visual, and sensory uplift transforming DEX//Pad into an authentic, tactile cryptographic knowledge terminal apparatus:
+1. Procedural Micro-Acoustics Engine (`src/ui/audio.js`, `tests/audio.test.mjs`): synthesized mechanical contact ticks (2ms), resonant magnetic commit impulses (65Hz sine decay), dual-tone peer confirmation bells (880/1320Hz), and muted amber warning pulses using Web Audio API with zero external audio assets; graceful degradation in headless and Node runtimes.
+2. Knowledge Topology Observatory (`src/ui/graph-lens.js`, `tests/graph-lens.test.mjs`): interactive 2D constellation map rendering interconnected notes, decisions, commitments, and incidents with gravity-well radius scaling, superseding decision vectors, broken target void detection, and one-tap node focus navigation.
+3. Cold-Vault Interface Design: sharp technical monospace telemetry, high-contrast dark-field canvas, industrial geometric branding, and authoritative local-first manifesto on welcome surface.
+4. Verification: 4 new unit tests (132/132 Node tests PASS), bundled 30 client assets into `dist/`. Real Chromium browser smoke passed end-to-end including audio toggle and Observatory lens validation.
+
+Local evidence: `npm run check` passed (132/132 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
 
 Do **not** infer GitHub publication from local files: wait for a remote commit receipt and source-tree readback. The repo is public and contains no real vault material.

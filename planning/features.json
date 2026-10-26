@@ -173,7 +173,7 @@
       "id": "C15",
       "title": "Encrypted attachments",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Client attachment store",
       "dependsOn": [
         "C02"
@@ -228,7 +228,7 @@
       "id": "C20",
       "title": "Optional local semantic retrieval",
       "phase": "P5",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "DexVault adapter / local model",
       "dependsOn": [
         "C11",
@@ -501,7 +501,7 @@
       "id": "F19",
       "title": "Remember This Later",
       "phase": "P5",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Lightweight review scheduling",
       "dependsOn": [
         "F08"
@@ -512,7 +512,7 @@
       "id": "F20",
       "title": "Downstream Review Hints",
       "phase": "P5",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Dependency links / change detection",
       "dependsOn": [
         "C11",

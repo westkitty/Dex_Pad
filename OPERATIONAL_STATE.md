@@ -72,6 +72,8 @@ working_scope: isolated synthetic-data browser development slice and full implem
 
 ## Implemented development prototypes (unverified against production)
 
+- Local Attachments & Semantic Retrieval (C15, C20 prototypes): encrypted attachment packaging with 10MB bounds, safe document previews, and independent byte recovery; local TF-IDF inverted index for authorized items supporting complete deletion and rebuild without cloud APIs.
+- Review Resurfacing & Downstream Hints (F19, F20 prototypes): explicit review interval scheduling with postpone/skip controls and zero compulsive loops; automated downstream review hints flagging dependent notes upon upstream source changes without rewriting authoritative content.
 - External Anchors & Scoped Publishing (F04, F07 prototypes): repository margin notes bound to immutable commit SHAs with stale revision drift warnings; previewed GitHub issue drafts requiring explicit user confirmation before scoped publication.
 - Interactive Runbook Cards & Peer Continuation (F09, F10 prototypes): step-by-step runbook execution with manual operator confirmation and rollback steps; cross-device session continuation restoring active project/item and scroll offsets strictly contingent upon authentic peer sync.
 - Media Annotations & Timecoded References (F12, F13 prototypes): normalized image region bounding boxes projecting consistently across desktop and mobile screens while preserving original media bytes; timecoded media notes linking seconds and durations surviving archive export.

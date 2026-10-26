@@ -15,6 +15,7 @@ const allow = [
   'src/core/sources.js', 'src/core/radar.js',
   'src/core/media-annotations.js', 'src/core/review-queue.js',
   'src/core/github-anchors.js', 'src/core/runbooks.js',
+  'src/core/attachments.js', 'src/core/local-retrieval.js', 'src/core/scheduling.js',
   'src/core/crypto/primitives.js', 'src/core/crypto/vault.js', 'src/core/crypto/backup.js',
   'src/core/sync/engine.js',
   'src/core/migration/standard-notes.js',

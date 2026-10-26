@@ -110,6 +110,15 @@ Implemented repository anchors, issue publishing drafts, interactive runbooks, a
 4. Continue on Another Device (F10): session context handoff (`dex-session-context.v1`) restoring active project, active item, and scroll offsets, strictly requiring authentic peer synchronization before restoration.
 5. Verification: 8 new unit tests (112/112 Node tests PASS), bundled 23 client assets into `dist/`. Advanced F04, F07, F09, and F10 to `dev-prototype`.
 
-Local evidence: `npm run check` passed (112/112 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
+### 2026-10-26 — Attachments, semantic retrieval, review scheduling & downstream hints delivered
+
+Implemented client-side encrypted attachments, local semantic retrieval index, review interval scheduling, and downstream review hints (`src/core/attachments.js`, `src/core/local-retrieval.js`, `src/core/scheduling.js`, `tests/attachments.test.mjs`, `tests/local-retrieval.test.mjs`, `tests/scheduling-hints.test.mjs`):
+1. Encrypted Attachments (C15): attachment records (`dex-attachment.v1`) with 10MB bounds enforcement, safe MIME-typed previews, and independent byte recovery.
+2. Optional Local Semantic Retrieval (C20): local in-memory inverted index and TF-IDF relevance scorer over authorized items only, supporting complete index deletion and rebuild without cloud APIs.
+3. Remember This Later (F19): review schedule records (`dex-schedule.v1`) with explicit target dates, postpone/skip controls, and zero compulsive notification loops.
+4. Downstream Review Hints (F20): dependency change analyzer flagging notes derived from modified upstream sources without silently rewriting note content.
+5. Verification: 9 new unit tests (121/121 Node tests PASS), bundled 26 client assets into `dist/`. Advanced C15, C20, F19, and F20 to `dev-prototype`.
+
+Local evidence: `npm run check` passed (121/121 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
 
 Do **not** infer GitHub publication from local files: wait for a remote commit receipt and source-tree readback. The repo is public and contains no real vault material.

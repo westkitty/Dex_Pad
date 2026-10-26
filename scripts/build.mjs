@@ -13,6 +13,7 @@ const allow = [
   'src/core/workspace.js', 'src/core/contributions.js',
   'src/storage/indexeddb.js', 'src/storage/memory.js',
   'src/ui/app.js',
+  'src/integrations/relay/bridge.js', 'src/integrations/relay/validator.js',
 ];
 for (const path of allow) {
   const file = resolve(target, path);

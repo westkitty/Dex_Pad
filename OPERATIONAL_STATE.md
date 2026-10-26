@@ -23,16 +23,17 @@ working_scope: isolated synthetic-data browser development slice and full implem
 
 ## Verified in local runtime (empirically proven)
 
-- Pure domain Node tests (20/20) for creating records, search, immutable revisions, optimistic concurrency, evidence references, simulated contribution idempotency and failing writes.
+- Pure domain Node tests (33/33) for creating records, search, immutable revisions, optimistic concurrency, evidence references, simulated contribution idempotency, failing writes, and synthetic DEX//RELAY event ingestion.
+- Synthetic DEX//RELAY event ingestion bridge (`src/integrations/relay/`): deterministic schema validation (`dex-relay.event.v1`, `dex-relay.task.v1`), strict sequence continuity and hash-chain tracking (`streamIntegrity`), idempotency preservation with conflict rejection on payload mismatch, strict project isolation, secret/credential payload sanitization, separation of claims from independent cryptographic proof, and project timeline visualization with explicit `SYNTHETIC RELAY EVENTS — NOT LIVE EXECUTION` disclaimer.
 - Static read-only server unit tests reject unsafe paths/write requests and serve required file types with CSP.
-- Build/feature registry tests ensure source assets and all 25 expansions are present.
-- Real Chromium browser smoke (tests/browser_smoke.py and 18-step interactive test): verified end-to-end UI rendering, IndexedDB write and reload persistence, revision increments, local full-text search, archive/unarchive revision restoration, project resume cards, decision evidence gate, contribution inbox idempotency, mobile (390px) and desktop (1280px) responsive layouts without horizontal overflow, zero console errors, zero cross-origin leaks.
+- Build/feature registry tests ensure source assets, integration files, and all 25 expansions are present.
+- Real Chromium browser smoke (tests/browser_smoke.py and 18-step interactive test): verified end-to-end UI rendering, IndexedDB write and reload persistence, revision increments, local full-text search, archive/unarchive revision restoration, project resume cards, relay timeline card rendering and blocker state display, decision evidence gate, contribution inbox idempotency, mobile (390px) and desktop (1280px) responsive layouts without horizontal overflow, zero console errors, zero cross-origin leaks.
 - Repaired baseline UI defect where revision restore buttons remained disabled after saving.
 
-## Implemented but unverified
+## Implemented development prototypes (unverified against production)
 
-- End-to-end browser UI local persistence and interactions across reload. Real Chromium navigation in the container was blocked by administrator policy; browser smoke test must be run on an authorized machine.
-- Native IndexedDB transaction behavior and mobile lifecycle. Unit tests use a memory adapter; no native browser IDB transaction proof is claimed.
+- Synthetic DEX//RELAY Event Ingestion Bridge (F21 prototype, scoped to C13/F02 contracts). Not production-ready; live Big Mac witness/daemon execution remains blocked.
+- Write-only contribution gateway (C13 prototype). No external GPT MCP connection is active.
 
 ## Known not implemented / do not claim
 

@@ -1,5 +1,6 @@
 import { createWorkspace } from '../core/workspace.js';
 import { createWriteOnlyGateway } from '../core/contributions.js';
+import { createRelayBridge } from '../integrations/relay/bridge.js';
 import { openIndexedDbStore } from '../storage/indexeddb.js';
 
 const $ = (selector) => document.querySelector(selector);
@@ -35,6 +36,7 @@ async function main() {
   const store = await openIndexedDbStore();
   const workspace = createWorkspace(store);
   const gateway = createWriteOnlyGateway(workspace);
+  const relayBridge = createRelayBridge({ store, workspace });
   let collection = 'note';
   let selected = null;
   let dirty = false;
@@ -92,6 +94,75 @@ async function main() {
       area.append(blocker);
     }
   }
+  async function renderRelayTimeline(projectId) {
+    const list = $('#relay-timeline-list');
+    list.replaceChildren();
+    if (!projectId) return;
+    const events = await relayBridge.getProjectTimeline(projectId);
+    if (!events.length) {
+      list.append(makeText('p', 'empty-panel', 'No synthetic relay events associated with this project. Click "Ingest fixture relay event" to test ingestion.'));
+      return;
+    }
+    for (const item of [...events].reverse()) {
+      const card = document.createElement('div');
+      card.className = 'relay-card';
+
+      const header = document.createElement('div');
+      header.className = 'relay-card-header';
+      header.append(makeText('span', 'relay-card-title', `Seq #${item.sequence} • ${item.action}`));
+
+      const badgeClass =
+        item.verificationStatus === 'UNVERIFIED_CLAIM' ? 'relay-badge-unverified' :
+        item.verificationStatus === 'BLOCKED' ? 'relay-badge-blocked' :
+        item.verificationStatus === 'AMBIGUOUS' ? 'relay-badge-ambiguous' :
+        item.verificationStatus === 'EVIDENCE_REFERENCED' ? 'relay-badge-evidence' : 'relay-badge-claimed';
+
+      const badgeLabel =
+        item.verificationStatus === 'UNVERIFIED_CLAIM' ? 'Unverified claim' :
+        item.verificationStatus === 'BLOCKED' ? 'Blocked' :
+        item.verificationStatus === 'AMBIGUOUS' ? 'Ambiguous' :
+        item.verificationStatus === 'EVIDENCE_REFERENCED' ? 'Evidence ref' : 'Source claim';
+
+      header.append(makeText('span', `relay-badge ${badgeClass}`, badgeLabel));
+      card.append(header);
+
+      const integrity = document.createElement('div');
+      if (item.streamIntegrity === 'MISSING_PREDECESSOR') {
+        integrity.className = 'relay-integrity gap';
+        integrity.textContent = '⚠️ Incomplete stream: missing predecessor event';
+      } else if (item.streamIntegrity === 'HASH_CHAIN_MISMATCH') {
+        integrity.className = 'relay-integrity gap';
+        integrity.textContent = '⚠️ Hash chain mismatch: predecessor hash does not match';
+      } else {
+        integrity.className = 'relay-integrity valid';
+        integrity.textContent = '✓ Continuous event sequence';
+      }
+      card.append(integrity);
+
+      const meta = document.createElement('div');
+      meta.className = 'relay-meta';
+      meta.append(makeText('span', '', `Stage: ${item.stage}`));
+      meta.append(makeText('span', '', `Route: ${item.sourceNodeId} → ${item.targetNodeId}`));
+      meta.append(makeText('span', '', `Time: ${niceTime(item.atUtc)}`));
+      card.append(meta);
+
+      const refs = document.createElement('div');
+      refs.className = 'relay-meta';
+      refs.append(makeText('span', '', `Task: ${item.taskId}`));
+      refs.append(makeText('span', '', `Hash: ${item.eventHash.slice(0, 16)}…`));
+      if (item.receiptHash) refs.append(makeText('span', '', `Receipt: ${item.receiptHash.slice(0, 16)}…`));
+      card.append(refs);
+
+      if (item.payload && Object.keys(item.payload).length > 0) {
+        const payloadBox = document.createElement('pre');
+        payloadBox.className = 'relay-payload';
+        payloadBox.textContent = JSON.stringify(item.payload, null, 2);
+        card.append(payloadBox);
+      }
+
+      list.append(card);
+    }
+  }
   async function renderHistory() {
     const host = $('#revisions-panel');
     host.replaceChildren();
@@ -143,6 +214,9 @@ async function main() {
     for (const element of $('#editor-form').querySelectorAll('input,textarea,select')) element.disabled = archived;
     $('#save-status').textContent = archived ? 'Archived locally' : 'Saved locally';
     await renderHistory();
+    if (selected.kind === 'project') {
+      await renderRelayTimeline(selected.id);
+    }
   }
   async function openItem(itemId) {
     if (dirty && !window.confirm('Discard unsaved changes?')) return;
@@ -258,12 +332,56 @@ async function main() {
       setTimeout(() => URL.revokeObjectURL(url), 5000);
     } catch (error) { window.alert(`Export failed: ${error.message}`); }
   }
+  async function simulateRelayEvent(blocked = false) {
+    if (!selected || selected.kind !== 'project') return;
+    setStatus('Ingesting relay event...');
+    try {
+      const existing = await relayBridge.getProjectTimeline(selected.id);
+      const seq = existing.length + 1;
+      const prevHash = seq > 1 ? existing[seq - 2].eventHash : null;
+
+      const randomBytes = new Uint8Array(32);
+      crypto.getRandomValues(randomBytes);
+      const eventHash = Array.from(randomBytes, b => b.toString(16).padStart(2, '0')).join('');
+
+      const event = {
+        schemaVersion: 'dex-relay.event.v1',
+        eventId: `evt-${crypto.randomUUID().slice(0, 8)}`,
+        taskId: `task-${selected.id.slice(0, 8)}`,
+        correlationId: `corr-${crypto.randomUUID().slice(0, 8)}`,
+        sourceNodeId: 'bigmac-node',
+        targetNodeId: 'macbook-node',
+        idempotencyKey: `idemp-${crypto.randomUUID()}`,
+        sequence: seq,
+        previousEventHash: prevHash,
+        eventHash,
+        receiptHash: blocked ? null : 'd'.repeat(64),
+        resultHash: null,
+        action: blocked ? 'BLOCKED' : 'CODEX_COMPLETED',
+        stage: blocked ? 'BLOCKED' : 'CODEX_DONE',
+        atUtc: new Date().toISOString(),
+        payload: blocked
+          ? { blocker: 'Missing authorization policy on target node', reason: 'Access restricted' }
+          : { summary: `Synthetic task step ${seq} completed successfully` },
+      };
+
+      await relayBridge.ingestEvent(selected.id, event);
+      await renderRelayTimeline(selected.id);
+      setStatus('Saved locally');
+    } catch (error) {
+      $('#save-error').textContent = error.message;
+      setStatus('Not saved', { error: true });
+    }
+  }
+
   for (const button of document.querySelectorAll('.nav-link')) button.addEventListener('click', () => { void changeCollection(button.dataset.kind); });
   $('#new-note').addEventListener('click', () => { void createNew(); });
   $('#welcome-create').addEventListener('click', () => { void createNew(); });
   $('#editor-form').addEventListener('submit', saveItem);
   $('#delete-note').addEventListener('click', () => { void archiveItem(); });
   $('#simulate-gpt').addEventListener('click', () => { void createSyntheticContribution(); });
+  $('#simulate-relay-event')?.addEventListener('click', () => { void simulateRelayEvent(false); });
+  $('#simulate-relay-blocked')?.addEventListener('click', () => { void simulateRelayEvent(true); });
   $('#export-data').addEventListener('click', exportLocal);
   $('#search-input').addEventListener('input', () => { void renderList(); });
   for (const field of $('#editor-form').querySelectorAll('input,textarea,select')) {

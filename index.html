@@ -93,6 +93,20 @@
             <div class="field-row"><label for="project-blocker">Current blocker</label><input id="project-blocker" type="text" maxlength="500" placeholder="Anything stopping progress?"></div>
             <div class="field-row"><label for="project-repo">Repository link</label><input id="project-repo" type="text" maxlength="500" placeholder="Optional source reference"></div>
             <div id="resume-panel" class="resume-summary" aria-live="polite"></div>
+            <div id="relay-timeline-section" class="relay-timeline-section">
+              <div class="fields-heading">DEX//RELAY ACTIVITY TIMELINE</div>
+              <div class="relay-disclaimer" role="note">
+                <span class="warning-icon" aria-hidden="true">&#9432;</span>
+                <span><strong>SYNTHETIC RELAY EVENTS &mdash; NOT LIVE EXECUTION</strong>. Unverified claims are not execution proof.</span>
+              </div>
+              <div class="relay-actions-bar">
+                <button id="simulate-relay-event" type="button" class="button button-quiet">Ingest fixture relay event</button>
+                <button id="simulate-relay-blocked" type="button" class="button button-quiet">Ingest blocker event</button>
+              </div>
+              <div id="relay-timeline-list" class="relay-timeline-list" role="feed" aria-label="Relay activity timeline">
+                <p class="empty-panel">No synthetic relay events associated with this project.</p>
+              </div>
+            </div>
           </div>
           <div class="metadata-panel">
             <div class="fields-heading">RECORD DETAILS</div>

@@ -524,7 +524,7 @@
       "id": "F21",
       "title": "DEX//REACH Result Receipts",
       "phase": "P3",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Scoped execution receipt adapter",
       "dependsOn": [
         "C13",

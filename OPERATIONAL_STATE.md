@@ -23,7 +23,7 @@ working_scope: isolated synthetic-data browser development slice and full implem
 
 ## Verified in local runtime (empirically proven)
 
-- Pure domain Node tests (70/70) across workspace, gateway, build, feature registry, synthetic DEX//RELAY ingestion, encrypted vault cryptography, cross-device sync engine, backup & recovery, and Standard Notes migration.
+- Pure domain Node tests (128/128) across workspace, gateway, build, feature registry, synthetic DEX//RELAY ingestion, encrypted vault cryptography, cross-device sync engine, backup & recovery, Standard Notes migration, continuity superpowers, original-source ledger, media annotations, external anchors, local retrieval, offline kits, and quiet alerts.
 - Independent Encrypted Backup & Recovery Subsystem (`src/core/crypto/backup.js`, `tests/backup-recovery.test.mjs`):
   1. Deterministic encrypted backup archive creation (`dex-backup.v1`) with SHA-256 cryptographic checksum binding over all encrypted record envelopes and manifest metadata.
   2. Bit-level tamper detection: modified ciphertext envelopes or altered record counts are rejected with `CorruptBackupError`.
@@ -72,6 +72,8 @@ working_scope: isolated synthetic-data browser development slice and full implem
 
 ## Implemented development prototypes (unverified against production)
 
+- Portable Offline Project Kits & Quiet Alerts (F24, F25 prototypes): authorized client packing of encrypted records and attachments with verifiable SHA-256 manifest and offline restore; minimal authenticated alerts with strict content leak prevention (no raw note bodies) and persistent duplicate spam rate-limiting.
+- DexDictate Ingest & Selective Git Publication (F22, F23 prototypes): explicit transcribed text capture into destination inbox with origin metadata and zero shared microphone permission; previewed and approved redacted diffs for named documents preventing wholesale vault mirroring.
 - Local Attachments & Semantic Retrieval (C15, C20 prototypes): encrypted attachment packaging with 10MB bounds, safe document previews, and independent byte recovery; local TF-IDF inverted index for authorized items supporting complete deletion and rebuild without cloud APIs.
 - Review Resurfacing & Downstream Hints (F19, F20 prototypes): explicit review interval scheduling with postpone/skip controls and zero compulsive loops; automated downstream review hints flagging dependent notes upon upstream source changes without rewriting authoritative content.
 - External Anchors & Scoped Publishing (F04, F07 prototypes): repository margin notes bound to immutable commit SHAs with stale revision drift warnings; previewed GitHub issue drafts requiring explicit user confirmation before scoped publication.

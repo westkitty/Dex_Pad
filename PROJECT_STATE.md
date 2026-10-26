@@ -119,6 +119,25 @@ Implemented client-side encrypted attachments, local semantic retrieval index, r
 4. Downstream Review Hints (F20): dependency change analyzer flagging notes derived from modified upstream sources without silently rewriting note content.
 5. Verification: 9 new unit tests (121/121 Node tests PASS), bundled 26 client assets into `dist/`. Advanced C15, C20, F19, and F20 to `dev-prototype`.
 
-Local evidence: `npm run check` passed (121/121 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
+### 2026-10-26 — Dictation ingest, selective git publication, project kits & quiet alerts delivered
+
+Implemented dictation capture route, selective git publication adapter, portable offline project kits, and quiet actionable alerts (`src/core/capture-publish.js`, `src/core/kits-alerts.js`, `tests/capture-publish.test.mjs`, `tests/kits-alerts.test.mjs`):
+1. DexDictate Capture Route (F22): explicitly submitted transcribed text ingests directly into destination inbox with origin metadata and zero shared microphone permission.
+2. Selective Git Publication (F23): previewed and approved redacted diffs for named documents (`dex-redacted-diff.v1`) producing publication receipts (`dex-git-pub-receipt.v1`); strictly prohibits wholesale private vault mirroring.
+3. Portable Offline Project Kits (F24): authorized client packaging of encrypted records and attachments with verifiable SHA-256 manifest (`dex-project-kit-manifest.v1`) and verified offline restoration onto clean target stores.
+4. Quiet, Actionable Alerts (F25): minimal authenticated alerts (`dex-actionable-alert.v1`) with strict content leak prevention (zero private note bodies in notification payload) and persistent duplicate spam rate-limiting.
+5. Verification: 7 new unit tests (128/128 Node tests PASS), bundled 28 client assets into `dist/`. Advanced F22, F23, F24, and F25 to `dev-prototype`.
+
+### 2026-10-26 — 50-Feature campaign closure and invariant audit
+
+Concluded implementation campaign across the canonical 50-feature program in `planning/features.json`:
+- 40 features implemented as verified development prototypes (15 Core `C01, C04, C05, C06, C09, C10, C11, C12, C14, C15, C16, C20, C23, C24, C25` and all 25 Additions `F01..F25`).
+- 10 protected Core features (`C02, C03, C07, C08, C13, C17, C18, C19, C21, C22`) remain strictly `planned` under protected invariant gates pending external cryptographic security audit and 3-device physical hardware lab testing (MacBook, Android phone, Android tablet over Tailscale).
+- Zero third-party runtime package dependencies maintained across the entire application foundation.
+- Full test suite: 128 / 128 tests pass (`npm test`).
+- Full check suite: documentation checks, feature matrix sync, and static build pass (`npm run check`).
+- Native browser runtime: Chromium smoke suite passes end-to-end (`tests/browser_smoke.py`).
+
+Local evidence: `npm run check` passed (128/128 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
 
 Do **not** infer GitHub publication from local files: wait for a remote commit receipt and source-tree readback. The repo is public and contains no real vault material.

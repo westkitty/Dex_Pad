@@ -86,6 +86,47 @@ with sync_playwright() as p:
     page.locator("#sync-network-toggle-btn").click()
     expect(page.locator("#sync-state")).to_have_text("Peer applied ✓")
 
+    # Incident Card interactive test (F05)
+    page.locator("#nav-incidents").click()
+    page.locator("#new-note").click()
+    page.locator("#editor-title").fill("Sync Disconnect Incident")
+    page.locator("#incident-status").select_option("mitigated")
+    page.locator("#incident-failure").fill("Socket drop caused relay disconnect")
+    page.locator("#incident-repro").fill("Simulate network break during active push")
+    page.locator("#incident-repair").fill("Buffered local outbox queue until reconnection")
+    page.locator("#incident-proof").fill("tests/sync-engine.test.mjs")
+    page.locator("#save-note").click()
+    expect(page.locator("#save-status")).to_have_text("Saved locally")
+
+    # Commitment Tracker interactive test (F08)
+    page.locator("#nav-commitments").click()
+    page.locator("#new-note").click()
+    page.locator("#editor-title").fill("Security Audit Preparation")
+    page.locator("#commitment-status").select_option("in-progress")
+    page.locator("#commitment-owner").fill("Lead Crypto Engineer")
+    page.locator("#commitment-outcome").fill("Zero-plaintext verification proof and test ledger")
+    page.locator("#commitment-review").fill("2026-11-01")
+    page.locator("#save-note").click()
+    expect(page.locator("#save-status")).to_have_text("Saved locally")
+
+    # Knowledge Relations & Backlinks test (C11)
+    # Create target note
+    page.locator("#nav-notes").click()
+    page.locator("#new-note").click()
+    page.locator("#editor-title").fill("Target Note for Backlinks")
+    page.locator("#editor-body").fill("I am the target of knowledge relations.")
+    page.locator("#save-note").click()
+    expect(page.locator("#save-status")).to_have_text("Saved locally")
+
+    # Verify revision incremented on save
+    expect(page.locator("#revision-label")).to_have_text("Revision 2")
+
+    # One-Tap Agent Handoff export test (F06)
+    with page.expect_download() as download_info:
+        page.locator("#export-handoff").click()
+    download = download_info.value
+    assert "dex-handoff-" in download.suggested_filename
+
     assert not errors, f"JavaScript errors: {errors}"
     assert not cross_origin_requests, f"Unexpected network: {cross_origin_requests}"
     page.screenshot(path=str(SCREENSHOT_DIR / "dex-pad-desktop-smoke.png"), full_page=True)

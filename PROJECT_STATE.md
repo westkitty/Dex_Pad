@@ -72,6 +72,17 @@ Implemented peer confirmation receipts (`dex-peer-ack.v1`) and truthful sync ins
 3. Dedicated interactive UI panel: provides diagnostic visibility into local, relay, and peer states, with push simulation, peer ACK simulation, and offline network interruption toggling.
 4. Automated browser verification: `tests/browser_smoke.py` exercises the full lifecycle on native Chromium against loopback server, proving state transitions across `SAVED_LOCALLY` -> `RELAY_STORED` -> `PEER_APPLIED` -> `Offline (buffered)`, responsive rendering across 1280px and 390px viewports, zero console errors, and zero cross-origin leaks. Full test suite passing (70/70 tests). C24 advanced to `dev-prototype`.
 
-Local evidence: `npm run check` passed (70/70 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
+### 2026-10-26 — Project continuity superpowers, knowledge relations & agent handoff delivered
+
+Implemented structured continuity records, knowledge relations engine, one-tap agent handoff, and resume diff analyzer (`src/core/relations.js`, `src/core/handoff.js`, `src/core/resume-diff.js`, `src/core/workspace.js`, `src/ui/app.js`, `index.html`, `styles.css`):
+1. Knowledge Graph & Stable Relations (C11): bidirectional wikilink extraction (`[[record-id]]`), structured relation fields indexing, broken target detection for missing or archived notes, circular link tolerance, and stable relation invariant across item title renames.
+2. Structured Decision Memory (F03): rationale and trade-offs, alternatives considered, review dates, superseding links preserving discarded decisions as visible audit trail without current authority.
+3. Incident Cards (F05): structured incident records capturing failure description, reproduction steps, confirmed repair, and reusable regression proof.
+4. Outstanding Commitments (F08): lightweight obligation tracker with status, owner, expected outcome, and review date.
+5. One-Tap Agent Handoff (F06): bounded task context packet generator (`dex-handoff.v1`) strictly restricted to user-selected items, with evidence state distribution summary and zero vault leakage.
+6. Project Resume Diff (F18): `getChangesSinceLastVisit` analyzer reconstructing events and revisions since previous visit, strictly isolating recorded observations from inferred impact summaries.
+7. Interactive UI & Automated Browser Verification: integrated Incident, Commitment, Decision Memory, Backlinks, and Handoff export controls into the live web UI. Verified end-to-end via `tests/browser_smoke.py` on Playwright Chromium (85/85 Node tests, full browser smoke PASS). Advanced C11, F05, F06, F08, and F18 to `dev-prototype`.
+
+Local evidence: `npm run check` passed (85/85 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
 
 Do **not** infer GitHub publication from local files: wait for a remote commit receipt and source-tree readback. The repo is public and contains no real vault material.

@@ -29,7 +29,7 @@ Status meanings: `planned` = specification only; `dev-prototype` = development-o
 | C08 | Non-destructive Standard Notes migration | P1 | planned | C01, C07 | An isolated import reports unsupported formats and mismatches, round-trips supported records, and never deletes source data. |
 | C09 | Universal capture inbox | P1 | dev-prototype | C01 | A titleless synthetic note can be captured without categorization; later adapters use the same validated submission contract. |
 | C10 | Typed knowledge objects | P1 | dev-prototype | C01 | Notes, projects, and decisions use stable IDs; new kinds are versioned without breaking existing exported items. |
-| C11 | Backlinks and stable relations | P2 | planned | C10 | Renaming or moving an item preserves incoming links, including cross-space permission checks and broken-target indicators. |
+| C11 | Backlinks and stable relations | P2 | dev-prototype | C10 | Renaming or moving an item preserves incoming links, including cross-space permission checks and broken-target indicators. |
 | C12 | Original-source ledger | P4 | planned | C10 | Imported material retains original URI, file hash, timestamps, authority label, and derived-record relationships. |
 | C13 | Revocable scoped integration service | P3 | planned | C02, C03, C25 | An external identity cannot read outside its grant, cannot retrieve the vault key, and loses future operations when revoked. |
 | C14 | GPT write-only contribution tool | P3 | dev-prototype | C25 | A real MCP tool can create submissions without exposing any read/list/search method, enforced by server authorization. |
@@ -53,10 +53,10 @@ Status meanings: `planned` = specification only; `dev-prototype` = development-o
 | F02 | Evidence-State Labels | P2 | dev-prototype | C01 | Record states distinguish proposed, claimed, observed, verified and stale; verified requires a reference and remains manual. |
 | F03 | Decision Memory | P2 | dev-prototype | C10, F02 | A decision records rationale, alternatives and superseding links; discarded decisions are visible without becoming current authority. |
 | F04 | Repository-Anchored Margin Notes | P2 | planned | C11 | An annotation retains an immutable commit/path/range anchor and warns when viewing an unrelated newer revision. |
-| F05 | Incident Cards | P2 | planned | F02 | An incident preserves the original failure, reproduction, confirmed repair, and reusable regression proof in one record. |
-| F06 | One-Tap Agent Handoff | P2 | planned | F01, C16 | Only user-selected items become a portable, bounded task packet with constraints, evidence states and exact sources. |
+| F05 | Incident Cards | P2 | dev-prototype | F02 | An incident preserves the original failure, reproduction, confirmed repair, and reusable regression proof in one record. |
+| F06 | One-Tap Agent Handoff | P2 | dev-prototype | F01, C16 | Only user-selected items become a portable, bounded task packet with constraints, evidence states and exact sources. |
 | F07 | Note to GitHub Issue | P3 | planned | C13, F06 | A previewed issue draft is published only to the named repository with explicit confirmation and idempotent receipt. |
-| F08 | Outstanding Commitments | P2 | planned | C10 | A pending obligation has owner, expected outcome and review date without creating a full duplicate task system. |
+| F08 | Outstanding Commitments | P2 | dev-prototype | C10 | A pending obligation has owner, expected outcome and review date without creating a full duplicate task system. |
 | F09 | Interactive Runbook Cards | P2 | planned | F08, F02 | A runbook lists steps, expected checks, stop conditions and rollback; execution remains manual unless separately authorized. |
 | F10 | Continue on Another Device | P3 | planned | C03, F01 | A second trusted device reopens the same project/item and scroll context only after authentic peer synchronization. |
 | F11 | Deep Citation Anchors | P4 | planned | C12 | A citation stores the exact page, line or section when supported, with origin snapshot and stale-target detection. |
@@ -66,7 +66,7 @@ Status meanings: `planned` = specification only; `dev-prototype` = development-o
 | F15 | Contradiction and Duplicate Review | P4 | planned | C11 | Potential duplicates and mismatches are presented with source provenance and never auto-merged or deleted. |
 | F16 | Watch This Source | P4 | planned | C12, C13 | An approved watcher submits only an authorized change receipt; disabling it leaves capture and search intact. |
 | F17 | Project Reading Radar | P4 | planned | C12 | Selected source feeds appear in one project context without creating a compulsory general-purpose RSS reader. |
-| F18 | What Changed Since I Was Here | P2 | planned | C23, F01 | A project reopen displays revisions since last visit from actual recorded events, separating observations from inferred impact. |
+| F18 | What Changed Since I Was Here | P2 | dev-prototype | C23, F01 | A project reopen displays revisions since last visit from actual recorded events, separating observations from inferred impact. |
 | F19 | Remember This Later | P5 | planned | F08 | A selected note resurfaces at an explicit interval with skip/postpone controls and no compulsive notification loops. |
 | F20 | Downstream Review Hints | P5 | planned | C11, F14 | A changed source flags dependent notes for user review without silently rewriting authoritative material. |
 | F21 | DEX//REACH Result Receipts | P3 | dev-prototype | C13, F02 | A sanitized receipt links one verified job result to a project with no raw secrets, delegated terminal access, or invented success. |

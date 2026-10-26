@@ -127,7 +127,7 @@
       "id": "C11",
       "title": "Backlinks and stable relations",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Knowledge graph / references",
       "dependsOn": [
         "C10"
@@ -341,7 +341,7 @@
       "id": "F05",
       "title": "Incident Cards",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Incident record / recovery",
       "dependsOn": [
         "F02"
@@ -352,7 +352,7 @@
       "id": "F06",
       "title": "One-Tap Agent Handoff",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Selective context packet exporter",
       "dependsOn": [
         "F01",
@@ -376,7 +376,7 @@
       "id": "F08",
       "title": "Outstanding Commitments",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Task/awaiting ledger",
       "dependsOn": [
         "C10"
@@ -489,7 +489,7 @@
       "id": "F18",
       "title": "What Changed Since I Was Here",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Event timeline / resume diff",
       "dependsOn": [
         "C23",

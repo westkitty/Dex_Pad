@@ -36,6 +36,8 @@
           <button id="nav-notes" class="nav-link is-active" data-kind="note" type="button"><span class="nav-symbol">N</span><span>Notes</span><span class="nav-count" id="count-notes">0</span></button>
           <button id="nav-projects" class="nav-link" data-kind="project" type="button"><span class="nav-symbol">P</span><span>Projects</span><span class="nav-count" id="count-projects">0</span></button>
           <button id="nav-decisions" class="nav-link" data-kind="decision" type="button"><span class="nav-symbol">D</span><span>Decisions</span><span class="nav-count" id="count-decisions">0</span></button>
+          <button id="nav-incidents" class="nav-link" data-kind="incident" type="button"><span class="nav-symbol">X</span><span>Incidents</span><span class="nav-count" id="count-incidents">0</span></button>
+          <button id="nav-commitments" class="nav-link" data-kind="commitment" type="button"><span class="nav-symbol">C</span><span>Commitments</span><span class="nav-count" id="count-commitments">0</span></button>
           <button id="nav-inbox" class="nav-link" data-kind="contribution" type="button"><span class="nav-symbol">I</span><span>Contributions</span><span class="nav-count" id="count-inbox">0</span></button>
           <button id="nav-archive" class="nav-link" data-kind="archive" type="button"><span class="nav-symbol">A</span><span>Archive</span><span class="nav-count" id="count-archive">0</span></button>
         </nav>
@@ -121,6 +123,7 @@
             <span class="editor-type-chip" id="kind-chip">Note</span>
             <span class="revision-chip" id="revision-label">Revision 1</span>
             <div class="toolbar-spacer"></div>
+            <button id="export-handoff" type="button" class="button button-quiet" title="Export One-Tap Agent Handoff Packet">Agent handoff</button>
             <button id="delete-note" type="button" class="button button-danger" title="Move to recoverable history">Archive</button>
           </div>
           <label class="sr-only" for="editor-title">Title</label>
@@ -146,6 +149,35 @@
               <div id="relay-timeline-list" class="relay-timeline-list" role="feed" aria-label="Relay activity timeline">
                 <p class="empty-panel">No synthetic relay events associated with this project.</p>
               </div>
+            </div>
+          </div>
+          <div id="decision-fields" class="decision-fields" hidden>
+            <div class="fields-heading">DECISION MEMORY</div>
+            <div class="field-row"><label for="decision-rationale">Rationale &amp; trade-offs</label><textarea id="decision-rationale" rows="3" placeholder="Why this decision was made and what was rejected"></textarea></div>
+            <div class="field-row"><label for="decision-alternatives">Alternatives considered (comma-separated)</label><input id="decision-alternatives" type="text" placeholder="Alternative A, Alternative B"></div>
+            <div class="field-row"><label for="decision-review">Review date</label><input id="decision-review" type="date"></div>
+            <div class="field-row"><label for="decision-superseded-by">Superseded by (Record ID)</label><input id="decision-superseded-by" type="text" placeholder="ID of newer decision record"></div>
+            <div class="field-row"><label for="decision-supersedes">Supersedes (Record ID)</label><input id="decision-supersedes" type="text" placeholder="ID of prior decision record"></div>
+          </div>
+          <div id="incident-fields" class="incident-fields" hidden>
+            <div class="fields-heading">INCIDENT RECORD</div>
+            <div class="field-row"><label for="incident-status">Incident status</label><select id="incident-status"><option value="open">Open</option><option value="investigating">Investigating</option><option value="mitigated">Mitigated</option><option value="resolved">Resolved</option></select></div>
+            <div class="field-row"><label for="incident-failure">Failure description</label><textarea id="incident-failure" rows="3" placeholder="Observed defect, error log, or impact"></textarea></div>
+            <div class="field-row"><label for="incident-repro">Reproduction steps</label><textarea id="incident-repro" rows="3" placeholder="Deterministic steps to reproduce"></textarea></div>
+            <div class="field-row"><label for="incident-repair">Confirmed repair</label><textarea id="incident-repair" rows="2" placeholder="Root cause fix or mitigation"></textarea></div>
+            <div class="field-row"><label for="incident-proof">Regression proof</label><input id="incident-proof" type="text" placeholder="Test command or commit showing fix"></div>
+          </div>
+          <div id="commitment-fields" class="commitment-fields" hidden>
+            <div class="fields-heading">COMMITMENT / PROMISE TRACKER</div>
+            <div class="field-row"><label for="commitment-status">Status</label><select id="commitment-status"><option value="pending">Pending</option><option value="in-progress">In progress</option><option value="fulfilled">Fulfilled</option><option value="cancelled">Cancelled</option></select></div>
+            <div class="field-row"><label for="commitment-owner">Owner / Assignee</label><input id="commitment-owner" type="text" placeholder="Individual, role, or team"></div>
+            <div class="field-row"><label for="commitment-outcome">Expected outcome</label><textarea id="commitment-outcome" rows="2" placeholder="Measurable deliverable or condition"></textarea></div>
+            <div class="field-row"><label for="commitment-review">Review / Due date</label><input id="commitment-review" type="date"></div>
+          </div>
+          <div id="backlinks-section" class="backlinks-section">
+            <div class="fields-heading">KNOWLEDGE RELATIONS &amp; BACKLINKS</div>
+            <div id="backlinks-list" class="backlinks-list" role="list" aria-label="Incoming backlinks">
+              <p class="empty-panel">No incoming backlinks pointing to this record.</p>
             </div>
           </div>
           <div class="metadata-panel">

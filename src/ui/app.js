@@ -1,6 +1,8 @@
 import { createWorkspace } from '../core/workspace.js';
 import { createWriteOnlyGateway } from '../core/contributions.js';
 import { createRelayBridge } from '../integrations/relay/bridge.js';
+import { buildKnowledgeGraph, getBacklinksForItem } from '../core/relations.js';
+import { createHandoffPacket } from '../core/handoff.js';
 import { openIndexedDbStore } from '../storage/indexeddb.js';
 
 const $ = (selector) => document.querySelector(selector);
@@ -8,6 +10,8 @@ const CATEGORY = {
   note: { title: 'Notes', label: 'Note' },
   project: { title: 'Projects', label: 'Project' },
   decision: { title: 'Decisions', label: 'Decision' },
+  incident: { title: 'Incidents', label: 'Incident' },
+  commitment: { title: 'Commitments', label: 'Commitment' },
   contribution: { title: 'Contributions', label: 'Contribution' },
   archive: { title: 'Archive', label: 'Archived' },
 };
@@ -112,11 +116,12 @@ async function main() {
 
   async function updateCounts() {
     const items = await workspace.list({ includeDeleted: true });
-    const counts = { note: 0, project: 0, decision: 0, contribution: 0, archive: 0 };
+    const counts = { note: 0, project: 0, decision: 0, incident: 0, commitment: 0, contribution: 0, archive: 0 };
     for (const item of items) { if (item.deletedAt) counts.archive++; else if (counts[item.kind] !== undefined) counts[item.kind]++; }
     for (const [kind, count] of Object.entries(counts)) {
-      const label = kind === 'contribution' ? 'inbox' : kind === 'note' ? 'notes' : kind === 'project' ? 'projects' : kind === 'decision' ? 'decisions' : 'archive';
-      $(`#count-${label}`).textContent = String(count);
+      const label = kind === 'contribution' ? 'inbox' : kind === 'note' ? 'notes' : kind === 'project' ? 'projects' : kind === 'decision' ? 'decisions' : kind === 'incident' ? 'incidents' : kind === 'commitment' ? 'commitments' : 'archive';
+      const el = $(`#count-${label}`);
+      if (el) el.textContent = String(count);
     }
   }
   async function renderList() {
@@ -257,6 +262,33 @@ async function main() {
       host.append(button);
     }
   }
+  async function renderBacklinks() {
+    const container = $('#backlinks-list');
+    if (!container) return;
+    container.replaceChildren();
+    if (!selected) return;
+    const allItems = await workspace.list({ includeDeleted: true });
+    const graph = buildKnowledgeGraph(allItems);
+    const backlinks = getBacklinksForItem({ graph, itemId: selected.id });
+    if (!backlinks.length) {
+      container.append(makeText('p', 'empty-panel', 'No incoming backlinks pointing to this record.'));
+      return;
+    }
+    for (const link of backlinks) {
+      const card = document.createElement('div');
+      card.className = 'backlink-item';
+      card.title = `Referenced from ${link.sourceTitle || 'Untitled'} (${link.relation})`;
+      const relationBadge = makeText('span', 'backlink-relation', link.relation);
+      const titleSpan = makeText('span', 'backlink-title', link.sourceTitle || 'Untitled');
+      card.append(relationBadge);
+      card.append(titleSpan);
+      if (link.brokenTarget) {
+        card.append(makeText('span', 'backlink-broken', 'Deleted source'));
+      }
+      card.addEventListener('click', () => { void openItem(link.sourceId); });
+      container.append(card);
+    }
+  }
   async function renderEditor() {
     $('#editor-empty').hidden = Boolean(selected);
     $('#editor-form').hidden = !selected;
@@ -274,6 +306,27 @@ async function main() {
     $('#project-blocker').value = selected.blocker || '';
     $('#project-repo').value = selected.repoUrl || '';
     $('#project-fields').hidden = selected.kind !== 'project';
+    $('#decision-fields').hidden = selected.kind !== 'decision';
+    $('#incident-fields').hidden = selected.kind !== 'incident';
+    $('#commitment-fields').hidden = selected.kind !== 'commitment';
+
+    $('#decision-rationale').value = selected.rationale || '';
+    $('#decision-alternatives').value = (selected.alternatives || []).join(', ');
+    $('#decision-review').value = selected.reviewDate || '';
+    $('#decision-superseded-by').value = selected.supersededBy || '';
+    $('#decision-supersedes').value = selected.supersedes || '';
+
+    $('#incident-status').value = selected.status || 'open';
+    $('#incident-failure').value = selected.failureDescription || '';
+    $('#incident-repro').value = selected.reproductionSteps || '';
+    $('#incident-repair').value = selected.confirmedRepair || '';
+    $('#incident-proof').value = selected.regressionProof || '';
+
+    $('#commitment-status').value = selected.status || 'pending';
+    $('#commitment-owner').value = selected.owner || '';
+    $('#commitment-outcome').value = selected.expectedOutcome || '';
+    $('#commitment-review').value = selected.reviewDate || '';
+
     updateResume();
     const archived = Boolean(selected.deletedAt);
     $('#delete-note').disabled = archived;
@@ -281,6 +334,7 @@ async function main() {
     for (const element of $('#editor-form').querySelectorAll('input,textarea,select')) element.disabled = archived;
     $('#save-status').textContent = archived ? 'Archived locally' : 'Saved locally';
     await renderHistory();
+    await renderBacklinks();
     if (selected.kind === 'project') {
       await renderRelayTimeline(selected.id);
     }
@@ -343,6 +397,18 @@ async function main() {
       nextAction: $('#project-next').value,
       blocker: $('#project-blocker').value,
       repoUrl: $('#project-repo').value,
+      rationale: $('#decision-rationale')?.value || '',
+      alternatives: $('#decision-alternatives')?.value ? $('#decision-alternatives').value.split(',').map(s => s.trim()).filter(Boolean) : [],
+      reviewDate: selected.kind === 'decision' ? ($('#decision-review')?.value || null) : selected.kind === 'commitment' ? ($('#commitment-review')?.value || null) : null,
+      supersededBy: $('#decision-superseded-by')?.value || null,
+      supersedes: $('#decision-supersedes')?.value || null,
+      failureDescription: $('#incident-failure')?.value || '',
+      reproductionSteps: $('#incident-repro')?.value || '',
+      confirmedRepair: $('#incident-repair')?.value || '',
+      regressionProof: $('#incident-proof')?.value || '',
+      status: selected.kind === 'incident' ? ($('#incident-status')?.value || 'open') : selected.kind === 'commitment' ? ($('#commitment-status')?.value || 'pending') : null,
+      owner: $('#commitment-owner')?.value || '',
+      expectedOutcome: $('#commitment-outcome')?.value || '',
     };
     try {
       selected = await workspace.update(selected.id, patch, selected.revision);
@@ -447,6 +513,30 @@ async function main() {
     }
   }
 
+  async function exportHandoff() {
+    if (!selected) return;
+    try {
+      const packet = await createHandoffPacket({
+        workspace,
+        selectedItemIds: [selected.id],
+        purpose: 'agent-task-context',
+        constraints: ['No unverified claims presented as verified', 'Zero external runtime dependencies'],
+      });
+      const blob = new Blob([JSON.stringify(packet, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `dex-handoff-${selected.id.slice(0, 8)}.json`;
+      document.body.append(anchor);
+      anchor.click();
+      anchor.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      appendSyncLog(`One-tap agent handoff exported for item ${selected.id.slice(0, 8)} (${packet.selectedItemsCount} items).`);
+    } catch (error) {
+      window.alert(`Handoff export failed: ${error.message}`);
+    }
+  }
+
   $('#open-sync-inspector')?.addEventListener('click', () => {
     const panel = $('#sync-inspector');
     if (!panel) return;
@@ -499,6 +589,7 @@ async function main() {
   $('#simulate-relay-event')?.addEventListener('click', () => { void simulateRelayEvent(false); });
   $('#simulate-relay-blocked')?.addEventListener('click', () => { void simulateRelayEvent(true); });
   $('#export-data').addEventListener('click', exportLocal);
+  $('#export-handoff')?.addEventListener('click', () => { void exportHandoff(); });
   $('#search-input').addEventListener('input', () => { void renderList(); });
   for (const field of $('#editor-form').querySelectorAll('input,textarea,select')) {
     field.addEventListener('input', () => { if (selected && !selected.deletedAt) { dirty = true; setStatus('Unsaved changes'); $('#save-error').textContent = ''; updateResume(); } });

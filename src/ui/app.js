@@ -36,6 +36,16 @@ function setStatus(value, { error = false } = {}) {
   const el = $('#save-status');
   el.textContent = value;
   el.style.color = error ? 'var(--red)' : value === 'Saved locally' ? '#afd4b9' : 'var(--muted)';
+  const timeEl = $('#save-time');
+  if (timeEl) {
+    if (value === 'Saved locally') {
+      const now = new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      timeEl.textContent = `(${now})`;
+      timeEl.title = `Durable local IndexedDB transaction confirmed at ${now}`;
+    } else if (error) {
+      timeEl.textContent = '';
+    }
+  }
 }
 
 async function main() {
@@ -495,6 +505,16 @@ async function main() {
     for (const button of document.querySelectorAll('.nav-link')) {
       button.classList.toggle('is-active', button.dataset.kind === kind);
       button.setAttribute('aria-current', button.dataset.kind === kind ? 'page' : 'false');
+    }
+    const host = $('#note-list');
+    if (host && kind !== 'topology') {
+      host.replaceChildren(
+        ...Array.from({ length: 3 }, () => {
+          const el = document.createElement('div');
+          el.className = 'skeleton-card';
+          return el;
+        })
+      );
     }
     await renderEditor();
     await renderList();

@@ -51,7 +51,7 @@
       </aside>
       <section class="item-pane" aria-label="Items">
         <div class="pane-heading">
-          <div><div class="overline">YOUR COLLECTION</div><h1 id="collection-title">Notes</h1></div>
+          <div><h1 id="collection-title">Notes</h1></div>
           <button id="new-note" class="button button-primary" type="button" title="Create a local note record">+ New Note</button>
         </div>
         <label class="search-box" for="search-input">
@@ -72,6 +72,7 @@
           <div class="breadcrumb"><span>WORKSPACE</span> <span aria-hidden="true">/</span> <strong id="editor-kind">NOTE</strong></div>
           <div class="state-line">
             <span id="save-status" role="status" aria-live="polite">Ready</span>
+            <span id="save-time" class="save-time" aria-hidden="true"></span>
             <span class="state-separator" aria-hidden="true">&bull;</span>
             <button id="open-sync-inspector" class="sync-status-btn" type="button" title="Open Truthful Sync Inspector"><span id="sync-state">Sync: Local</span></button>
           </div>

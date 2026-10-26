@@ -4,7 +4,7 @@
 
 DEX//Pad is intended to replace slow or unreliable cross-device note synchronization while creating a reusable, encrypted knowledge layer for personal projects, research, and other local-first applications.
 
-> **Status: architecture/bootstrap only.** No notes app, encryption engine, sync service, migration utility, or Android package has been implemented or validated yet. Do not store important information in DEX//Pad until the durability and recovery gates pass.
+> **Status: unencrypted development preview.** A runnable local browser sandbox now demonstrates synthetic notes, project/decision records, revision history and a simulated contribution inbox. It is **NOT** a real private vault: encryption, multi-device synchronization, import/backup recovery, Android lifecycle and GPT connectivity are unimplemented or unverified. **Synthetic data only.**
 
 ## Product principles
 
@@ -18,6 +18,24 @@ DEX//Pad is intended to replace slow or unreliable cross-device note synchroniza
 8. **Integration by capability, not blanket access.** Other apps use revocable, scoped access through an explicitly unlocked trusted client.
 9. **A notes application stays simple.** Powerful object models, project lenses, automation, and AI never obstruct quick capture.
 10. **No public-network dependency.** A private, self-hosted relay over Tailscale is the intended first deployment; no Docker requirement.
+
+## Run the development preview
+
+Requires Node.js 22 or newer and no dependency installation. From the repository root:
+
+```sh
+npm run dev
+```
+
+Open `http://127.0.0.1:4173` locally on that machine. This does not expose notes to Android or other computers.
+
+Run tests, documentation checks and a static build with:
+
+```sh
+npm run check
+```
+
+The browser preview stores development records **unencrypted** in IndexedDB. Do not use it for real private notes. See [Developer Quickstart](docs/DEVELOPER_QUICKSTART.md), [50-feature development matrix](docs/FEATURE_MATRIX.md) and [operational state](OPERATIONAL_STATE.md).
 
 ## The distinct DEX//Pad layers
 
@@ -42,6 +60,10 @@ DEX//Pad is intended to replace slow or unreliable cross-device note synchroniza
 | File | Role |
 |---|---|
 | [docs/PRODUCT.md](docs/PRODUCT.md) | Product scope, UX, object model, differentiators |
+| [docs/DEVELOPER_QUICKSTART.md](docs/DEVELOPER_QUICKSTART.md) | Install, run, test and contribute |
+| [docs/FEATURE_MATRIX.md](docs/FEATURE_MATRIX.md) | 50 scoped capabilities and delivery contracts |
+| [docs/GPT_WRITE_ONLY.md](docs/GPT_WRITE_ONLY.md) | Future write-only GPT contribution integration |
+| [OPERATIONAL_STATE.md](OPERATIONAL_STATE.md) | Current verified/unknown project state |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Proposed trust and storage boundaries |
 | [docs/SECURITY.md](docs/SECURITY.md) | Threat model, encryption and key-management gates |
 | [docs/SYNC-LAB.md](docs/SYNC-LAB.md) | Competitive sync experiments and failure-injection matrix |
@@ -61,7 +83,7 @@ Run the bounded sync/security lab before freezing application framework or build
 
 ## Current build state
 
-No runtime code has been chosen or shipped. A green test result on the docs does **not** validate synchronization, security, or mobile behavior. The first technical milestone is a runnable three-device sync experiment.
+The repo contains a runnable local **development-only** browser preview and standard-library Node test infrastructure. Node tests do **not** prove IndexedDB on target Android devices, encryption, sync or production security. The next critical experiment is encryption/key recovery and three-device encrypted sync. See `docs/SYNC-LAB.md`.
 
 ## License
 

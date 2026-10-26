@@ -1,6 +1,6 @@
 # DEX//Pad agent contract
 
-Read README.md, PROJECT_STATE.md, docs/DECISIONS.md, docs/SECURITY.md, docs/SYNC-LAB.md, and docs/ROADMAP.md before any substantive change.
+Read README.md, OPERATIONAL_STATE.md, PROJECT_STATE.md, docs/DECISIONS.md, docs/SECURITY.md, docs/SYNC-LAB.md, docs/ROADMAP.md, and planning/features.json before any substantive change.
 
 ## Protected invariants
 
@@ -31,3 +31,7 @@ Classify each nontrivial assertion as **proposed**, **implemented**, **observed*
 ## Git hygiene
 
 Use small commits tied to explicit acceptance criteria. Run repository-specific tests before committing. No automatic push, release, public exposure, or deployment unless authorized. Keep rollback and existing user data protected.
+
+## Development sandbox boundary
+
+The browser application in `src/` is an unencrypted **synthetic-only** development scaffold. Never present the demo as production E2EE, cross-device sync, Standard Notes replacement, or working GPT integration. The source feature roster is `planning/features.json` and the generated `docs/FEATURE_MATRIX.md`. Execute `npm run check` and, on supported machines, the Playwright browser smoke. A browser policy failure must remain UNVERIFIED, not be reclassified as PASS.

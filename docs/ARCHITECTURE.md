@@ -63,3 +63,7 @@ Prefer a small no-Docker self-hosted Node service and SQLite database if the syn
 - P3: Shared web core vs Android native shell.
 - P4: Long-term Markdown-first vs block editor compatibility.
 - P5: Ciphertext compaction, metadata minimization and epoch rotation.
+
+## Development foundation (2026-10-25)
+
+A dependency-free browser **simulation** exists under `src/`. It provides a local IndexedDB adapter and separate domain/contribution modules. The local server is static, read-only and loopback-bound. This is not the encrypted client architecture above: IndexedDB is currently plaintext, and there is no remote relay. All work must honor the security and sync gates before real user data. See `OPERATIONAL_STATE.md` and `docs/DEVELOPER_QUICKSTART.md`.

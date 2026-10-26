@@ -31,3 +31,7 @@ Records here are planning decisions unless marked verified by implementation evi
 - No auto-import replacing existing source files.
 - No claim of complete privacy from ciphertext when metadata may leak.
 - No Android background timing promise the OS cannot guarantee.
+
+## Development-only architecture decision (2026-10-25)
+
+**ADR-008 — Use a zero-dependency, plaintext, local browser sandbox solely to establish runnable architecture, domain contracts and a development workflow.** This is a strictly synthetic-data experiment and does not supersede ADR-001 through ADR-005. It does not authorize personal-data use, network exposure, real GPT access or any change to the encrypted client requirements. Build/runtime readiness and cryptographic production readiness have separate gates. Reassess final framework packaging after sync/security prototype evidence.

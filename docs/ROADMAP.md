@@ -1,6 +1,10 @@
-# Build roadmap — gate-driven, not calendar promises
+# Build roadmap - gate-driven, not calendar promises
 
-## Phase 0 — Security/sync proof (must precede product code)
+## Development preview (synthetic-only exception)
+
+The first repository runnable browser code deliberately uses plaintext development storage. This is a tool for developing UI and transactional logic; it is not an encrypted vault and does not satisfy Phase 0. See [Developer Quickstart](DEVELOPER_QUICKSTART.md), [Full Feature Matrix](FEATURE_MATRIX.md) and [GPT Write-Only Contract](GPT_WRITE_ONLY.md).
+
+## Phase 0 — Security/sync proof (must precede production notes)
 
 Deliver: threat model review, key lifecycle specification, two competing local-first sync prototypes, fault-injection harness, performance matrix, explicit ADR. Gate: crash/replay/restore tests meet SYNC-LAB acceptance criteria. Stop if data loss is observed until diagnosed.
 

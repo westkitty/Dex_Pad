@@ -12,6 +12,10 @@ REQUIRED = [
     "docs/SYNC-LAB.md", "docs/ROADMAP.md", "docs/INTEGRATIONS.md",
     "docs/IMPORT-EXPORT.md", "docs/DECISIONS.md", "docs/RISKS.md",
     "docs/RESEARCH.md", "specs/object-envelope.v0.schema.json",
+    "docs/FEATURE_MATRIX.md", "docs/GPT_WRITE_ONLY.md", "docs/DEVELOPER_QUICKSTART.md",
+    "OPERATIONAL_STATE.md", "planning/features.json", "index.html", "styles.css",
+    "docs/superpowers/specs/2026-10-25-development-foundation-design.md",
+    "docs/superpowers/plans/2026-10-25-development-foundation-plan.md",
 ]
 errors = []
 for path in REQUIRED:

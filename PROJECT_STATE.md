@@ -33,3 +33,11 @@ Created a non-executable foundation packet and deterministic documentation/schem
 ### 2026-10-25 — Canonical GitHub target selected
 
 The owner supplied `https://github.com/westkitty/Dex_Pad` as the authoritative project repository. GitHub confirmed `main`, push permission, public visibility, and no files at preflight. Scaffold files are intended for initial publication there; the precise remote commit and publication outcome require a verified GitHub readback. Keep actual user notes, credentials, and vault material out of this public repository.
+
+### 2026-10-25 — Local development-foundation implementation (sandbox evidence)
+
+In an isolated container worktree, created a dependency-free local browser UI and modular JS domain for **synthetic data only**: notes, projects, decisions, simulated contributions, immutable revision records, evidence states, optimistic revision checks, local full-text filtering, archive/restore, JSON export and local IndexedDB adapter. Created a 50-item machine-readable feature roster (25 core, 25 new), human-readable matrix, Superpowers design and implementation plan, developer quickstart, GPT write-only architecture, CI workflow and operational state.
+
+Local evidence: `npm run check` passed (20/20 Node tests, documentation, feature roster and static build). Chromium static render at 1440px and 390px widths passed without horizontal overflow. **Functional browser smoke not run successfully:** the container's Chromium returned `net::ERR_BLOCKED_BY_ADMINISTRATOR` when navigating to localhost, even when routing static responses through Playwright. Native IndexedDB, real Android lifecycle, E2EE, cross-device sync, actual GPT MCP, Standard Notes migration and backup/restore remain unverified/unimplemented.
+
+Do **not** infer GitHub publication from local files: wait for a remote commit receipt and source-tree readback. The repo is public and contains no real vault material.

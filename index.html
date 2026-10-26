@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0c1118">
+  <meta name="description" content="DEX//Pad developer sandbox for local notes, project continuity, decisions, and contributions.">
+  <title>DEX//Pad | Development</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/src/ui/app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand" aria-label="DEX Pad">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        <div class="brand-copy">
+          <strong>DEX<span class="brand-slash">//</span>Pad</strong>
+          <small>Personal knowledge workspace</small>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="environment-badge"><span class="status-dot" aria-hidden="true"></span> Local sandbox</span>
+        <button id="export-data" class="button button-quiet" type="button" title="Export all development records as unencrypted JSON">Export data</button>
+      </div>
+    </header>
+    <div id="developer-warning" class="security-warning" role="note">
+      <span class="warning-icon" aria-hidden="true">!</span>
+      <p><strong>UNENCRYPTED DEVELOPMENT STORAGE</strong><span class="warning-divider">/</span> SYNTHETIC DATA ONLY. No encryption, cross-device sync, or remote integrations are active.</p>
+    </div>
+    <div class="workspace">
+      <aside class="navigation" aria-label="Workspace navigation">
+        <div class="section-heading">WORKSPACE</div>
+        <nav class="nav-menu" aria-label="Collections">
+          <button id="nav-notes" class="nav-link is-active" data-kind="note" type="button"><span class="nav-symbol">N</span><span>Notes</span><span class="nav-count" id="count-notes">0</span></button>
+          <button id="nav-projects" class="nav-link" data-kind="project" type="button"><span class="nav-symbol">P</span><span>Projects</span><span class="nav-count" id="count-projects">0</span></button>
+          <button id="nav-decisions" class="nav-link" data-kind="decision" type="button"><span class="nav-symbol">D</span><span>Decisions</span><span class="nav-count" id="count-decisions">0</span></button>
+          <button id="nav-inbox" class="nav-link" data-kind="contribution" type="button"><span class="nav-symbol">I</span><span>Contributions</span><span class="nav-count" id="count-inbox">0</span></button>
+          <button id="nav-archive" class="nav-link" data-kind="archive" type="button"><span class="nav-symbol">A</span><span>Archive</span><span class="nav-count" id="count-archive">0</span></button>
+        </nav>
+        <div class="nav-caption">
+          <span class="caption-emblem" aria-hidden="true">01</span>
+          <p>A quiet place for decisions, work in progress, and what happens next.</p>
+        </div>
+        <div class="nav-footnote"><span class="mini-dot" aria-hidden="true"></span> Device-local storage</div>
+      </aside>
+      <section class="item-pane" aria-label="Items">
+        <div class="pane-heading">
+          <div><div class="overline">YOUR COLLECTION</div><h1 id="collection-title">Notes</h1></div>
+          <button id="new-note" class="button button-primary" type="button" title="Create a local development record">+ New</button>
+        </div>
+        <label class="search-box" for="search-input">
+          <span aria-hidden="true">&#8981;</span>
+          <input id="search-input" type="search" autocomplete="off" placeholder="Find in this collection" aria-label="Search local items">
+          <kbd>Ctrl K</kbd>
+        </label>
+        <div id="note-list" class="item-list" role="list" aria-label="Saved items">
+          <p class="empty-panel">Open the workspace to see your records.</p>
+        </div>
+        <div class="item-pane-footer">
+          <div class="lowlight">Your items stay on this device in the development build.</div>
+          <button id="simulate-gpt" class="button button-quiet simulation-button" type="button" hidden>Add synthetic contribution</button>
+        </div>
+      </section>
+      <main class="editor-pane" id="editor-panel">
+        <div class="editor-topline">
+          <div class="breadcrumb"><span>WORKSPACE</span> <span aria-hidden="true">/</span> <strong id="editor-kind">NOTE</strong></div>
+          <div class="state-line"><span id="save-status" role="status" aria-live="polite">Ready</span><span class="state-separator" aria-hidden="true">&bull;</span><span id="sync-state">No sync active</span></div>
+        </div>
+        <div id="editor-empty" class="welcome-surface">
+          <div class="welcome-emblem" aria-hidden="true">D<span>//</span></div>
+          <div class="overline">WRITE IT DOWN. KEEP THE THREAD.</div>
+          <h2>Every good project<br>starts somewhere.</h2>
+          <p>Capture a synthetic note, create a project resume card, or record a decision. The workspace is local and ready for development.</p>
+          <button id="welcome-create" type="button" class="button button-primary">Create first note</button>
+          <div class="welcome-meta">No account. No cloud. No external services.</div>
+        </div>
+        <form id="editor-form" class="editor-form" hidden>
+          <div class="editor-toolbar">
+            <span class="editor-type-chip" id="kind-chip">Note</span>
+            <span class="revision-chip" id="revision-label">Revision 1</span>
+            <div class="toolbar-spacer"></div>
+            <button id="delete-note" type="button" class="button button-danger" title="Move to recoverable history">Archive</button>
+          </div>
+          <label class="sr-only" for="editor-title">Title</label>
+          <input id="editor-title" class="editor-title" type="text" maxlength="180" autocomplete="off" placeholder="Untitled">
+          <label class="sr-only" for="editor-body">Content</label>
+          <textarea id="editor-body" class="editor-body" maxlength="100000" rows="11" placeholder="Start writing..."></textarea>
+          <div id="project-fields" class="project-fields" hidden>
+            <div class="fields-heading">PROJECT RESUME CAPSULE</div>
+            <div class="field-row"><label for="project-next">Next action</label><input id="project-next" type="text" maxlength="500" placeholder="What happens next?"></div>
+            <div class="field-row"><label for="project-blocker">Current blocker</label><input id="project-blocker" type="text" maxlength="500" placeholder="Anything stopping progress?"></div>
+            <div class="field-row"><label for="project-repo">Repository link</label><input id="project-repo" type="text" maxlength="500" placeholder="Optional source reference"></div>
+            <div id="resume-panel" class="resume-summary" aria-live="polite"></div>
+          </div>
+          <div class="metadata-panel">
+            <div class="fields-heading">RECORD DETAILS</div>
+            <div class="metadata-grid">
+              <div class="field-row"><label for="evidence-state">Evidence state</label><select id="evidence-state"><option value="proposed">Proposed</option><option value="claimed">Claimed</option><option value="observed">Observed</option><option value="verified">Verified</option><option value="stale">Stale</option></select></div>
+              <div class="field-row"><label for="evidence-ref">Evidence reference</label><input id="evidence-ref" maxlength="500" placeholder="Required for Verified"></div>
+              <div class="field-row full-span"><label for="editor-tags">Tags, separated by commas</label><input id="editor-tags" type="text" placeholder="research, design, backlog"></div>
+            </div>
+            <p class="fineprint">Evidence labels are manual; "Verified" requires a supporting reference, not just confidence.</p>
+          </div>
+          <div id="save-error" class="form-error" role="alert" aria-live="assertive"></div>
+          <div class="editor-footer">
+            <div class="editor-foot-info">Changes are saved only after a confirmed local transaction.</div>
+            <button type="submit" id="save-note" class="button button-primary">Save locally</button>
+          </div>
+          <section class="history-section" aria-label="Revision history">
+            <div class="history-heading"><span>REVISION HISTORY</span><small>Restore creates a new revision</small></div>
+            <div id="revisions-panel" class="revision-list"></div>
+          </section>
+        </form>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

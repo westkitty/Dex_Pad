@@ -1,0 +1,584 @@
+{
+  "schemaVersion": "1",
+  "repository": "westkitty/Dex_Pad",
+  "meaningOfStatus": {
+    "planned": "Spec and acceptance only; not implemented",
+    "dev-prototype": "Some development-only code or UI exists; not production-verified",
+    "verified": "End-to-end acceptance proven and evidence recorded"
+  },
+  "phases": {
+    "P0": "Trust and sync fault lab",
+    "P1": "Usable encrypted notes replacement",
+    "P2": "Project continuity and human knowledge workflow",
+    "P3": "Scoped integrations and device handoffs",
+    "P4": "Research evidence and source preservation",
+    "P5": "Optional advanced capabilities after product use"
+  },
+  "features": [
+    {
+      "id": "C01",
+      "title": "Durable local notes",
+      "phase": "P1",
+      "status": "dev-prototype",
+      "surface": "Client core / IndexedDB",
+      "dependsOn": [],
+      "acceptance": "A synthetic note survives reload, forced interruption after acknowledged commit, and exact local search on a supported client."
+    },
+    {
+      "id": "C02",
+      "title": "Encrypted client vault",
+      "phase": "P0",
+      "status": "planned",
+      "surface": "Security / client cryptography",
+      "dependsOn": [],
+      "acceptance": "Ciphertext only is persisted; independent review verifies key lifecycle, nonce management, lock behavior, and tampering rejection."
+    },
+    {
+      "id": "C03",
+      "title": "Encrypted cross-device relay",
+      "phase": "P0",
+      "status": "planned",
+      "surface": "Sync core / Big Mac relay",
+      "dependsOn": [
+        "C02"
+      ],
+      "acceptance": "Three real devices converge through a private no-Docker relay under reordered, duplicated, and interrupted encrypted updates."
+    },
+    {
+      "id": "C04",
+      "title": "Local keyword search",
+      "phase": "P1",
+      "status": "dev-prototype",
+      "surface": "Client search",
+      "dependsOn": [
+        "C01"
+      ],
+      "acceptance": "Unlocked client searches a 10k-note corpus with measured latency and no server-side plaintext index."
+    },
+    {
+      "id": "C05",
+      "title": "Tags and pinned records",
+      "phase": "P1",
+      "status": "dev-prototype",
+      "surface": "Client organization",
+      "dependsOn": [
+        "C01"
+      ],
+      "acceptance": "Tags remain portable and consistent across edits; pinning follows explicit, tested order without duplicating records."
+    },
+    {
+      "id": "C06",
+      "title": "Immutable revision history",
+      "phase": "P1",
+      "status": "dev-prototype",
+      "surface": "Client history",
+      "dependsOn": [
+        "C01"
+      ],
+      "acceptance": "Every accepted edit creates a recoverable revision; restoring a version appends a new revision instead of deleting history."
+    },
+    {
+      "id": "C07",
+      "title": "Independent encrypted backup restore",
+      "phase": "P1",
+      "status": "planned",
+      "surface": "Recovery / backup worker",
+      "dependsOn": [
+        "C02",
+        "C06"
+      ],
+      "acceptance": "A fresh client restores an independently held encrypted snapshot and compares full record, attachment, and key-epoch checksums."
+    },
+    {
+      "id": "C08",
+      "title": "Non-destructive Standard Notes migration",
+      "phase": "P1",
+      "status": "planned",
+      "surface": "Import quarantine",
+      "dependsOn": [
+        "C01",
+        "C07"
+      ],
+      "acceptance": "An isolated import reports unsupported formats and mismatches, round-trips supported records, and never deletes source data."
+    },
+    {
+      "id": "C09",
+      "title": "Universal capture inbox",
+      "phase": "P1",
+      "status": "dev-prototype",
+      "surface": "Inbox / UI",
+      "dependsOn": [
+        "C01"
+      ],
+      "acceptance": "A titleless synthetic note can be captured without categorization; later adapters use the same validated submission contract."
+    },
+    {
+      "id": "C10",
+      "title": "Typed knowledge objects",
+      "phase": "P1",
+      "status": "dev-prototype",
+      "surface": "Client data model",
+      "dependsOn": [
+        "C01"
+      ],
+      "acceptance": "Notes, projects, and decisions use stable IDs; new kinds are versioned without breaking existing exported items."
+    },
+    {
+      "id": "C11",
+      "title": "Backlinks and stable relations",
+      "phase": "P2",
+      "status": "planned",
+      "surface": "Knowledge graph / references",
+      "dependsOn": [
+        "C10"
+      ],
+      "acceptance": "Renaming or moving an item preserves incoming links, including cross-space permission checks and broken-target indicators."
+    },
+    {
+      "id": "C12",
+      "title": "Original-source ledger",
+      "phase": "P4",
+      "status": "planned",
+      "surface": "Evidence and provenance",
+      "dependsOn": [
+        "C10"
+      ],
+      "acceptance": "Imported material retains original URI, file hash, timestamps, authority label, and derived-record relationships."
+    },
+    {
+      "id": "C13",
+      "title": "Revocable scoped integration service",
+      "phase": "P3",
+      "status": "planned",
+      "surface": "Integration gateway",
+      "dependsOn": [
+        "C02",
+        "C03",
+        "C25"
+      ],
+      "acceptance": "An external identity cannot read outside its grant, cannot retrieve the vault key, and loses future operations when revoked."
+    },
+    {
+      "id": "C14",
+      "title": "GPT write-only contribution tool",
+      "phase": "P3",
+      "status": "dev-prototype",
+      "surface": "Contribution facade (simulation only)",
+      "dependsOn": [
+        "C25"
+      ],
+      "acceptance": "A real MCP tool can create submissions without exposing any read/list/search method, enforced by server authorization."
+    },
+    {
+      "id": "C15",
+      "title": "Encrypted attachments",
+      "phase": "P4",
+      "status": "planned",
+      "surface": "Client attachment store",
+      "dependsOn": [
+        "C02"
+      ],
+      "acceptance": "Attachment bytes and metadata are independently recoverable and encrypted, with bounded size and safe previews."
+    },
+    {
+      "id": "C16",
+      "title": "Portable export and import",
+      "phase": "P1",
+      "status": "dev-prototype",
+      "surface": "Portable JSON and Markdown",
+      "dependsOn": [
+        "C01"
+      ],
+      "acceptance": "JSON/Markdown exports round-trip item identities, bodies, provenance, relations, and attachments; plaintext export requires consent."
+    },
+    {
+      "id": "C17",
+      "title": "Authenticated pairing and revocation",
+      "phase": "P0",
+      "status": "planned",
+      "surface": "Security / device trust",
+      "dependsOn": [
+        "C02"
+      ],
+      "acceptance": "A new device joins only after authenticated key exchange; revoked credentials cannot authorize future sync."
+    },
+    {
+      "id": "C18",
+      "title": "Truthful sync inspector",
+      "phase": "P1",
+      "status": "planned",
+      "surface": "Client diagnostics",
+      "dependsOn": [
+        "C03"
+      ],
+      "acceptance": "Saved-local, relay-acknowledged, and peer-applied states are independently demonstrated under interrupted networks."
+    },
+    {
+      "id": "C19",
+      "title": "Android lifecycle and share-sheet bridge",
+      "phase": "P1",
+      "status": "planned",
+      "surface": "Android packaging",
+      "dependsOn": [
+        "C03"
+      ],
+      "acceptance": "On real phone/tablet, force-stop recovery and foreground catch-up pass; share sheet capture preserves content without lost saves."
+    },
+    {
+      "id": "C20",
+      "title": "Optional local semantic retrieval",
+      "phase": "P5",
+      "status": "planned",
+      "surface": "DexVault adapter / local model",
+      "dependsOn": [
+        "C11",
+        "C02"
+      ],
+      "acceptance": "Semantic indexes can be deleted and rebuilt from selected authorized items without endangering notes or requiring a cloud API."
+    },
+    {
+      "id": "C21",
+      "title": "Concurrent-edit semantic recovery",
+      "phase": "P0",
+      "status": "planned",
+      "surface": "Sync and conflict review",
+      "dependsOn": [
+        "C03"
+      ],
+      "acceptance": "Two offline clients editing one item converge or surface a recoverable conflict; no accepted edit silently disappears."
+    },
+    {
+      "id": "C22",
+      "title": "Lost-device and key recovery",
+      "phase": "P1",
+      "status": "planned",
+      "surface": "Recovery UX",
+      "dependsOn": [
+        "C07",
+        "C17"
+      ],
+      "acceptance": "A simulated lost-device restore succeeds only with authorized recovery material; unrecoverable secrets are disclosed accurately."
+    },
+    {
+      "id": "C23",
+      "title": "Local operation and evidence log",
+      "phase": "P1",
+      "status": "dev-prototype",
+      "surface": "Client operation journal",
+      "dependsOn": [
+        "C01"
+      ],
+      "acceptance": "Every accepted revision records identity and action; a failed transaction produces no successful event receipt."
+    },
+    {
+      "id": "C24",
+      "title": "Peer-applied confirmation",
+      "phase": "P1",
+      "status": "planned",
+      "surface": "Client sync UI",
+      "dependsOn": [
+        "C03"
+      ],
+      "acceptance": "A receiving device cryptographically acknowledges applied revision before the sending UI labels it present on that device."
+    },
+    {
+      "id": "C25",
+      "title": "Contribution review inbox",
+      "phase": "P1",
+      "status": "dev-prototype",
+      "surface": "Client contribution queue",
+      "dependsOn": [
+        "C01"
+      ],
+      "acceptance": "Synthetic write-only submissions have unique receipts, show origin, can be reviewed, and cannot retrieve existing items."
+    },
+    {
+      "id": "F01",
+      "title": "Project Resume Capsules",
+      "phase": "P2",
+      "status": "dev-prototype",
+      "surface": "Project record / resume lens",
+      "dependsOn": [
+        "C10"
+      ],
+      "acceptance": "A project opens to the latest recorded next action, blocker, repo reference, and evidence link without searching prior chats."
+    },
+    {
+      "id": "F02",
+      "title": "Evidence-State Labels",
+      "phase": "P2",
+      "status": "dev-prototype",
+      "surface": "Record metadata / review",
+      "dependsOn": [
+        "C01"
+      ],
+      "acceptance": "Record states distinguish proposed, claimed, observed, verified and stale; verified requires a reference and remains manual."
+    },
+    {
+      "id": "F03",
+      "title": "Decision Memory",
+      "phase": "P2",
+      "status": "dev-prototype",
+      "surface": "Decision records",
+      "dependsOn": [
+        "C10",
+        "F02"
+      ],
+      "acceptance": "A decision records rationale, alternatives and superseding links; discarded decisions are visible without becoming current authority."
+    },
+    {
+      "id": "F04",
+      "title": "Repository-Anchored Margin Notes",
+      "phase": "P2",
+      "status": "planned",
+      "surface": "GitHub read-only anchor adapter",
+      "dependsOn": [
+        "C11"
+      ],
+      "acceptance": "An annotation retains an immutable commit/path/range anchor and warns when viewing an unrelated newer revision."
+    },
+    {
+      "id": "F05",
+      "title": "Incident Cards",
+      "phase": "P2",
+      "status": "planned",
+      "surface": "Incident record / recovery",
+      "dependsOn": [
+        "F02"
+      ],
+      "acceptance": "An incident preserves the original failure, reproduction, confirmed repair, and reusable regression proof in one record."
+    },
+    {
+      "id": "F06",
+      "title": "One-Tap Agent Handoff",
+      "phase": "P2",
+      "status": "planned",
+      "surface": "Selective context packet exporter",
+      "dependsOn": [
+        "F01",
+        "C16"
+      ],
+      "acceptance": "Only user-selected items become a portable, bounded task packet with constraints, evidence states and exact sources."
+    },
+    {
+      "id": "F07",
+      "title": "Note to GitHub Issue",
+      "phase": "P3",
+      "status": "planned",
+      "surface": "GitHub scoped write adapter",
+      "dependsOn": [
+        "C13",
+        "F06"
+      ],
+      "acceptance": "A previewed issue draft is published only to the named repository with explicit confirmation and idempotent receipt."
+    },
+    {
+      "id": "F08",
+      "title": "Outstanding Commitments",
+      "phase": "P2",
+      "status": "planned",
+      "surface": "Task/awaiting ledger",
+      "dependsOn": [
+        "C10"
+      ],
+      "acceptance": "A pending obligation has owner, expected outcome and review date without creating a full duplicate task system."
+    },
+    {
+      "id": "F09",
+      "title": "Interactive Runbook Cards",
+      "phase": "P2",
+      "status": "planned",
+      "surface": "Runbook templates",
+      "dependsOn": [
+        "F08",
+        "F02"
+      ],
+      "acceptance": "A runbook lists steps, expected checks, stop conditions and rollback; execution remains manual unless separately authorized."
+    },
+    {
+      "id": "F10",
+      "title": "Continue on Another Device",
+      "phase": "P3",
+      "status": "planned",
+      "surface": "Session context handoff",
+      "dependsOn": [
+        "C03",
+        "F01"
+      ],
+      "acceptance": "A second trusted device reopens the same project/item and scroll context only after authentic peer synchronization."
+    },
+    {
+      "id": "F11",
+      "title": "Deep Citation Anchors",
+      "phase": "P4",
+      "status": "planned",
+      "surface": "Source position annotations",
+      "dependsOn": [
+        "C12"
+      ],
+      "acceptance": "A citation stores the exact page, line or section when supported, with origin snapshot and stale-target detection."
+    },
+    {
+      "id": "F12",
+      "title": "Image Region Notes",
+      "phase": "P4",
+      "status": "planned",
+      "surface": "Media annotation coordinates",
+      "dependsOn": [
+        "C15"
+      ],
+      "acceptance": "An annotation stays attached to normalized image coordinates across device sizes without modifying the source bytes."
+    },
+    {
+      "id": "F13",
+      "title": "Timecoded Media Notes",
+      "phase": "P4",
+      "status": "planned",
+      "surface": "Media timeline references",
+      "dependsOn": [
+        "C15"
+      ],
+      "acceptance": "Timestamp annotations open a compatible audio/video source near the selected time and survive export."
+    },
+    {
+      "id": "F14",
+      "title": "Evidence Freshness Rules",
+      "phase": "P4",
+      "status": "planned",
+      "surface": "Verification policy",
+      "dependsOn": [
+        "C12"
+      ],
+      "acceptance": "A source-linked claim becomes needs-review on a configured expiry or source revision, not silently false/true."
+    },
+    {
+      "id": "F15",
+      "title": "Contradiction and Duplicate Review",
+      "phase": "P4",
+      "status": "planned",
+      "surface": "Human review queue",
+      "dependsOn": [
+        "C11"
+      ],
+      "acceptance": "Potential duplicates and mismatches are presented with source provenance and never auto-merged or deleted."
+    },
+    {
+      "id": "F16",
+      "title": "Watch This Source",
+      "phase": "P4",
+      "status": "planned",
+      "surface": "Optional external change adapter",
+      "dependsOn": [
+        "C12",
+        "C13"
+      ],
+      "acceptance": "An approved watcher submits only an authorized change receipt; disabling it leaves capture and search intact."
+    },
+    {
+      "id": "F17",
+      "title": "Project Reading Radar",
+      "phase": "P4",
+      "status": "planned",
+      "surface": "RSS/source digest adapter",
+      "dependsOn": [
+        "C12"
+      ],
+      "acceptance": "Selected source feeds appear in one project context without creating a compulsory general-purpose RSS reader."
+    },
+    {
+      "id": "F18",
+      "title": "What Changed Since I Was Here",
+      "phase": "P2",
+      "status": "planned",
+      "surface": "Event timeline / resume diff",
+      "dependsOn": [
+        "C23",
+        "F01"
+      ],
+      "acceptance": "A project reopen displays revisions since last visit from actual recorded events, separating observations from inferred impact."
+    },
+    {
+      "id": "F19",
+      "title": "Remember This Later",
+      "phase": "P5",
+      "status": "planned",
+      "surface": "Lightweight review scheduling",
+      "dependsOn": [
+        "F08"
+      ],
+      "acceptance": "A selected note resurfaces at an explicit interval with skip/postpone controls and no compulsive notification loops."
+    },
+    {
+      "id": "F20",
+      "title": "Downstream Review Hints",
+      "phase": "P5",
+      "status": "planned",
+      "surface": "Dependency links / change detection",
+      "dependsOn": [
+        "C11",
+        "F14"
+      ],
+      "acceptance": "A changed source flags dependent notes for user review without silently rewriting authoritative material."
+    },
+    {
+      "id": "F21",
+      "title": "DEX//REACH Result Receipts",
+      "phase": "P3",
+      "status": "planned",
+      "surface": "Scoped execution receipt adapter",
+      "dependsOn": [
+        "C13",
+        "F02"
+      ],
+      "acceptance": "A sanitized receipt links one verified job result to a project with no raw secrets, delegated terminal access, or invented success."
+    },
+    {
+      "id": "F22",
+      "title": "DexDictate Capture Route",
+      "phase": "P3",
+      "status": "planned",
+      "surface": "External transcription ingest",
+      "dependsOn": [
+        "C13",
+        "C25"
+      ],
+      "acceptance": "Only explicitly submitted transcribed text enters a destination inbox with origin and no shared dictation microphone permission."
+    },
+    {
+      "id": "F23",
+      "title": "Selective Git Publication",
+      "phase": "P3",
+      "status": "planned",
+      "surface": "Approved GitHub export adapter",
+      "dependsOn": [
+        "C13",
+        "C16"
+      ],
+      "acceptance": "A redacted diff for a named document is previewed and approved before a scoped commit or draft PR; private vault never mirrors wholesale."
+    },
+    {
+      "id": "F24",
+      "title": "Portable Offline Project Kits",
+      "phase": "P5",
+      "status": "planned",
+      "surface": "Device pin/export bundle",
+      "dependsOn": [
+        "C15",
+        "C02"
+      ],
+      "acceptance": "An authorized client packs selected encrypted records and attachments with a verifiable manifest and successful offline restore."
+    },
+    {
+      "id": "F25",
+      "title": "Quiet, Actionable Alerts",
+      "phase": "P5",
+      "status": "planned",
+      "surface": "Notification adapter",
+      "dependsOn": [
+        "F08",
+        "C13"
+      ],
+      "acceptance": "A user-chosen condition produces a minimal authenticated alert, and no body/content leak or persistent spam occurs."
+    }
+  ]
+}

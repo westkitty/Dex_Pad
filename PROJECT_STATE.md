@@ -101,6 +101,15 @@ Implemented media region coordinates, timecoded annotations, contradiction/dupli
 4. Watch This Source (F16): authorized source watcher manager with cryptographic receipt emission (`dex-watcher-receipt.v1`); disabling watcher leaves capture and search intact while rejecting subsequent unauthorized submissions.
 5. Verification: 8 new unit tests (104/104 Node tests PASS), bundled 21 client assets into `dist/`. Advanced F12, F13, F15, and F16 to `dev-prototype`.
 
-Local evidence: `npm run check` passed (104/104 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
+### 2026-10-26 — Repository margin notes, GitHub publishing, runbooks & peer continuation delivered
+
+Implemented repository anchors, issue publishing drafts, interactive runbooks, and cross-device session continuation (`src/core/github-anchors.js`, `src/core/runbooks.js`, `tests/github-anchors.test.mjs`, `tests/runbooks.test.mjs`):
+1. Repository-Anchored Margin Notes (F04): immutable commit SHA, path, and line range anchors (`dex-margin-note.v1`) with drift detection warning when viewing newer/different revisions.
+2. Note to GitHub Issue (F07): scoped issue drafts (`dex-github-draft.v1`) requiring explicit user confirmation before publication, producing deterministic cryptographic publication receipts (`dex-github-receipt.v1`).
+3. Interactive Runbook Cards (F09): operational runbooks (`dex-runbook.v1`) with step checks, stop conditions, and rollback steps, enforcing manual execution confirmation unless separately authorized.
+4. Continue on Another Device (F10): session context handoff (`dex-session-context.v1`) restoring active project, active item, and scroll offsets, strictly requiring authentic peer synchronization before restoration.
+5. Verification: 8 new unit tests (112/112 Node tests PASS), bundled 23 client assets into `dist/`. Advanced F04, F07, F09, and F10 to `dev-prototype`.
+
+Local evidence: `npm run check` passed (112/112 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
 
 Do **not** infer GitHub publication from local files: wait for a remote commit receipt and source-tree readback. The repo is public and contains no real vault material.

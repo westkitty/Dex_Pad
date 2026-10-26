@@ -72,6 +72,8 @@ working_scope: isolated synthetic-data browser development slice and full implem
 
 ## Implemented development prototypes (unverified against production)
 
+- External Anchors & Scoped Publishing (F04, F07 prototypes): repository margin notes bound to immutable commit SHAs with stale revision drift warnings; previewed GitHub issue drafts requiring explicit user confirmation before scoped publication.
+- Interactive Runbook Cards & Peer Continuation (F09, F10 prototypes): step-by-step runbook execution with manual operator confirmation and rollback steps; cross-device session continuation restoring active project/item and scroll offsets strictly contingent upon authentic peer sync.
 - Media Annotations & Timecoded References (F12, F13 prototypes): normalized image region bounding boxes projecting consistently across desktop and mobile screens while preserving original media bytes; timecoded media notes linking seconds and durations surviving archive export.
 - Contradiction Review & Source Watcher (F15, F16 prototypes): automated candidate duplicate detection presenting source provenance and enforcing human recovery without silent deletion or auto-merging; authorized source watchers with verifiable change receipts and disabled state isolation.
 - Original-Source Ledger & Deep Citation Anchors (C12, F11 prototypes): immutable source records preserving original URI, SHA-256 snapshot file hash, timestamps, authority labels, and derived-record relationships; deep citation anchors with exact page/line/section coordinates, quote hashes, and drift detection.

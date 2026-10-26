@@ -330,7 +330,7 @@
       "id": "F04",
       "title": "Repository-Anchored Margin Notes",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "GitHub read-only anchor adapter",
       "dependsOn": [
         "C11"
@@ -364,7 +364,7 @@
       "id": "F07",
       "title": "Note to GitHub Issue",
       "phase": "P3",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "GitHub scoped write adapter",
       "dependsOn": [
         "C13",
@@ -387,7 +387,7 @@
       "id": "F09",
       "title": "Interactive Runbook Cards",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Runbook templates",
       "dependsOn": [
         "F08",
@@ -399,7 +399,7 @@
       "id": "F10",
       "title": "Continue on Another Device",
       "phase": "P3",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Session context handoff",
       "dependsOn": [
         "C03",

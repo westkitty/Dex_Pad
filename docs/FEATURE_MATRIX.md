@@ -52,13 +52,13 @@ Status meanings: `planned` = specification only; `dev-prototype` = development-o
 | F01 | Project Resume Capsules | P2 | dev-prototype | C10 | A project opens to the latest recorded next action, blocker, repo reference, and evidence link without searching prior chats. |
 | F02 | Evidence-State Labels | P2 | dev-prototype | C01 | Record states distinguish proposed, claimed, observed, verified and stale; verified requires a reference and remains manual. |
 | F03 | Decision Memory | P2 | dev-prototype | C10, F02 | A decision records rationale, alternatives and superseding links; discarded decisions are visible without becoming current authority. |
-| F04 | Repository-Anchored Margin Notes | P2 | planned | C11 | An annotation retains an immutable commit/path/range anchor and warns when viewing an unrelated newer revision. |
+| F04 | Repository-Anchored Margin Notes | P2 | dev-prototype | C11 | An annotation retains an immutable commit/path/range anchor and warns when viewing an unrelated newer revision. |
 | F05 | Incident Cards | P2 | dev-prototype | F02 | An incident preserves the original failure, reproduction, confirmed repair, and reusable regression proof in one record. |
 | F06 | One-Tap Agent Handoff | P2 | dev-prototype | F01, C16 | Only user-selected items become a portable, bounded task packet with constraints, evidence states and exact sources. |
-| F07 | Note to GitHub Issue | P3 | planned | C13, F06 | A previewed issue draft is published only to the named repository with explicit confirmation and idempotent receipt. |
+| F07 | Note to GitHub Issue | P3 | dev-prototype | C13, F06 | A previewed issue draft is published only to the named repository with explicit confirmation and idempotent receipt. |
 | F08 | Outstanding Commitments | P2 | dev-prototype | C10 | A pending obligation has owner, expected outcome and review date without creating a full duplicate task system. |
-| F09 | Interactive Runbook Cards | P2 | planned | F08, F02 | A runbook lists steps, expected checks, stop conditions and rollback; execution remains manual unless separately authorized. |
-| F10 | Continue on Another Device | P3 | planned | C03, F01 | A second trusted device reopens the same project/item and scroll context only after authentic peer synchronization. |
+| F09 | Interactive Runbook Cards | P2 | dev-prototype | F08, F02 | A runbook lists steps, expected checks, stop conditions and rollback; execution remains manual unless separately authorized. |
+| F10 | Continue on Another Device | P3 | dev-prototype | C03, F01 | A second trusted device reopens the same project/item and scroll context only after authentic peer synchronization. |
 | F11 | Deep Citation Anchors | P4 | dev-prototype | C12 | A citation stores the exact page, line or section when supported, with origin snapshot and stale-target detection. |
 | F12 | Image Region Notes | P4 | dev-prototype | C15 | An annotation stays attached to normalized image coordinates across device sizes without modifying the source bytes. |
 | F13 | Timecoded Media Notes | P4 | dev-prototype | C15 | Timestamp annotations open a compatible audio/video source near the selected time and survive export. |

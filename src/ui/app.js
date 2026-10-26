@@ -498,7 +498,16 @@ async function main() {
     if (dirty && !window.confirm('Discard unsaved changes?')) return;
     setStatus('Saving...');
     try {
-      selected = await workspace.create({ kind: collection });
+      const targetKind = collection === 'topology' ? 'note' : collection;
+      if (collection === 'topology') {
+        collection = 'note';
+        $('#collection-title').textContent = CATEGORY['note']?.title || 'Notes';
+        for (const button of document.querySelectorAll('.nav-link')) {
+          button.classList.toggle('is-active', button.dataset.kind === 'note');
+          button.setAttribute('aria-current', button.dataset.kind === 'note' ? 'page' : 'false');
+        }
+      }
+      selected = await workspace.create({ kind: targetKind });
       dirty = false;
       await updateCounts();
       await renderEditor();
@@ -528,14 +537,14 @@ async function main() {
       repoUrl: $('#project-repo').value,
       rationale: $('#decision-rationale')?.value || '',
       alternatives: $('#decision-alternatives')?.value ? $('#decision-alternatives').value.split(',').map(s => s.trim()).filter(Boolean) : [],
-      reviewDate: selected.kind === 'decision' ? ($('#decision-review')?.value || null) : selected.kind === 'commitment' ? ($('#commitment-review')?.value || null) : null,
+      reviewDate: selected.kind === 'decision' ? ($('#decision-review')?.value || null) : selected.kind === 'commitment' ? ($('#commitment-review')?.value || null) : (selected.reviewDate || null),
       supersededBy: $('#decision-superseded-by')?.value || null,
       supersedes: $('#decision-supersedes')?.value || null,
       failureDescription: $('#incident-failure')?.value || '',
       reproductionSteps: $('#incident-repro')?.value || '',
       confirmedRepair: $('#incident-repair')?.value || '',
       regressionProof: $('#incident-proof')?.value || '',
-      status: selected.kind === 'incident' ? ($('#incident-status')?.value || 'open') : selected.kind === 'commitment' ? ($('#commitment-status')?.value || 'pending') : null,
+      status: selected.kind === 'incident' ? ($('#incident-status')?.value || 'open') : selected.kind === 'commitment' ? ($('#commitment-status')?.value || 'pending') : (selected.status || null),
       owner: $('#commitment-owner')?.value || '',
       expectedOutcome: $('#commitment-outcome')?.value || '',
     };

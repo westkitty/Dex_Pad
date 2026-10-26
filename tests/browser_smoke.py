@@ -158,6 +158,16 @@ with sync_playwright() as p:
     page.locator("#topo-scrub-slider").fill("100")
     expect(page.locator("#topo-epoch-label")).to_have_text("Present (All Time)")
 
+    # Welcome surface navigation & create tests
+    page.locator("#nav-notes").click()
+    expect(page.locator("#editor-empty")).to_be_visible()
+    page.locator("#welcome-topology").click()
+    expect(page.locator("#topology-panel")).to_be_visible()
+    page.locator("#nav-notes").click()
+    page.locator("#welcome-create").click()
+    expect(page.locator("#editor-form")).to_be_visible()
+    expect(page.locator("#save-status")).to_have_text("Saved locally")
+
     assert not errors, f"JavaScript errors: {errors}"
     assert not cross_origin_requests, f"Unexpected network: {cross_origin_requests}"
     page.screenshot(path=str(SCREENSHOT_DIR / "dex-pad-desktop-smoke.png"), full_page=True)

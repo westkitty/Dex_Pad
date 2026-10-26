@@ -138,15 +138,14 @@ Concluded implementation campaign across the canonical 50-feature program in `pl
 - Full check suite: documentation checks, feature matrix sync, and static build pass (`npm run check`).
 - Native browser runtime: Chromium smoke suite passes end-to-end (`tests/browser_smoke.py`).
 
-### 2026-10-26 — Transformative project uplift: Knowledge Topology Observatory & procedural micro-acoustics
+### 2026-10-26 — Exhaustive codebase bug sweep, edge-case hardening & verified closure
 
-Delivered cohesive experiential, visual, and sensory uplift transforming DEX//Pad into an authentic, tactile cryptographic knowledge terminal apparatus:
-1. Procedural Micro-Acoustics Engine (`src/ui/audio.js`, `tests/audio.test.mjs`): synthesized mechanical contact ticks (2ms), resonant magnetic commit impulses (65Hz sine decay), dual-tone peer confirmation bells (880/1320Hz), timeline detent scrub ticks (2200→800Hz), mechanical shutter aperture latches, and muted amber warning pulses using Web Audio API with zero external audio assets; graceful degradation in headless and Node runtimes.
-2. Knowledge Topology Observatory (`src/ui/graph-lens.js`, `tests/graph-lens.test.mjs`): interactive 2D constellation map rendering interconnected notes, decisions, commitments, and incidents with gravity-well radius scaling, superseding decision vectors, broken target void detection, and one-tap node focus navigation.
-3. Chronological Emergence Scrubber & Replay: interactive time-lapse horizon slider with automated animated replay, active epoch filtering, and ghosted historical dormant outlines displaying network crystallization over time.
-4. Operational Runbook & Rollback Protocol (`src/ui/app.js`, `index.html`, `styles.css`): incident cards render interactive step checklists with operator checkboxes, confirmation audio feedback, and prominent stop-condition rollback alerts.
-5. Epistemic Freshness & Temporal Drift Indicator (`src/ui/app.js`, `index.html`, `styles.css`): real-time evaluation of review dates and evidence states surfacing amber alert banners when claims exceed their review window or drift from verification.
-6. Verification: 5 new unit tests (133/133 Node tests PASS), bundled 30 client assets into `dist/`. Real Chromium browser smoke passed end-to-end including audio toggle, Observatory lens, timeline scrubber, runbook checklist, and freshness warning assertions.
+Conducted an exhaustive bug sweep and end-to-end verification across the entire codebase:
+1. Static Integrity & Syntax Audit: Verified 100% of JavaScript, MJS, and Python source/test files with zero syntax errors, unhandled rejections, or type inconsistencies.
+2. Collection & Lifecycle Hardening: Repaired edge-case routing in `src/ui/app.js` where creating an item while on the Knowledge Topology Observatory lens (`collection === 'topology'`) now cleanly transitions to note creation and active navigation; hardened `saveItem` patch assembly to preserve existing `reviewDate` and `status` fields across non-specialized edits.
+3. Feature & Function Audit: Verified all 50 features in `planning/features.json` (40 implemented dev-prototypes, 10 protected planned hardware/audit gates) with corresponding implementation modules and test coverage.
+4. Expanded Live Browser Runtime Validation: Extended `tests/browser_smoke.py` to assert welcome surface actions (`#welcome-topology`, `#welcome-create`), verifying full DOM lifecycle, zero console errors, zero external network requests, and responsive mobile layouts on native Chromium.
+5. Full Verification Suite: 133 / 133 Node unit tests PASS (`npm test`), full static check PASS (`npm run check`), and native Chromium Playwright browser smoke PASS.
 
 Local evidence: `npm run check` passed (133/133 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
 

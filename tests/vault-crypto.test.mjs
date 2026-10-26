@@ -172,10 +172,10 @@ test('8. rejects tampered ciphertext (bit-flips and modified auth data)', async 
   const vault = await createVault({ passphrase: TEST_PASSPHRASE, iterations: KDF_TEST_ROUNDS });
   const envelope = await encryptRecord(vault.session, 'note:tamper-1', { body: 'Authentic content' });
 
-  // 1. Bit flip in ciphertext
+  // 1. Bit flip in ciphertext (flip first character to guarantee altered byte without base64 padding effects)
   const tamperedCiphertext = {
     ...envelope,
-    ciphertext: envelope.ciphertext.slice(0, -4) + (envelope.ciphertext.endsWith('A') ? 'B' : 'A') + envelope.ciphertext.slice(-3),
+    ciphertext: (envelope.ciphertext[0] === 'A' ? 'B' : 'A') + envelope.ciphertext.slice(1),
   };
   await assert.rejects(
     () => decryptRecord(vault.session, tamperedCiphertext),

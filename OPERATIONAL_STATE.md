@@ -23,7 +23,16 @@ working_scope: isolated synthetic-data browser development slice and full implem
 
 ## Verified in local runtime (empirically proven)
 
-- Pure domain Node tests (45/45) across workspace, gateway, build, feature registry, synthetic DEX//RELAY ingestion, and encrypted vault cryptography.
+- Pure domain Node tests (53/53) across workspace, gateway, build, feature registry, synthetic DEX//RELAY ingestion, encrypted vault cryptography, and cross-device sync engine.
+- Cross-Device Encrypted Sync Engine & Fault Matrix Harness (`src/core/sync/engine.js`, `tests/sync-engine.test.mjs`):
+  1. Offline writing: local transactions commit durably while offline; pending encrypted sync frames (`dex-sync.v1`) queue reliably.
+  2. Private ciphertext-only relay transport: relay stores and forwards encrypted sync blobs without plaintext decryption capability.
+  3. Scrambled/reordered frame buffering: frames arriving out-of-order wait in a holding buffer and apply cleanly without state corruption once predecessors arrive.
+  4. 100x duplicate replay idempotency: duplicate sync deliveries result in exactly-once application.
+  5. Interrupted transfer recovery: sync cursor resumes from the last confirmed server sequence without data loss.
+  6. Concurrent divergent edits: concurrent offline edits at the same base revision fork cleanly with full historical revision recovery; zero silent overwrites.
+  7. Device pairing & revocation enforcement: authentic pairing tokens, immediate revocation enforcement on relay, documented limitation that revocation governs future sync and cannot erase previously downloaded offline plaintext.
+  8. Truthful acknowledgment: strict architectural distinction between `RELAY_STORED` (relay receipt) and `PEER_APPLIED` (actual target peer application).
 - Cryptographic proof suite (`src/core/crypto/primitives.js`, `src/core/crypto/vault.js`, `tests/vault-crypto.test.mjs`):
   1. Unique vault identity (`vlt-...`) and versioned format (`dex-vault.v1`).
   2. Domain-separated key hierarchy derived via PBKDF2 + HKDF-SHA256: Master Key (MK), Vault Key (VK), Auth Key (AK), Recovery Key (RK), Device Pairing Key (PK), and Integration Key (IK).
@@ -39,12 +48,13 @@ working_scope: isolated synthetic-data browser development slice and full implem
   12. Format versioning (`dex-record.v1`, `dex-vault.v1`) for forward migration safety.
 - Synthetic DEX//RELAY event ingestion bridge (`src/integrations/relay/`): deterministic schema validation (`dex-relay.event.v1`, `dex-relay.task.v1`), sequence continuity and hash-chain tracking (`streamIntegrity`), idempotency preservation with conflict rejection on payload mismatch, strict project isolation, secret/credential payload sanitization, separation of claims from independent cryptographic proof, and project timeline visualization with explicit `SYNTHETIC RELAY EVENTS — NOT LIVE EXECUTION` disclaimer.
 - Static read-only server unit tests reject unsafe paths/write requests and serve required file types with CSP.
-- Build/feature registry tests ensure source assets, crypto modules, integration files, and all 25 expansions are present.
+- Build/feature registry tests ensure source assets, crypto modules, sync modules, integration files, and all 25 expansions are present.
 - Real Chromium browser smoke (tests/browser_smoke.py and 18-step interactive test): verified end-to-end UI rendering, IndexedDB write and reload persistence, revision increments, local full-text search, archive/unarchive revision restoration, project resume cards, relay timeline card rendering and blocker state display, decision evidence gate, contribution inbox idempotency, mobile (390px) and desktop (1280px) responsive layouts without horizontal overflow, zero console errors, zero cross-origin leaks.
 - Repaired baseline UI defect where revision restore buttons remained disabled after saving.
 
 ## Implemented development prototypes (unverified against production)
 
+- Cross-Device Encrypted Sync Engine (C03 candidate harness). 8/8 fault matrix tests pass against synthetic relay. Physical multi-device validation across MacBook, Android phone, and Galaxy Tab over live Tailscale remains UNVERIFIED.
 - Encrypted Vault Cryptographic Proof (C02 foundation). 12/12 unit tests pass on Web Crypto API primitives. MUST NOT be claimed as production E2EE until external security audit, hardware key storage review, side-channel analysis, and production key rotation are verified.
 - Synthetic DEX//RELAY Event Ingestion Bridge (F21 prototype, scoped to C13/F02 contracts). Not production-ready; live Big Mac witness/daemon execution remains blocked.
 - Write-only contribution gateway (C13 prototype). No external GPT MCP connection is active.

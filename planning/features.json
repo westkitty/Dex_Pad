@@ -138,7 +138,7 @@
       "id": "C12",
       "title": "Original-source ledger",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Evidence and provenance",
       "dependsOn": [
         "C10"
@@ -411,7 +411,7 @@
       "id": "F11",
       "title": "Deep Citation Anchors",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Source position annotations",
       "dependsOn": [
         "C12"
@@ -444,7 +444,7 @@
       "id": "F14",
       "title": "Evidence Freshness Rules",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Verification policy",
       "dependsOn": [
         "C12"
@@ -478,7 +478,7 @@
       "id": "F17",
       "title": "Project Reading Radar",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "RSS/source digest adapter",
       "dependsOn": [
         "C12"

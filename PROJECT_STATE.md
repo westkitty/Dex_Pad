@@ -83,6 +83,15 @@ Implemented structured continuity records, knowledge relations engine, one-tap a
 6. Project Resume Diff (F18): `getChangesSinceLastVisit` analyzer reconstructing events and revisions since previous visit, strictly isolating recorded observations from inferred impact summaries.
 7. Interactive UI & Automated Browser Verification: integrated Incident, Commitment, Decision Memory, Backlinks, and Handoff export controls into the live web UI. Verified end-to-end via `tests/browser_smoke.py` on Playwright Chromium (85/85 Node tests, full browser smoke PASS). Advanced C11, F05, F06, F08, and F18 to `dev-prototype`.
 
-Local evidence: `npm run check` passed (85/85 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
+### 2026-10-26 — Original-source ledger, deep citations, freshness rules & reading radar delivered
+
+Implemented original-source provenance ledger, deep citations, freshness evaluation rules, and project-scoped reading radar (`src/core/sources.js`, `src/core/radar.js`, `tests/source-ledger.test.mjs`, `tests/reading-radar.test.mjs`):
+1. Original-Source Ledger (C12): captures immutable source records (`dex-source.v1`) with original URI, deterministic SHA-256 snapshot file hash, timestamps, authority labels, and derived-record relationships.
+2. Deep Citation Anchors (F11): citation records (`dex-citation.v1`) tracking exact page, line, or section coordinates, snapshot quote hashes, and drift detection to identify stale targets upon source modification.
+3. Evidence Freshness Rules (F14): `evaluateEvidenceFreshness` policy marking claims as `NEEDS_REVIEW` (reason: `EXPIRED` or `SOURCE_UPDATED`) rather than silently assuming truth or falsehood.
+4. Project Reading Radar (F17): project-scoped feed radar (`dex-radar.v1`) supporting idempotent digest ingestion, deduplication, unread tracking, and summary statistics without creating a compulsory global RSS reader.
+5. Verification: 11 new unit tests (96/96 Node tests PASS), bundled 19 client assets into `dist/`. Advanced C12, F11, F14, and F17 to `dev-prototype`.
+
+Local evidence: `npm run check` passed (96/96 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
 
 Do **not** infer GitHub publication from local files: wait for a remote commit receipt and source-tree readback. The repo is public and contains no real vault material.

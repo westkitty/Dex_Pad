@@ -72,6 +72,8 @@ working_scope: isolated synthetic-data browser development slice and full implem
 
 ## Implemented development prototypes (unverified against production)
 
+- Original-Source Ledger & Deep Citation Anchors (C12, F11 prototypes): immutable source records preserving original URI, SHA-256 snapshot file hash, timestamps, authority labels, and derived-record relationships; deep citation anchors with exact page/line/section coordinates, quote hashes, and drift detection.
+- Evidence Freshness Rules & Project Reading Radar (F14, F17 prototypes): expiration and source-drift policy marking claims as needs-review rather than silently true/false; project-scoped reading radar digests with idempotent feed item ingestion.
 - Knowledge Graph & Stable Relations (C11 prototype): bidirectional wikilink indexing, stable item ID relation anchors across renames, broken target detection for deleted/missing notes, superseding link tracking.
 - Project Continuity Records (F03, F05, F08 prototypes): structured Decision Memory with rationale, alternatives considered, review dates, superseding audit trail; Incident Cards with failure description, reproduction steps, confirmed repair, and regression proof; Outstanding Commitments with owner, expected outcome, and review date.
 - Agent Handoff & Resume Diff (F06, F18 prototypes): One-Tap Agent Handoff context exporter strictly bounded to user selection with evidence breakdown; resume diff analyzer strictly isolating empirical recorded events from inferred impacts.

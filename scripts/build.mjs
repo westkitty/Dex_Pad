@@ -12,6 +12,7 @@ const allow = [
   'index.html', 'styles.css',
   'src/core/workspace.js', 'src/core/contributions.js', 'src/core/relations.js',
   'src/core/handoff.js', 'src/core/resume-diff.js',
+  'src/core/sources.js', 'src/core/radar.js',
   'src/core/crypto/primitives.js', 'src/core/crypto/vault.js', 'src/core/crypto/backup.js',
   'src/core/sync/engine.js',
   'src/core/migration/standard-notes.js',

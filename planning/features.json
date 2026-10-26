@@ -422,7 +422,7 @@
       "id": "F12",
       "title": "Image Region Notes",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Media annotation coordinates",
       "dependsOn": [
         "C15"
@@ -433,7 +433,7 @@
       "id": "F13",
       "title": "Timecoded Media Notes",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Media timeline references",
       "dependsOn": [
         "C15"
@@ -455,7 +455,7 @@
       "id": "F15",
       "title": "Contradiction and Duplicate Review",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Human review queue",
       "dependsOn": [
         "C11"
@@ -466,7 +466,7 @@
       "id": "F16",
       "title": "Watch This Source",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Optional external change adapter",
       "dependsOn": [
         "C12",

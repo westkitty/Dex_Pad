@@ -60,11 +60,11 @@ Status meanings: `planned` = specification only; `dev-prototype` = development-o
 | F09 | Interactive Runbook Cards | P2 | planned | F08, F02 | A runbook lists steps, expected checks, stop conditions and rollback; execution remains manual unless separately authorized. |
 | F10 | Continue on Another Device | P3 | planned | C03, F01 | A second trusted device reopens the same project/item and scroll context only after authentic peer synchronization. |
 | F11 | Deep Citation Anchors | P4 | dev-prototype | C12 | A citation stores the exact page, line or section when supported, with origin snapshot and stale-target detection. |
-| F12 | Image Region Notes | P4 | planned | C15 | An annotation stays attached to normalized image coordinates across device sizes without modifying the source bytes. |
-| F13 | Timecoded Media Notes | P4 | planned | C15 | Timestamp annotations open a compatible audio/video source near the selected time and survive export. |
+| F12 | Image Region Notes | P4 | dev-prototype | C15 | An annotation stays attached to normalized image coordinates across device sizes without modifying the source bytes. |
+| F13 | Timecoded Media Notes | P4 | dev-prototype | C15 | Timestamp annotations open a compatible audio/video source near the selected time and survive export. |
 | F14 | Evidence Freshness Rules | P4 | dev-prototype | C12 | A source-linked claim becomes needs-review on a configured expiry or source revision, not silently false/true. |
-| F15 | Contradiction and Duplicate Review | P4 | planned | C11 | Potential duplicates and mismatches are presented with source provenance and never auto-merged or deleted. |
-| F16 | Watch This Source | P4 | planned | C12, C13 | An approved watcher submits only an authorized change receipt; disabling it leaves capture and search intact. |
+| F15 | Contradiction and Duplicate Review | P4 | dev-prototype | C11 | Potential duplicates and mismatches are presented with source provenance and never auto-merged or deleted. |
+| F16 | Watch This Source | P4 | dev-prototype | C12, C13 | An approved watcher submits only an authorized change receipt; disabling it leaves capture and search intact. |
 | F17 | Project Reading Radar | P4 | dev-prototype | C12 | Selected source feeds appear in one project context without creating a compulsory general-purpose RSS reader. |
 | F18 | What Changed Since I Was Here | P2 | dev-prototype | C23, F01 | A project reopen displays revisions since last visit from actual recorded events, separating observations from inferred impact. |
 | F19 | Remember This Later | P5 | planned | F08 | A selected note resurfaces at an explicit interval with skip/postpone controls and no compulsive notification loops. |

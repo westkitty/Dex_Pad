@@ -92,6 +92,15 @@ Implemented original-source provenance ledger, deep citations, freshness evaluat
 4. Project Reading Radar (F17): project-scoped feed radar (`dex-radar.v1`) supporting idempotent digest ingestion, deduplication, unread tracking, and summary statistics without creating a compulsory global RSS reader.
 5. Verification: 11 new unit tests (96/96 Node tests PASS), bundled 19 client assets into `dist/`. Advanced C12, F11, F14, and F17 to `dev-prototype`.
 
-Local evidence: `npm run check` passed (96/96 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
+### 2026-10-26 — Media annotations, contradiction review & source watcher delivered
+
+Implemented media region coordinates, timecoded annotations, contradiction/duplicate review queue, and source watcher adapter (`src/core/media-annotations.js`, `src/core/review-queue.js`, `tests/media-annotations.test.mjs`, `tests/review-queue.test.mjs`):
+1. Image Region Notes (F12): normalized [0, 1] bounding box coordinate system (`dex-media-annotation.v1`) projecting deterministically across viewports (mobile 390px vs desktop 1920px) without modifying raw source image bytes.
+2. Timecoded Media Notes (F13): audio/video timestamp anchors with duration and label attributes, surviving JSON archive export and import roundtrip without loss of precision.
+3. Contradiction & Duplicate Review Queue (F15): tokenized similarity analyzer identifying candidate duplicates with similarity scoring, presenting source provenance for human recovery and strictly prohibiting silent auto-merge or destructive deletion.
+4. Watch This Source (F16): authorized source watcher manager with cryptographic receipt emission (`dex-watcher-receipt.v1`); disabling watcher leaves capture and search intact while rejecting subsequent unauthorized submissions.
+5. Verification: 8 new unit tests (104/104 Node tests PASS), bundled 21 client assets into `dist/`. Advanced F12, F13, F15, and F16 to `dev-prototype`.
+
+Local evidence: `npm run check` passed (104/104 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
 
 Do **not** infer GitHub publication from local files: wait for a remote commit receipt and source-tree readback. The repo is public and contains no real vault material.

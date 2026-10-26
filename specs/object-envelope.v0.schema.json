@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/dex-pad/object-envelope.v0.schema.json",
+  "title": "DEX//Pad draft plaintext interchange envelope (NOT a cryptographic wire schema)",
+  "description": "Proposal for export/interchange only. Encryption envelope, sync protocol, metadata privacy, and revision semantics remain undecided.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "kind", "title", "createdAt", "updatedAt", "body", "links", "provenance"],
+  "properties": {
+    "schemaVersion": {"const": "0-draft"},
+    "id": {"type": "string", "minLength": 1},
+    "kind": {"enum": ["note", "capture", "task", "project", "source", "file", "collection", "reference"]},
+    "title": {"type": "string"},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "updatedAt": {"type": "string", "format": "date-time"},
+    "body": {"type": "string", "description": "UTF-8 Markdown/plain text, export form only."},
+    "links": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["targetId", "relation"], "properties": {"targetId": {"type": "string"}, "relation": {"type": "string"}}}},
+    "provenance": {"type": "object", "additionalProperties": false, "required": ["origin"], "properties": {"origin": {"enum": ["human", "import", "automation", "derived"]}, "sourceUri": {"type": "string"}, "sourceHash": {"type": "string"}, "importBatchId": {"type": "string"}, "authority": {"enum": ["native", "reference", "derived", "unknown"]}}}
+  }
+}

@@ -203,14 +203,18 @@ async function main() {
     try {
       selected = await workspace.update(selected.id, patch, selected.revision);
       dirty = false;
-      await renderEditor();
-      await renderList();
-      setStatus('Saved locally');
     } catch (error) {
       $('#save-error').textContent = error?.message ?? 'Local save failed';
       setStatus('Not saved', { error: true });
       dirty = true;
-    } finally { saving = false; if (selected && !selected.deletedAt) $('#save-note').disabled = false; }
+      return;
+    } finally {
+      saving = false;
+      if (selected && !selected.deletedAt) $('#save-note').disabled = false;
+    }
+    await renderEditor();
+    await renderList();
+    setStatus('Saved locally');
   }
   async function archiveItem() {
     if (!selected || selected.deletedAt) return;

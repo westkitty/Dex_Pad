@@ -2,13 +2,22 @@
 """Real Chromium development-UI smoke. Requires the separately started local dev server and Playwright."""
 import os
 import sys
-from playwright.sync_api import sync_playwright
+from pathlib import Path
+from playwright.sync_api import sync_playwright, expect
 
 URL = os.environ.get("DEX_PAD_TEST_URL", "http://127.0.0.1:4173")
-BROWSER = os.environ.get("DEX_PAD_CHROMIUM", "/usr/bin/chromium")
+BROWSER = os.environ.get("DEX_PAD_CHROMIUM")
+if not BROWSER and os.path.exists("/usr/bin/chromium"):
+    BROWSER = "/usr/bin/chromium"
+
+SCREENSHOT_DIR = Path(os.environ.get("DEX_PAD_SCREENSHOT_DIR", "/mnt/data" if os.path.isdir("/mnt/data") else Path(__file__).resolve().parents[1] / "screenshots"))
+SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
 
 with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True, executable_path=BROWSER, args=["--no-sandbox"])
+    launch_kwargs = {"headless": True, "args": ["--no-sandbox"]}
+    if BROWSER:
+        launch_kwargs["executable_path"] = BROWSER
+    browser = p.chromium.launch(**launch_kwargs)
     page = browser.new_page(viewport={"width": 1280, "height": 800}, accept_downloads=True)
     errors = []
     cross_origin_requests = []
@@ -25,7 +34,7 @@ with sync_playwright() as p:
     page.reload()
     page.locator("#note-list").get_by_text("Browser proof").wait_for()
     page.locator("#note-list").get_by_text("Browser proof").click()
-    assert page.locator("#editor-body").input_value() == "Synthetic data only"
+    expect(page.locator("#editor-body")).to_have_value("Synthetic data only")
     page.locator("#editor-body").fill("Changed in Chromium")
     page.locator("#save-note").click()
     page.get_by_text("Saved locally", exact=True).wait_for()
@@ -47,7 +56,7 @@ with sync_playwright() as p:
     page.locator("#note-list").get_by_text("Synthetic GPT contribution").wait_for()
     assert not errors, f"JavaScript errors: {errors}"
     assert not cross_origin_requests, f"Unexpected network: {cross_origin_requests}"
-    page.screenshot(path="/mnt/data/dex-pad-desktop-smoke.png", full_page=True)
+    page.screenshot(path=str(SCREENSHOT_DIR / "dex-pad-desktop-smoke.png"), full_page=True)
 
     small = browser.new_page(viewport={"width": 390, "height": 844})
     small.goto(URL)
@@ -55,6 +64,6 @@ with sync_playwright() as p:
     assert small.locator("#new-note").is_visible()
     width_overflow = small.evaluate("document.documentElement.scrollWidth > window.innerWidth + 1")
     assert not width_overflow, "Mobile horizontal overflow"
-    small.screenshot(path="/mnt/data/dex-pad-mobile-smoke.png", full_page=True)
+    small.screenshot(path=str(SCREENSHOT_DIR / "dex-pad-mobile-smoke.png"), full_page=True)
     browser.close()
 print("Chromium smoke PASS: create, reload, update, evidence gate, contribution, mobile layout, no external requests")

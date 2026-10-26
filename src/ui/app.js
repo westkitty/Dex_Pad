@@ -483,7 +483,13 @@ async function main() {
     selected = null;
     dirty = false;
     $('#collection-title').textContent = CATEGORY[kind]?.title || 'Notes';
-    $('#new-note').hidden = kind === 'archive' || kind === 'topology';
+    const newBtn = $('#new-note');
+    if (newBtn) {
+      newBtn.hidden = kind === 'archive' || kind === 'topology';
+      const singular = CATEGORY[kind]?.label ?? 'Item';
+      newBtn.textContent = `+ New ${singular}`;
+      newBtn.title = `Create a local ${singular.toLowerCase()} record`;
+    }
     $('#simulate-gpt').hidden = kind !== 'contribution';
     $('#search-input').value = '';
     for (const button of document.querySelectorAll('.nav-link')) {
@@ -502,6 +508,11 @@ async function main() {
       if (collection === 'topology') {
         collection = 'note';
         $('#collection-title').textContent = CATEGORY['note']?.title || 'Notes';
+        const newBtn = $('#new-note');
+        if (newBtn) {
+          newBtn.textContent = '+ New Note';
+          newBtn.title = 'Create a local note record';
+        }
         for (const button of document.querySelectorAll('.nav-link')) {
           button.classList.toggle('is-active', button.dataset.kind === 'note');
           button.setAttribute('aria-current', button.dataset.kind === 'note' ? 'page' : 'false');

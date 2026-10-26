@@ -127,6 +127,21 @@ with sync_playwright() as p:
     download = download_info.value
     assert "dex-handoff-" in download.suggested_filename
 
+    # Tactile Acoustic Audio Toggle test
+    expect(page.locator("#audio-label")).to_have_text("Audio: On")
+    page.locator("#audio-toggle-btn").click()
+    expect(page.locator("#audio-label")).to_have_text("Audio: Muted")
+    page.locator("#audio-toggle-btn").click()
+    expect(page.locator("#audio-label")).to_have_text("Audio: On")
+
+    # Knowledge Topology Observatory Lens test
+    page.locator("#nav-topology").click()
+    page.locator("#topology-panel").wait_for()
+    page.locator("#topology-canvas-container canvas").wait_for()
+    expect(page.locator("#topology-panel")).to_be_visible()
+    expect(page.locator("#topology-canvas-container canvas")).to_be_visible()
+    expect(page.locator("#editor-kind")).to_have_text("OBSERVATORY")
+
     assert not errors, f"JavaScript errors: {errors}"
     assert not cross_origin_requests, f"Unexpected network: {cross_origin_requests}"
     page.screenshot(path=str(SCREENSHOT_DIR / "dex-pad-desktop-smoke.png"), full_page=True)

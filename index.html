@@ -21,6 +21,7 @@
         </div>
       </div>
       <div class="topbar-actions">
+        <button id="audio-toggle-btn" class="button button-quiet audio-toggle-btn" type="button" title="Tactile micro-acoustic feedback" aria-label="Toggle audio feedback"><span id="audio-icon" aria-hidden="true">&#9834;</span> <span id="audio-label">Audio: On</span></button>
         <span class="environment-badge"><span class="status-dot" aria-hidden="true"></span> Local sandbox</span>
         <button id="export-data" class="button button-quiet" type="button" title="Export all development records as unencrypted JSON">Export data</button>
       </div>
@@ -38,6 +39,7 @@
           <button id="nav-decisions" class="nav-link" data-kind="decision" type="button"><span class="nav-symbol">D</span><span>Decisions</span><span class="nav-count" id="count-decisions">0</span></button>
           <button id="nav-incidents" class="nav-link" data-kind="incident" type="button"><span class="nav-symbol">X</span><span>Incidents</span><span class="nav-count" id="count-incidents">0</span></button>
           <button id="nav-commitments" class="nav-link" data-kind="commitment" type="button"><span class="nav-symbol">C</span><span>Commitments</span><span class="nav-count" id="count-commitments">0</span></button>
+          <button id="nav-topology" class="nav-link" data-kind="topology" type="button"><span class="nav-symbol">&Phi;</span><span>Observatory</span><span class="nav-count" id="count-topology">&bull;</span></button>
           <button id="nav-inbox" class="nav-link" data-kind="contribution" type="button"><span class="nav-symbol">I</span><span>Contributions</span><span class="nav-count" id="count-inbox">0</span></button>
           <button id="nav-archive" class="nav-link" data-kind="archive" type="button"><span class="nav-symbol">A</span><span>Archive</span><span class="nav-count" id="count-archive">0</span></button>
         </nav>
@@ -110,13 +112,58 @@
           </div>
           <div id="sync-inspector-log" class="sync-log-box" role="log" aria-live="polite">Ready. Save a record or push to test truthful sync states.</div>
         </section>
+        <section id="topology-panel" class="topology-panel" hidden aria-label="Knowledge Topology Observatory">
+          <div class="topology-topbar">
+            <div class="topology-title-cluster">
+              <span class="topology-emblem" aria-hidden="true">&Phi;</span>
+              <div>
+                <strong>KNOWLEDGE TOPOLOGY OBSERVATORY</strong>
+                <div class="topology-sub">Interactive constellation map of interconnected notes, decisions, commitments, and anchors</div>
+              </div>
+            </div>
+            <div class="topology-stats-bar">
+              <span class="stat-pill"><strong id="topo-nodes-count">0</strong> records</span>
+              <span class="stat-pill"><strong id="topo-edges-count">0</strong> links</span>
+              <span class="stat-pill stat-broken"><strong id="topo-broken-count">0</strong> broken</span>
+            </div>
+          </div>
+          <div class="topology-legend">
+            <span class="legend-chip chip-note"><span class="legend-dot"></span> Note</span>
+            <span class="legend-chip chip-decision"><span class="legend-dot"></span> Decision</span>
+            <span class="legend-chip chip-project"><span class="legend-dot"></span> Project</span>
+            <span class="legend-chip chip-incident"><span class="legend-dot"></span> Incident</span>
+            <span class="legend-chip chip-commitment"><span class="legend-dot"></span> Commitment</span>
+          </div>
+          <div id="topology-canvas-container" class="topology-canvas-container"></div>
+        </section>
         <div id="editor-empty" class="welcome-surface">
-          <div class="welcome-emblem" aria-hidden="true">D<span>//</span></div>
-          <div class="overline">WRITE IT DOWN. KEEP THE THREAD.</div>
-          <h2>Every good project<br>starts somewhere.</h2>
-          <p>Capture a synthetic note, create a project resume card, or record a decision. The workspace is local and ready for development.</p>
-          <button id="welcome-create" type="button" class="button button-primary">Create first note</button>
-          <div class="welcome-meta">No account. No cloud. No external services.</div>
+          <div class="welcome-emblem" aria-hidden="true">D<span>//</span>P</div>
+          <div class="overline">OBSERVE // COMMIT // ENDURE</div>
+          <h2>A durable terminal for<br>uncompromising records.</h2>
+          <p class="welcome-manifesto">
+            Bound directly to local hardware storage. What is written here exists in durable memory, immune to cloud decay, unmonitored by remote authority. Every decision preserves its rejected alternatives; every citation anchors to immutable coordinates; every peer write requires cryptographic receipt.
+          </p>
+          <div class="welcome-actions">
+            <button id="welcome-create" type="button" class="button button-primary">Create first note</button>
+            <button id="welcome-topology" type="button" class="button button-quiet">Launch Observatory</button>
+          </div>
+          <div class="welcome-meta-grid">
+            <div class="meta-card">
+              <div class="meta-card-label">STORAGE SOVEREIGNTY</div>
+              <div class="meta-card-val">Local IndexedDB</div>
+              <div class="meta-card-sub">Zero telemetry &bull; Zero WAN listeners</div>
+            </div>
+            <div class="meta-card">
+              <div class="meta-card-label">REVISION DURABILITY</div>
+              <div class="meta-card-val">Append-Only History</div>
+              <div class="meta-card-sub">Soft-restore &bull; Non-destructive</div>
+            </div>
+            <div class="meta-card">
+              <div class="meta-card-label">TRUTHFUL SYNC</div>
+              <div class="meta-card-val">Signed Peer ACKs</div>
+              <div class="meta-card-sub">Differentiates local from peer-applied</div>
+            </div>
+          </div>
         </div>
         <form id="editor-form" class="editor-form" hidden>
           <div class="editor-toolbar">

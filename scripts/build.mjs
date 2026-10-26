@@ -21,7 +21,7 @@ const allow = [
   'src/core/sync/engine.js',
   'src/core/migration/standard-notes.js',
   'src/storage/indexeddb.js', 'src/storage/memory.js',
-  'src/ui/app.js',
+  'src/ui/app.js', 'src/ui/audio.js', 'src/ui/graph-lens.js',
   'src/integrations/relay/bridge.js', 'src/integrations/relay/validator.js',
 ];
 for (const path of allow) {

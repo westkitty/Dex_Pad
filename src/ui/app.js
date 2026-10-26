@@ -4,6 +4,8 @@ import { createRelayBridge } from '../integrations/relay/bridge.js';
 import { buildKnowledgeGraph, getBacklinksForItem } from '../core/relations.js';
 import { createHandoffPacket } from '../core/handoff.js';
 import { openIndexedDbStore } from '../storage/indexeddb.js';
+import { createAcousticFeedback } from './audio.js';
+import { mountGraphCanvas, prepareGraphTopology } from './graph-lens.js';
 
 const $ = (selector) => document.querySelector(selector);
 const CATEGORY = {
@@ -12,6 +14,7 @@ const CATEGORY = {
   decision: { title: 'Decisions', label: 'Decision' },
   incident: { title: 'Incidents', label: 'Incident' },
   commitment: { title: 'Commitments', label: 'Commitment' },
+  topology: { title: 'Observatory', label: 'Observatory' },
   contribution: { title: 'Contributions', label: 'Contribution' },
   archive: { title: 'Archive', label: 'Archived' },
 };
@@ -41,11 +44,13 @@ async function main() {
   const workspace = createWorkspace(store);
   const gateway = createWriteOnlyGateway(workspace);
   const relayBridge = createRelayBridge({ store, workspace });
+  const audio = createAcousticFeedback();
   let collection = 'note';
   let selected = null;
   let dirty = false;
   let renderSerial = 0;
   let saving = false;
+  let topologyInstance = null;
 
   let syncOnline = true;
   let syncState = 'SAVED_LOCALLY';
@@ -123,12 +128,17 @@ async function main() {
       const el = $(`#count-${label}`);
       if (el) el.textContent = String(count);
     }
+    const topoCount = items.filter(item => !item.deletedAt).length;
+    const topoEl = $('#count-topology');
+    if (topoEl) topoEl.textContent = String(topoCount);
   }
   async function renderList() {
     const serial = ++renderSerial;
     const query = $('#search-input').value;
     const matches = collection === 'archive'
       ? (await workspace.list({ query, includeDeleted: true })).filter(item => item.deletedAt)
+      : collection === 'topology'
+      ? (await workspace.list({ query, includeDeleted: false }))
       : await workspace.list({ query, kind: collection });
     if (serial !== renderSerial) return;
     const host = $('#note-list');
@@ -290,6 +300,33 @@ async function main() {
     }
   }
   async function renderEditor() {
+    if (collection === 'topology') {
+      $('#editor-empty').hidden = true;
+      $('#editor-form').hidden = true;
+      $('#topology-panel').hidden = false;
+      $('#editor-kind').textContent = 'OBSERVATORY';
+      if (topologyInstance) {
+        topologyInstance.destroy();
+        topologyInstance = null;
+      }
+      const allRecords = await workspace.list({ includeDeleted: false });
+      const topo = prepareGraphTopology(allRecords);
+      $('#topo-nodes-count').textContent = String(topo.nodes.length);
+      $('#topo-edges-count').textContent = String(topo.edges.length);
+      $('#topo-broken-count').textContent = String(topo.brokenTargets.length);
+      topologyInstance = mountGraphCanvas($('#topology-canvas-container'), allRecords, {
+        onSelectNode: (itemId) => { void openItem(itemId); },
+        audioFeedback: audio,
+      });
+      return;
+    }
+
+    $('#topology-panel').hidden = true;
+    if (topologyInstance) {
+      topologyInstance.destroy();
+      topologyInstance = null;
+    }
+
     $('#editor-empty').hidden = Boolean(selected);
     $('#editor-form').hidden = !selected;
     $('#save-error').textContent = '';
@@ -345,16 +382,25 @@ async function main() {
     if (!found) return;
     selected = found;
     dirty = false;
+    if (collection === 'topology') {
+      collection = found.kind || 'note';
+      $('#collection-title').textContent = CATEGORY[collection]?.title || 'Notes';
+      for (const button of document.querySelectorAll('.nav-link')) {
+        button.classList.toggle('is-active', button.dataset.kind === collection);
+        button.setAttribute('aria-current', button.dataset.kind === collection ? 'page' : 'false');
+      }
+    }
     await renderEditor();
     await renderList();
   }
   async function changeCollection(kind) {
     if (dirty && !window.confirm('Discard unsaved changes?')) return;
+    audio.tick();
     collection = kind;
     selected = null;
     dirty = false;
-    $('#collection-title').textContent = CATEGORY[kind].title;
-    $('#new-note').hidden = kind === 'archive';
+    $('#collection-title').textContent = CATEGORY[kind]?.title || 'Notes';
+    $('#new-note').hidden = kind === 'archive' || kind === 'topology';
     $('#simulate-gpt').hidden = kind !== 'contribution';
     $('#search-input').value = '';
     for (const button of document.querySelectorAll('.nav-link')) {
@@ -413,10 +459,12 @@ async function main() {
     try {
       selected = await workspace.update(selected.id, patch, selected.revision);
       dirty = false;
+      audio.commit();
     } catch (error) {
       $('#save-error').textContent = error?.message ?? 'Local save failed';
       setStatus('Not saved', { error: true });
       dirty = true;
+      audio.alert();
       return;
     } finally {
       saving = false;
@@ -538,16 +586,19 @@ async function main() {
   }
 
   $('#open-sync-inspector')?.addEventListener('click', () => {
+    audio.tick();
     const panel = $('#sync-inspector');
     if (!panel) return;
     panel.hidden = !panel.hidden;
     updateSyncUi();
   });
   $('#close-sync-inspector')?.addEventListener('click', () => {
+    audio.tick();
     const panel = $('#sync-inspector');
     if (panel) panel.hidden = true;
   });
   $('#sync-push-btn')?.addEventListener('click', () => {
+    audio.tick();
     if (!syncOnline) {
       appendSyncLog('Push blocked: network simulation is offline. Encrypted frame retained in local outbox.');
       updateSyncUi();
@@ -561,9 +612,11 @@ async function main() {
   });
   $('#sync-peer-ack-btn')?.addEventListener('click', () => {
     if (syncState !== 'RELAY_STORED' && syncState !== 'PEER_APPLIED') {
+      audio.alert();
       appendSyncLog('Peer cannot catch up: no frames have been stored on relay yet. Push to relay first.');
       return;
     }
+    audio.peerAck();
     peerConfirmedCount++;
     lastPeerTime = new Date().toISOString();
     const bytes = new Uint8Array(32);
@@ -574,22 +627,38 @@ async function main() {
     updateSyncUi();
   });
   $('#sync-network-toggle-btn')?.addEventListener('click', () => {
+    audio.tick();
     syncOnline = !syncOnline;
     $('#sync-network-toggle-btn').textContent = syncOnline ? 'Toggle Network (Online)' : 'Toggle Network (Offline)';
     appendSyncLog(syncOnline ? 'Network restored (Online). Relay connection re-established.' : 'Network interrupted (Offline). Offline writing and local buffering active.');
     updateSyncUi();
   });
 
+  $('#audio-toggle-btn')?.addEventListener('click', () => {
+    const nextMuted = !audio.isMuted();
+    audio.setMuted(nextMuted);
+    const label = $('#audio-label');
+    const icon = $('#audio-icon');
+    if (label) label.textContent = nextMuted ? 'Audio: Muted' : 'Audio: On';
+    if (icon) icon.textContent = nextMuted ? '✕' : '♪';
+    if (!nextMuted) audio.tick();
+  });
+
+  $('#welcome-topology')?.addEventListener('click', () => {
+    audio.tick();
+    void changeCollection('topology');
+  });
+
   for (const button of document.querySelectorAll('.nav-link')) button.addEventListener('click', () => { void changeCollection(button.dataset.kind); });
-  $('#new-note').addEventListener('click', () => { void createNew(); });
-  $('#welcome-create').addEventListener('click', () => { void createNew(); });
+  $('#new-note').addEventListener('click', () => { audio.tick(); void createNew(); });
+  $('#welcome-create').addEventListener('click', () => { audio.tick(); void createNew(); });
   $('#editor-form').addEventListener('submit', saveItem);
   $('#delete-note').addEventListener('click', () => { void archiveItem(); });
-  $('#simulate-gpt').addEventListener('click', () => { void createSyntheticContribution(); });
-  $('#simulate-relay-event')?.addEventListener('click', () => { void simulateRelayEvent(false); });
-  $('#simulate-relay-blocked')?.addEventListener('click', () => { void simulateRelayEvent(true); });
-  $('#export-data').addEventListener('click', exportLocal);
-  $('#export-handoff')?.addEventListener('click', () => { void exportHandoff(); });
+  $('#simulate-gpt').addEventListener('click', () => { audio.tick(); void createSyntheticContribution(); });
+  $('#simulate-relay-event')?.addEventListener('click', () => { audio.tick(); void simulateRelayEvent(false); });
+  $('#simulate-relay-blocked')?.addEventListener('click', () => { audio.alert(); void simulateRelayEvent(true); });
+  $('#export-data').addEventListener('click', () => { audio.tick(); exportLocal(); });
+  $('#export-handoff')?.addEventListener('click', () => { audio.tick(); void exportHandoff(); });
   $('#search-input').addEventListener('input', () => { void renderList(); });
   for (const field of $('#editor-form').querySelectorAll('input,textarea,select')) {
     field.addEventListener('input', () => { if (selected && !selected.deletedAt) { dirty = true; setStatus('Unsaved changes'); $('#save-error').textContent = ''; updateResume(); } });

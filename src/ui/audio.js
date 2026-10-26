@@ -139,5 +139,65 @@ export function createAcousticFeedback() {
         osc.stop(now + 0.06);
       } catch {}
     },
+
+    /**
+     * Ultra-short dry rotary detent tick for chronological timeline scrubbing.
+     */
+    scrub() {
+      const c = getContext();
+      if (!c) return;
+      try {
+        const osc = c.createOscillator();
+        const gain = c.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(2200, c.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(800, c.currentTime + 0.003);
+
+        gain.gain.setValueAtTime(0.025, c.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.003);
+
+        osc.connect(gain);
+        gain.connect(c.destination);
+
+        osc.start(c.currentTime);
+        osc.stop(c.currentTime + 0.003);
+      } catch {}
+    },
+
+    /**
+     * Dual-stage mechanical aperture shutter for major lens transitions.
+     */
+    shutter() {
+      const c = getContext();
+      if (!c) return;
+      try {
+        const now = c.currentTime;
+        // First latch
+        const osc1 = c.createOscillator();
+        const gain1 = c.createGain();
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(950, now);
+        osc1.frequency.exponentialRampToValueAtTime(400, now + 0.006);
+        gain1.gain.setValueAtTime(0.04, now);
+        gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.006);
+        osc1.connect(gain1);
+        gain1.connect(c.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.006);
+
+        // Second release
+        const osc2 = c.createOscillator();
+        const gain2 = c.createGain();
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(1600, now + 0.025);
+        osc2.frequency.exponentialRampToValueAtTime(600, now + 0.033);
+        gain2.gain.setValueAtTime(0.03, now + 0.025);
+        gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.033);
+        osc2.connect(gain2);
+        gain2.connect(c.destination);
+        osc2.start(now + 0.025);
+        osc2.stop(now + 0.033);
+      } catch {}
+    },
   };
 }

@@ -299,6 +299,60 @@ async function main() {
       container.append(card);
     }
   }
+
+  function renderRunbookChecklist() {
+    const runbookList = $('#runbook-steps-list');
+    if (!runbookList) return;
+    if (!selected || selected.kind !== 'incident') {
+      runbookList.innerHTML = '<p class="empty-panel">Incident runbook checklist not active.</p>';
+      return;
+    }
+    const reproText = $('#incident-repro')?.value || selected.reproductionSteps || '';
+    const lines = reproText
+      .split('\n')
+      .map(l => l.trim())
+      .filter(Boolean);
+
+    runbookList.innerHTML = '';
+    if (lines.length === 0) {
+      runbookList.innerHTML = '<p class="empty-panel">Add numbered reproduction steps above to generate interactive checklist.</p>';
+      return;
+    }
+
+    lines.forEach((line, idx) => {
+      const item = document.createElement('label');
+      item.className = 'runbook-step-item';
+      const cleanText = line.replace(/^\d+[\.\)]\s*/, '');
+
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.className = 'runbook-step-checkbox';
+      cb.id = `rb-step-${idx}`;
+
+      const textSpan = document.createElement('span');
+      const strong = document.createElement('strong');
+      strong.textContent = `Step ${idx + 1}: `;
+      textSpan.appendChild(strong);
+      textSpan.appendChild(document.createTextNode(cleanText));
+
+      item.appendChild(cb);
+      item.appendChild(textSpan);
+
+      cb.addEventListener('change', () => {
+        item.classList.toggle('is-executed', cb.checked);
+        if (cb.checked) {
+          audio.tick();
+          const allBoxes = Array.from(runbookList.querySelectorAll('.runbook-step-checkbox'));
+          if (allBoxes.every(c => c.checked)) {
+            audio.peerAck();
+          }
+        }
+      });
+
+      runbookList.appendChild(item);
+    });
+  }
+
   async function renderEditor() {
     if (collection === 'topology') {
       $('#editor-empty').hidden = true;
@@ -364,6 +418,35 @@ async function main() {
     $('#commitment-outcome').value = selected.expectedOutcome || '';
     $('#commitment-review').value = selected.reviewDate || '';
 
+    // Epistemic Freshness Check
+    const freshnessBanner = $('#epistemic-freshness-banner');
+    const freshnessStatus = $('#freshness-status');
+    const freshnessDetails = $('#freshness-details');
+    if (freshnessBanner) {
+      let isStale = false;
+      let reasonText = '';
+      if (selected.reviewDate) {
+        const revTime = new Date(selected.reviewDate).getTime();
+        if (Number.isFinite(revTime) && revTime < Date.now()) {
+          isStale = true;
+          reasonText = `Scheduled review date (${selected.reviewDate}) has expired. Human verification review required.`;
+        }
+      }
+      if (selected.evidence === 'stale') {
+        isStale = true;
+        reasonText = reasonText || 'Evidence state is marked STALE. Citations or assumptions require re-verification.';
+      }
+      if (isStale) {
+        freshnessBanner.hidden = false;
+        freshnessBanner.className = 'freshness-banner';
+        freshnessStatus.textContent = '⚠ NEEDS REVIEW: TEMPORAL DRIFT DETECTED';
+        freshnessDetails.textContent = reasonText;
+      } else {
+        freshnessBanner.hidden = true;
+      }
+    }
+
+    renderRunbookChecklist();
     updateResume();
     const archived = Boolean(selected.deletedAt);
     $('#delete-note').disabled = archived;
@@ -660,6 +743,7 @@ async function main() {
   $('#export-data').addEventListener('click', () => { audio.tick(); exportLocal(); });
   $('#export-handoff')?.addEventListener('click', () => { audio.tick(); void exportHandoff(); });
   $('#search-input').addEventListener('input', () => { void renderList(); });
+  $('#incident-repro')?.addEventListener('input', () => { renderRunbookChecklist(); });
   for (const field of $('#editor-form').querySelectorAll('input,textarea,select')) {
     field.addEventListener('input', () => { if (selected && !selected.deletedAt) { dirty = true; setStatus('Unsaved changes'); $('#save-error').textContent = ''; updateResume(); } });
     field.addEventListener('change', () => { if (selected && !selected.deletedAt) { dirty = true; setStatus('Unsaved changes'); $('#save-error').textContent = ''; updateResume(); } });

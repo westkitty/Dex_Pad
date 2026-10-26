@@ -86,28 +86,34 @@ with sync_playwright() as p:
     page.locator("#sync-network-toggle-btn").click()
     expect(page.locator("#sync-state")).to_have_text("Peer applied ✓")
 
-    # Incident Card interactive test (F05)
+    # Incident Card interactive test (F05) & Runbook Checklist (F09)
     page.locator("#nav-incidents").click()
     page.locator("#new-note").click()
     page.locator("#editor-title").fill("Sync Disconnect Incident")
     page.locator("#incident-status").select_option("mitigated")
     page.locator("#incident-failure").fill("Socket drop caused relay disconnect")
-    page.locator("#incident-repro").fill("Simulate network break during active push")
+    page.locator("#incident-repro").fill("1. Disconnect physical network adapter\n2. Attempt peer sync\n3. Confirm local buffering")
     page.locator("#incident-repair").fill("Buffered local outbox queue until reconnection")
     page.locator("#incident-proof").fill("tests/sync-engine.test.mjs")
+    expect(page.locator("#runbook-steps-list .runbook-step-item")).to_have_count(3)
+    page.locator("#rb-step-0").check()
+    expect(page.locator("#runbook-steps-list .runbook-step-item").first).to_have_class("runbook-step-item is-executed")
     page.locator("#save-note").click()
     expect(page.locator("#save-status")).to_have_text("Saved locally")
 
-    # Commitment Tracker interactive test (F08)
+    # Commitment Tracker interactive test (F08) & Epistemic Freshness Indicator (F14)
     page.locator("#nav-commitments").click()
     page.locator("#new-note").click()
     page.locator("#editor-title").fill("Security Audit Preparation")
     page.locator("#commitment-status").select_option("in-progress")
     page.locator("#commitment-owner").fill("Lead Crypto Engineer")
     page.locator("#commitment-outcome").fill("Zero-plaintext verification proof and test ledger")
-    page.locator("#commitment-review").fill("2026-11-01")
+    # Expired date to verify temporal review horizon warning
+    page.locator("#commitment-review").fill("2020-01-01")
     page.locator("#save-note").click()
     expect(page.locator("#save-status")).to_have_text("Saved locally")
+    expect(page.locator("#epistemic-freshness-banner")).to_be_visible()
+    expect(page.locator("#freshness-status")).to_contain_text("NEEDS REVIEW")
 
     # Knowledge Relations & Backlinks test (C11)
     # Create target note
@@ -141,6 +147,16 @@ with sync_playwright() as p:
     expect(page.locator("#topology-panel")).to_be_visible()
     expect(page.locator("#topology-canvas-container canvas")).to_be_visible()
     expect(page.locator("#editor-kind")).to_have_text("OBSERVATORY")
+
+    # Chronological Scrubber & Replay test
+    expect(page.locator("#topo-epoch-label")).to_have_text("Present (All Time)")
+    page.locator("#topo-play-btn").click()
+    page.wait_for_timeout(200)
+    page.locator("#topo-scrub-slider").fill("50")
+    page.wait_for_timeout(100)
+    expect(page.locator("#topo-epoch-label")).not_to_have_text("Present (All Time)")
+    page.locator("#topo-scrub-slider").fill("100")
+    expect(page.locator("#topo-epoch-label")).to_have_text("Present (All Time)")
 
     assert not errors, f"JavaScript errors: {errors}"
     assert not cross_origin_requests, f"Unexpected network: {cross_origin_requests}"

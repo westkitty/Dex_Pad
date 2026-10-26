@@ -44,3 +44,26 @@ test('2. prepareGraphTopology computes degrees and gravity metrics', () => {
   assert.equal(hubNode.outgoingDegree, 0);
   assert.ok(hubNode.radius > 8); // Hubs have larger radius for visual hierarchy
 });
+
+test('3. prepareGraphTopology filters by chronological epoch horizon', () => {
+  const records = [
+    { id: 'early', kind: 'note', title: 'Genesis Note', updatedAt: '2026-01-01T10:00:00Z' },
+    { id: 'mid', kind: 'decision', title: 'Mid Decision', updatedAt: '2026-06-01T10:00:00Z', body: 'Refers to [[early]]' },
+    { id: 'late', kind: 'incident', title: 'Late Incident', updatedAt: '2026-10-01T10:00:00Z', body: 'Refers to [[mid]]' },
+  ];
+
+  const full = prepareGraphTopology(records);
+  assert.equal(full.nodes.length, 3);
+  assert.equal(full.minTime, new Date('2026-01-01T10:00:00Z').getTime());
+  assert.equal(full.maxTime, new Date('2026-10-01T10:00:00Z').getTime());
+
+  // Scrub back to mid-year
+  const midEpoch = new Date('2026-06-15T00:00:00Z').getTime();
+  const scrubbed = prepareGraphTopology(records, { maxTimestamp: midEpoch });
+
+  assert.equal(scrubbed.nodes.length, 2);
+  assert.ok(scrubbed.nodes.find((n) => n.id === 'early'));
+  assert.ok(scrubbed.nodes.find((n) => n.id === 'mid'));
+  assert.ok(!scrubbed.nodes.find((n) => n.id === 'late'));
+  assert.equal(scrubbed.edges.length, 1);
+});

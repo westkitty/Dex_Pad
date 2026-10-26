@@ -9,6 +9,8 @@ test('1. createAcousticFeedback gracefully degrades in headless or unsupported e
   assert.equal(typeof audio.commit, 'function');
   assert.equal(typeof audio.peerAck, 'function');
   assert.equal(typeof audio.alert, 'function');
+  assert.equal(typeof audio.scrub, 'function');
+  assert.equal(typeof audio.shutter, 'function');
   assert.equal(typeof audio.setMuted, 'function');
   assert.equal(typeof audio.isMuted, 'function');
 
@@ -18,6 +20,8 @@ test('1. createAcousticFeedback gracefully degrades in headless or unsupported e
     audio.commit();
     audio.peerAck();
     audio.alert();
+    audio.scrub();
+    audio.shutter();
   });
 });
 

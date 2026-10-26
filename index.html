@@ -173,6 +173,13 @@
             <button id="export-handoff" type="button" class="button button-quiet" title="Export One-Tap Agent Handoff Packet">Agent handoff</button>
             <button id="delete-note" type="button" class="button button-danger" title="Move to recoverable history">Archive</button>
           </div>
+          <div id="epistemic-freshness-banner" class="freshness-banner" hidden>
+            <span class="freshness-icon" aria-hidden="true">&#9888;</span>
+            <div class="freshness-content">
+              <strong id="freshness-status">NEEDS REVIEW</strong>
+              <p id="freshness-details"></p>
+            </div>
+          </div>
           <label class="sr-only" for="editor-title">Title</label>
           <input id="editor-title" class="editor-title" type="text" maxlength="180" autocomplete="off" placeholder="Untitled">
           <label class="sr-only" for="editor-body">Content</label>
@@ -213,6 +220,15 @@
             <div class="field-row"><label for="incident-repro">Reproduction steps</label><textarea id="incident-repro" rows="3" placeholder="Deterministic steps to reproduce"></textarea></div>
             <div class="field-row"><label for="incident-repair">Confirmed repair</label><textarea id="incident-repair" rows="2" placeholder="Root cause fix or mitigation"></textarea></div>
             <div class="field-row"><label for="incident-proof">Regression proof</label><input id="incident-proof" type="text" placeholder="Test command or commit showing fix"></div>
+            <div class="runbook-container" id="incident-runbook-container">
+              <div class="fields-heading">OPERATIONAL RUNBOOK &amp; ROLLBACK PROTOCOL</div>
+              <div class="runbook-checklist" id="runbook-steps-list">
+                <p class="empty-panel">Add numbered reproduction steps above to generate interactive checklist.</p>
+              </div>
+              <div class="runbook-stop-banner" id="runbook-stop-banner">
+                <strong>STOP CONDITION:</strong> If data corruption or verification failure occurs, stop execution immediately and follow rollback procedures.
+              </div>
+            </div>
           </div>
           <div id="commitment-fields" class="commitment-fields" hidden>
             <div class="fields-heading">COMMITMENT / PROMISE TRACKER</div>

@@ -536,7 +536,7 @@
       "id": "F22",
       "title": "DexDictate Capture Route",
       "phase": "P3",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "External transcription ingest",
       "dependsOn": [
         "C13",
@@ -548,7 +548,7 @@
       "id": "F23",
       "title": "Selective Git Publication",
       "phase": "P3",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Approved GitHub export adapter",
       "dependsOn": [
         "C13",
@@ -560,7 +560,7 @@
       "id": "F24",
       "title": "Portable Offline Project Kits",
       "phase": "P5",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Device pin/export bundle",
       "dependsOn": [
         "C15",
@@ -572,7 +572,7 @@
       "id": "F25",
       "title": "Quiet, Actionable Alerts",
       "phase": "P5",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Notification adapter",
       "dependsOn": [
         "F08",

@@ -70,10 +70,10 @@ Status meanings: `planned` = specification only; `dev-prototype` = development-o
 | F19 | Remember This Later | P5 | dev-prototype | F08 | A selected note resurfaces at an explicit interval with skip/postpone controls and no compulsive notification loops. |
 | F20 | Downstream Review Hints | P5 | dev-prototype | C11, F14 | A changed source flags dependent notes for user review without silently rewriting authoritative material. |
 | F21 | DEX//REACH Result Receipts | P3 | dev-prototype | C13, F02 | A sanitized receipt links one verified job result to a project with no raw secrets, delegated terminal access, or invented success. |
-| F22 | DexDictate Capture Route | P3 | planned | C13, C25 | Only explicitly submitted transcribed text enters a destination inbox with origin and no shared dictation microphone permission. |
-| F23 | Selective Git Publication | P3 | planned | C13, C16 | A redacted diff for a named document is previewed and approved before a scoped commit or draft PR; private vault never mirrors wholesale. |
-| F24 | Portable Offline Project Kits | P5 | planned | C15, C02 | An authorized client packs selected encrypted records and attachments with a verifiable manifest and successful offline restore. |
-| F25 | Quiet, Actionable Alerts | P5 | planned | F08, C13 | A user-chosen condition produces a minimal authenticated alert, and no body/content leak or persistent spam occurs. |
+| F22 | DexDictate Capture Route | P3 | dev-prototype | C13, C25 | Only explicitly submitted transcribed text enters a destination inbox with origin and no shared dictation microphone permission. |
+| F23 | Selective Git Publication | P3 | dev-prototype | C13, C16 | A redacted diff for a named document is previewed and approved before a scoped commit or draft PR; private vault never mirrors wholesale. |
+| F24 | Portable Offline Project Kits | P5 | dev-prototype | C15, C02 | An authorized client packs selected encrypted records and attachments with a verifiable manifest and successful offline restore. |
+| F25 | Quiet, Actionable Alerts | P5 | dev-prototype | F08, C13 | A user-chosen condition produces a minimal authenticated alert, and no body/content leak or persistent spam occurs. |
 
 ## Execution rule
 

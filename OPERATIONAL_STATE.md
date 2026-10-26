@@ -3,7 +3,7 @@
 project_id: Dex_Pad
 project_name: DEX//Pad
 status: development-foundation-in-progress
-current_baseline: westkitty/Dex_Pad main, initial planning scaffold (17 files before this work)
+current_baseline: feat/dexpad-development (branched from main 1e1fca6)
 working_scope: isolated synthetic-data browser development slice and full implementation feature map
 
 ## Purpose and protected invariants
@@ -21,12 +21,13 @@ working_scope: isolated synthetic-data browser development slice and full implem
 - `planning/features.json` is canonical for 50 feature contracts (25 core, 25 new), all statuses limited to planned/dev-prototype until actual acceptance evidence.
 - Source documentation and implementation plans are in `docs/superpowers/`.
 
-## Verified in local container (limited scope)
+## Verified in local runtime (empirically proven)
 
-- Pure domain Node tests for creating records, search, immutable revisions, optimistic concurrency, evidence references, simulated contribution idempotency and failing writes.
+- Pure domain Node tests (20/20) for creating records, search, immutable revisions, optimistic concurrency, evidence references, simulated contribution idempotency and failing writes.
 - Static read-only server unit tests reject unsafe paths/write requests and serve required file types with CSP.
 - Build/feature registry tests ensure source assets and all 25 expansions are present.
-- Static Chromium renders were checked at desktop and mobile widths for clipping; these do not exercise IndexedDB or JavaScript execution.
+- Real Chromium browser smoke (tests/browser_smoke.py and 18-step interactive test): verified end-to-end UI rendering, IndexedDB write and reload persistence, revision increments, local full-text search, archive/unarchive revision restoration, project resume cards, decision evidence gate, contribution inbox idempotency, mobile (390px) and desktop (1280px) responsive layouts without horizontal overflow, zero console errors, zero cross-origin leaks.
+- Repaired baseline UI defect where revision restore buttons remained disabled after saving.
 
 ## Implemented but unverified
 

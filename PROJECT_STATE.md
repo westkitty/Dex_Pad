@@ -38,6 +38,10 @@ The owner supplied `https://github.com/westkitty/Dex_Pad` as the authoritative p
 
 In an isolated container worktree, created a dependency-free local browser UI and modular JS domain for **synthetic data only**: notes, projects, decisions, simulated contributions, immutable revision records, evidence states, optimistic revision checks, local full-text filtering, archive/restore, JSON export and local IndexedDB adapter. Created a 50-item machine-readable feature roster (25 core, 25 new), human-readable matrix, Superpowers design and implementation plan, developer quickstart, GPT write-only architecture, CI workflow and operational state.
 
+### 2026-10-26 — Empirical browser smoke validation and baseline repair
+
+Established isolated implementation branch `feat/dexpad-development`. Successfully ran `tests/browser_smoke.py` and the 18-step interactive browser verification suite on macOS with native Playwright Chromium against loopback server `http://127.0.0.1:4173`. Diagnosed and resolved a baseline defect in `src/ui/app.js` where revision restore buttons remained disabled following save operations due to `saving` flag lifecycle scoping. IndexedDB persistence across reload, revision restoration, full-text search, evidence gate enforcement, and responsive layout verified empirically on live browser runtime.
+
 Local evidence: `npm run check` passed (20/20 Node tests, documentation, feature roster and static build). Chromium static render at 1440px and 390px widths passed without horizontal overflow. **Functional browser smoke not run successfully:** the container's Chromium returned `net::ERR_BLOCKED_BY_ADMINISTRATOR` when navigating to localhost, even when routing static responses through Playwright. Native IndexedDB, real Android lifecycle, E2EE, cross-device sync, actual GPT MCP, Standard Notes migration and backup/restore remain unverified/unimplemented.
 
 Do **not** infer GitHub publication from local files: wait for a remote commit receipt and source-tree readback. The repo is public and contains no real vault material.

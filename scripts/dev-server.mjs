@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const BASE = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const EXPLICIT = new Set(['/', '/index.html', '/styles.css']);
-const SOURCE_FILE = /^\/src\/(?:core|storage|ui|integrations(?:\/[a-z0-9_-]+)?)\/[a-z0-9_-]+\.js$/;
+const SOURCE_FILE = /^\/src\/(?:(?:core|storage|ui|integrations)(?:\/[a-z0-9_-]+)?)\/[a-z0-9_-]+\.js$/;
 const CONTENT_TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8' };
 const POLICY = "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'self'";
 

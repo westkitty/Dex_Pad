@@ -11,6 +11,7 @@ try {
 const allow = [
   'index.html', 'styles.css',
   'src/core/workspace.js', 'src/core/contributions.js',
+  'src/core/crypto/primitives.js', 'src/core/crypto/vault.js',
   'src/storage/indexeddb.js', 'src/storage/memory.js',
   'src/ui/app.js',
   'src/integrations/relay/bridge.js', 'src/integrations/relay/validator.js',

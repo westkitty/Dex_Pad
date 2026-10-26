@@ -23,7 +23,25 @@ working_scope: isolated synthetic-data browser development slice and full implem
 
 ## Verified in local runtime (empirically proven)
 
-- Pure domain Node tests (53/53) across workspace, gateway, build, feature registry, synthetic DEX//RELAY ingestion, encrypted vault cryptography, and cross-device sync engine.
+- Pure domain Node tests (70/70) across workspace, gateway, build, feature registry, synthetic DEX//RELAY ingestion, encrypted vault cryptography, cross-device sync engine, backup & recovery, and Standard Notes migration.
+- Independent Encrypted Backup & Recovery Subsystem (`src/core/crypto/backup.js`, `tests/backup-recovery.test.mjs`):
+  1. Deterministic encrypted backup archive creation (`dex-backup.v1`) with SHA-256 cryptographic checksum binding over all encrypted record envelopes and manifest metadata.
+  2. Bit-level tamper detection: modified ciphertext envelopes or altered record counts are rejected with `CorruptBackupError`.
+  3. Independent offline restore: completely restores all encrypted records into a clean, empty store on an independent client without relay or network access.
+  4. Key epoch validation: rejects backup archives from mismatched key epochs with `KeyEpochMismatchError`.
+  5. Lost-device recovery workflow: restores vault access, recovers the Vault Key, and re-encrypts with a new user passphrase using the emergency recovery code and recovery envelope.
+  6. Unrecoverability proof: demonstrates that lost passphrase combined with lost recovery code cannot decrypt or restore records.
+  7. Mandatory explicit consent gating: unencrypted export strictly requires explicit user confirmation (`ConsentRequiredError`) and attaches a prominent warning banner.
+- Quarantined Standard Notes Migration Processor (`src/core/migration/standard-notes.js`, `tests/migration-standard-notes.test.mjs`):
+  1. Non-destructive parsing: input archive data is deep-cloned and never mutated or deleted.
+  2. Tag reference resolution: bidirectional tag-to-note and note-to-tag relationships are resolved into DEX//Pad record tag arrays.
+  3. Titleless note preservation: titleless notes, markdown content, and original timestamps are preserved.
+  4. Unsupported content quarantine: extensions (`SN|Component`) and themes (`SN|Theme`) are quarantined into a structured report with descriptive reasons rather than causing data loss.
+  5. Encrypted archive detection: detects encrypted Standard Notes payloads (`004:...`, `003:...`) and surfaces a clear warning requiring decrypted export before import.
+- Truthful Sync Inspector & Peer-Applied Confirmation Protocol (`src/core/sync/engine.js`, `src/ui/app.js`, `index.html`, `styles.css`):
+  1. Peer confirmation protocol: peer devices cryptographically sign and register delivery receipts (`dex-peer-ack.v1`) upon applying incoming envelopes.
+  2. Truthful state tracking: `getItemSyncState` strictly distinguishes `SAVED_LOCALLY` (pending outbox), `RELAY_STORED` (stored on relay, awaiting peer pull), and `PEER_APPLIED` (confirmed by peer device with signature verification).
+  3. Interactive UI inspector: dedicated Truthful Sync Inspector panel with local, relay, and peer status cards, push simulation, peer ACK simulation, and network interruption toggling.
 - Cross-Device Encrypted Sync Engine & Fault Matrix Harness (`src/core/sync/engine.js`, `tests/sync-engine.test.mjs`):
   1. Offline writing: local transactions commit durably while offline; pending encrypted sync frames (`dex-sync.v1`) queue reliably.
   2. Private ciphertext-only relay transport: relay stores and forwards encrypted sync blobs without plaintext decryption capability.
@@ -48,13 +66,15 @@ working_scope: isolated synthetic-data browser development slice and full implem
   12. Format versioning (`dex-record.v1`, `dex-vault.v1`) for forward migration safety.
 - Synthetic DEX//RELAY event ingestion bridge (`src/integrations/relay/`): deterministic schema validation (`dex-relay.event.v1`, `dex-relay.task.v1`), sequence continuity and hash-chain tracking (`streamIntegrity`), idempotency preservation with conflict rejection on payload mismatch, strict project isolation, secret/credential payload sanitization, separation of claims from independent cryptographic proof, and project timeline visualization with explicit `SYNTHETIC RELAY EVENTS — NOT LIVE EXECUTION` disclaimer.
 - Static read-only server unit tests reject unsafe paths/write requests and serve required file types with CSP.
-- Build/feature registry tests ensure source assets, crypto modules, sync modules, integration files, and all 25 expansions are present.
-- Real Chromium browser smoke (tests/browser_smoke.py and 18-step interactive test): verified end-to-end UI rendering, IndexedDB write and reload persistence, revision increments, local full-text search, archive/unarchive revision restoration, project resume cards, relay timeline card rendering and blocker state display, decision evidence gate, contribution inbox idempotency, mobile (390px) and desktop (1280px) responsive layouts without horizontal overflow, zero console errors, zero cross-origin leaks.
+- Build/feature registry tests ensure source assets, crypto modules, sync modules, migration modules, and all 25 expansions are present.
+- Real Chromium browser smoke (tests/browser_smoke.py): verified end-to-end UI rendering, IndexedDB write and reload persistence, revision increments, local full-text search, archive/unarchive revision restoration, project resume cards, relay timeline card rendering, decision evidence gate, contribution inbox idempotency, mobile (390px) and desktop (1280px) responsive layouts without horizontal overflow, Truthful Sync Inspector interactive cycle (`SAVED_LOCALLY` -> `RELAY_STORED` -> `PEER_APPLIED` -> `Offline buffered`), zero console errors, zero cross-origin leaks.
 - Repaired baseline UI defect where revision restore buttons remained disabled after saving.
 
 ## Implemented development prototypes (unverified against production)
 
-- Cross-Device Encrypted Sync Engine (C03 candidate harness). 8/8 fault matrix tests pass against synthetic relay. Physical multi-device validation across MacBook, Android phone, and Galaxy Tab over live Tailscale remains UNVERIFIED.
+- Cross-Device Encrypted Sync Engine & Peer Confirmation (C03/C18/C24 harness). 10/10 fault matrix tests pass against synthetic relay. Physical multi-device validation across MacBook, Android phone, and Galaxy Tab over live Tailscale remains UNVERIFIED.
+- Independent Encrypted Backup & Restore (C07 prototype). 9/9 unit tests pass. External independent security audit and hardware key-storage review remain UNVERIFIED.
+- Standard Notes Migration Processor (C08 prototype). 6/6 tests pass. Large multi-megabyte real production archive test remains UNVERIFIED.
 - Encrypted Vault Cryptographic Proof (C02 foundation). 12/12 unit tests pass on Web Crypto API primitives. MUST NOT be claimed as production E2EE until external security audit, hardware key storage review, side-channel analysis, and production key rotation are verified.
 - Synthetic DEX//RELAY Event Ingestion Bridge (F21 prototype, scoped to C13/F02 contracts). Not production-ready; live Big Mac witness/daemon execution remains blocked.
 - Write-only contribution gateway (C13 prototype). No external GPT MCP connection is active.

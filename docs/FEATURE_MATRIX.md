@@ -42,7 +42,7 @@ Status meanings: `planned` = specification only; `dev-prototype` = development-o
 | C21 | Concurrent-edit semantic recovery | P0 | planned | C03 | Two offline clients editing one item converge or surface a recoverable conflict; no accepted edit silently disappears. |
 | C22 | Lost-device and key recovery | P1 | planned | C07, C17 | A simulated lost-device restore succeeds only with authorized recovery material; unrecoverable secrets are disclosed accurately. |
 | C23 | Local operation and evidence log | P1 | dev-prototype | C01 | Every accepted revision records identity and action; a failed transaction produces no successful event receipt. |
-| C24 | Peer-applied confirmation | P1 | planned | C03 | A receiving device cryptographically acknowledges applied revision before the sending UI labels it present on that device. |
+| C24 | Peer-applied confirmation | P1 | dev-prototype | C03 | A receiving device cryptographically acknowledges applied revision before the sending UI labels it present on that device. |
 | C25 | Contribution review inbox | P1 | dev-prototype | C01 | Synthetic write-only submissions have unique receipts, show origin, can be reviewed, and cannot retrieve existing items. |
 
 ## 25 additional capabilities

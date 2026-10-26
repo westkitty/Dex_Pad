@@ -30,17 +30,17 @@ with sync_playwright() as p:
     page.locator("#editor-title").fill("Browser proof")
     page.locator("#editor-body").fill("Synthetic data only")
     page.locator("#save-note").click()
-    page.get_by_text("Saved locally", exact=True).wait_for()
+    expect(page.locator("#save-status")).to_have_text("Saved locally")
     page.reload()
     page.locator("#note-list").get_by_text("Browser proof").wait_for()
     page.locator("#note-list").get_by_text("Browser proof").click()
     expect(page.locator("#editor-body")).to_have_value("Synthetic data only")
     page.locator("#editor-body").fill("Changed in Chromium")
     page.locator("#save-note").click()
-    page.get_by_text("Saved locally", exact=True).wait_for()
+    expect(page.locator("#save-status")).to_have_text("Saved locally")
     page.once("dialog", lambda dialog: dialog.accept())
     page.locator("#revisions-panel button").first.click()
-    page.get_by_text("Saved locally", exact=True).wait_for()
+    expect(page.locator("#save-status")).to_have_text("Saved locally")
     page.locator("#editor-body").wait_for()
     page.locator("#nav-decisions").click()
     page.locator("#new-note").click()
@@ -50,10 +50,42 @@ with sync_playwright() as p:
     page.locator("#save-error").get_by_text("evidence reference", exact=False).wait_for()
     page.locator("#evidence-ref").fill("git:synthetic123")
     page.locator("#save-note").click()
-    page.get_by_text("Saved locally", exact=True).wait_for()
+    expect(page.locator("#save-status")).to_have_text("Saved locally")
     page.locator("#nav-inbox").click()
     page.locator("#simulate-gpt").click()
     page.locator("#note-list").get_by_text("Synthetic GPT contribution").wait_for()
+
+    # Truthful Sync Inspector interactive test
+    page.locator("#nav-notes").click()
+    page.locator("#new-note").click()
+    page.locator("#editor-title").fill("Sync Inspector Test Note")
+    page.locator("#save-note").click()
+    expect(page.locator("#save-status")).to_have_text("Saved locally")
+
+    page.locator("#open-sync-inspector").click()
+    page.locator("#sync-inspector").wait_for()
+    expect(page.locator("#sync-local-val")).to_have_text("SAVED_LOCALLY")
+    expect(page.locator("#sync-relay-val")).to_have_text("PENDING")
+
+    # Push to relay
+    page.locator("#sync-push-btn").click()
+    expect(page.locator("#sync-relay-val")).to_have_text("RELAY_STORED")
+    expect(page.locator("#sync-state")).to_have_text("Relay stored")
+
+    # Peer catch-up and ACK
+    page.locator("#sync-peer-ack-btn").click()
+    expect(page.locator("#sync-peer-val")).to_have_text("PEER_APPLIED")
+    expect(page.locator("#sync-state")).to_have_text("Peer applied ✓")
+
+    # Network break toggle
+    page.locator("#sync-network-toggle-btn").click()
+    expect(page.locator("#sync-state")).to_have_text("Offline (buffered)")
+    expect(page.locator("#sync-relay-val")).to_have_text("BUFFERED")
+
+    # Restore network
+    page.locator("#sync-network-toggle-btn").click()
+    expect(page.locator("#sync-state")).to_have_text("Peer applied ✓")
+
     assert not errors, f"JavaScript errors: {errors}"
     assert not cross_origin_requests, f"Unexpected network: {cross_origin_requests}"
     page.screenshot(path=str(SCREENSHOT_DIR / "dex-pad-desktop-smoke.png"), full_page=True)

@@ -66,8 +66,48 @@
       <main class="editor-pane" id="editor-panel">
         <div class="editor-topline">
           <div class="breadcrumb"><span>WORKSPACE</span> <span aria-hidden="true">/</span> <strong id="editor-kind">NOTE</strong></div>
-          <div class="state-line"><span id="save-status" role="status" aria-live="polite">Ready</span><span class="state-separator" aria-hidden="true">&bull;</span><span id="sync-state">No sync active</span></div>
+          <div class="state-line">
+            <span id="save-status" role="status" aria-live="polite">Ready</span>
+            <span class="state-separator" aria-hidden="true">&bull;</span>
+            <button id="open-sync-inspector" class="sync-status-btn" type="button" title="Open Truthful Sync Inspector"><span id="sync-state">Sync: Local</span></button>
+          </div>
         </div>
+        <section id="sync-inspector" class="sync-inspector-panel" hidden aria-label="Truthful Sync Inspector">
+          <div class="sync-inspector-header">
+            <div class="sync-inspector-title">
+              <span class="warning-icon" aria-hidden="true">&#9881;</span>
+              <strong>TRUTHFUL SYNC INSPECTOR</strong>
+              <span class="sync-inspector-sub">Candidate C &bull; Local Dev Simulation</span>
+            </div>
+            <button id="close-sync-inspector" class="button button-quiet sync-close-btn" type="button" aria-label="Close inspector">&times;</button>
+          </div>
+          <div class="sync-disclaimer">
+            <span>Differentiates <strong>SAVED_LOCALLY</strong>, <strong>RELAY_STORED</strong>, and <strong>PEER_APPLIED</strong>. Physical multi-device convergence is UNVERIFIED until physical lab gate.</span>
+          </div>
+          <div class="sync-status-grid">
+            <div class="sync-status-card" id="sync-card-local">
+              <div class="sync-card-label">1. LOCAL STORAGE</div>
+              <div class="sync-card-val" id="sync-local-val">SAVED_LOCALLY</div>
+              <div class="sync-card-meta" id="sync-local-meta">Committed to IndexedDB</div>
+            </div>
+            <div class="sync-status-card" id="sync-card-relay">
+              <div class="sync-card-label">2. RELAY STORED</div>
+              <div class="sync-card-val" id="sync-relay-val">PENDING</div>
+              <div class="sync-card-meta" id="sync-relay-meta">Awaiting push</div>
+            </div>
+            <div class="sync-status-card" id="sync-card-peer">
+              <div class="sync-card-label">3. PEER CONFIRMED</div>
+              <div class="sync-card-val" id="sync-peer-val">AWAITING</div>
+              <div class="sync-card-meta" id="sync-peer-meta">Awaiting peer pull</div>
+            </div>
+          </div>
+          <div class="sync-actions-row">
+            <button id="sync-push-btn" class="button button-quiet" type="button">Push to Relay</button>
+            <button id="sync-peer-ack-btn" class="button button-quiet" type="button">Simulate Peer Catch-Up &amp; ACK</button>
+            <button id="sync-network-toggle-btn" class="button button-quiet" type="button">Toggle Network (Online)</button>
+          </div>
+          <div id="sync-inspector-log" class="sync-log-box" role="log" aria-live="polite">Ready. Save a record or push to test truthful sync states.</div>
+        </section>
         <div id="editor-empty" class="welcome-surface">
           <div class="welcome-emblem" aria-hidden="true">D<span>//</span></div>
           <div class="overline">WRITE IT DOWN. KEEP THE THREAD.</div>

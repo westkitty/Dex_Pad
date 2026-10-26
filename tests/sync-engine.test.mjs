@@ -204,3 +204,48 @@ test('8. truthful acknowledgment: distinguishes RELAY_STORED from PEER_APPLIED',
   assert.equal(pullReceipt.status, 'PEER_APPLIED');
   assert.equal(pullReceipt.appliedCount, 1);
 });
+
+test('9. peer-applied confirmation protocol exchanges delivery receipts', async () => {
+  const { ws1, client1, ws2, client2 } = await setupSyncCluster();
+
+  const note = await ws1.create({ title: 'Confirmation Test', body: 'Signed receipt test' });
+  await client1.push();
+
+  // Before peer pull: sending device state for note is RELAY_STORED
+  const preStatus = await client1.getItemSyncState(note.id, note.revision);
+  assert.equal(preStatus.state, 'RELAY_STORED');
+  assert.equal(preStatus.peerApplied, false);
+
+  // Peer pulls, applies, and registers peer-ack receipt
+  await client2.pull();
+
+  // After peer pull: sending device sees PEER_APPLIED with peer device ID and receipt signature
+  const postStatus = await client1.getItemSyncState(note.id, note.revision);
+  assert.equal(postStatus.state, 'PEER_APPLIED');
+  assert.equal(postStatus.peerApplied, true);
+  assert.equal(postStatus.appliedByDeviceId, 'dev-phone-02');
+  assert.match(postStatus.receiptSignature, /^[0-9a-f]{64}$/);
+});
+
+test('10. truthful sync inspector accurately tracks offline, relay, and peer states', async () => {
+  const { ws1, client1, client2 } = await setupSyncCluster();
+
+  // 1. Offline item
+  const offlineNote = await ws1.create({ title: 'Offline Item' });
+  const localStatus = await client1.getItemSyncState(offlineNote.id, offlineNote.revision);
+  assert.equal(localStatus.state, 'SAVED_LOCALLY');
+  assert.equal(localStatus.pendingUpload, true);
+
+  // 2. Upload to relay
+  await client1.push();
+  const relayStatus = await client1.getItemSyncState(offlineNote.id, offlineNote.revision);
+  assert.equal(relayStatus.state, 'RELAY_STORED');
+  assert.equal(relayStatus.pendingUpload, false);
+  assert.equal(relayStatus.peerApplied, false);
+
+  // 3. Peer syncs
+  await client2.pull();
+  const confirmedStatus = await client1.getItemSyncState(offlineNote.id, offlineNote.revision);
+  assert.equal(confirmedStatus.state, 'PEER_APPLIED');
+  assert.equal(confirmedStatus.peerApplied, true);
+});

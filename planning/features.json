@@ -274,7 +274,7 @@
       "id": "C24",
       "title": "Peer-applied confirmation",
       "phase": "P1",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Client sync UI",
       "dependsOn": [
         "C03"

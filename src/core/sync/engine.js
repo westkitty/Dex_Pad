@@ -31,6 +31,7 @@ export class SyncEnvelopeTamperedError extends SyncError {
 
 export function createSyntheticRelay() {
   const envelopes = [];
+  const peerReceipts = new Map(); // key: `${itemId}:${revision}` -> array of receipts
   const revokedDevices = new Set();
   const authorizedDevices = new Set(['dev-macbook-01', 'dev-phone-02', 'dev-tablet-03']);
   let seqCounter = 0;
@@ -46,6 +47,16 @@ export function createSyntheticRelay() {
     },
     isDeviceRevoked(deviceId) {
       return revokedDevices.has(deviceId);
+    },
+    async postPeerAck(receipt) {
+      const key = `${receipt.itemId}:${receipt.revision}`;
+      if (!peerReceipts.has(key)) peerReceipts.set(key, []);
+      peerReceipts.get(key).push(receipt);
+      return { status: 'ACK_REGISTERED', receiptSignature: receipt.receiptSignature };
+    },
+    async getPeerAcks({ itemId, revision }) {
+      const key = `${itemId}:${revision}`;
+      return peerReceipts.get(key) || [];
     },
     async pushEnvelopes({ deviceId, frames }) {
       if (revokedDevices.has(deviceId)) {
@@ -109,6 +120,7 @@ export function createSyncEngine({
   let lastSyncedSeq = 0;
   const bufferedFrames = new Map(); // key: `${itemId}:${revision}`
   const pushedFrames = new Set(); // key: `${itemId}:${revision}:${updateHash}`
+  const pushedRevisions = new Set(); // key: `${itemId}:${revision}`
   const conflicts = [];
 
   async function computeUpdateHash(ciphertext) {
@@ -125,6 +137,9 @@ export function createSyncEngine({
       if (item.kind === 'relay-event') continue; // Scoped relay events stay local to project
       const revisions = await store.listRevisions(item.id);
       for (const rev of revisions) {
+        const revKey = `${rev.id}:${rev.revision}`;
+        if (pushedRevisions.has(revKey)) continue;
+
         const sensitive = {
           title: rev.title ?? '',
           body: rev.body ?? '',
@@ -138,28 +153,25 @@ export function createSyncEngine({
 
         const ciphertextEnvelope = await encryptRecord(vaultSession, rev.id, sensitive);
         const updateHash = await computeUpdateHash(ciphertextEnvelope.ciphertext);
-        const frameKey = `${rev.id}:${rev.revision}:${updateHash}`;
 
-        if (!pushedFrames.has(frameKey)) {
-          pending.push({
+        pending.push({
+          schemaVersion: 'dex-sync.v1',
+          deviceId,
+          itemId: rev.id,
+          revision: rev.revision,
+          kind: rev.kind ?? 'note',
+          createdAt: rev.createdAt,
+          updatedAt: rev.updatedAt,
+          deletedAt: rev.deletedAt,
+          updateHash,
+          envelope: {
             schemaVersion: 'dex-sync.v1',
-            deviceId,
-            itemId: rev.id,
-            revision: rev.revision,
-            kind: rev.kind ?? 'note',
-            createdAt: rev.createdAt,
-            updatedAt: rev.updatedAt,
-            deletedAt: rev.deletedAt,
-            updateHash,
-            envelope: {
-              schemaVersion: 'dex-sync.v1',
-              ciphertext: ciphertextEnvelope.ciphertext,
-              iv: ciphertextEnvelope.iv,
-              authData: ciphertextEnvelope.authData,
-              ciphertextEnvelope,
-            },
-          });
-        }
+            ciphertext: ciphertextEnvelope.ciphertext,
+            iv: ciphertextEnvelope.iv,
+            authData: ciphertextEnvelope.authData,
+            ciphertextEnvelope,
+          },
+        });
       }
     }
     return pending;
@@ -176,6 +188,7 @@ export function createSyncEngine({
 
     const receipt = await relay.pushEnvelopes({ deviceId, frames });
     for (const f of frames) {
+      pushedRevisions.add(`${f.itemId}:${f.revision}`);
       pushedFrames.add(`${f.itemId}:${f.revision}:${f.updateHash}`);
     }
     return {
@@ -202,6 +215,7 @@ export function createSyncEngine({
         };
         const evt = { id: `${item.id}:1`, itemId: item.id, kind: item.kind, revision: 1, action: 'synced', at: item.updatedAt };
         await store.commit(item, evt);
+        pushedRevisions.add(`${frame.itemId}:1`);
         pushedFrames.add(`${frame.itemId}:1:${frame.updateHash}`);
         return true;
       }
@@ -219,6 +233,7 @@ export function createSyncEngine({
       };
       const evt = { id: `${next.id}:${next.revision}`, itemId: next.id, kind: next.kind, revision: next.revision, action: 'synced', at: next.updatedAt };
       await store.commit(next, evt);
+      pushedRevisions.add(`${frame.itemId}:${frame.revision}`);
       pushedFrames.add(`${frame.itemId}:${frame.revision}:${frame.updateHash}`);
       return true;
     }
@@ -319,13 +334,83 @@ export function createSyncEngine({
     let count = 0;
     for (const env of envelopes) {
       const res = await receiveFrame(env);
-      if (res.status === 'APPLIED') count++;
+      if (res.status === 'APPLIED') {
+        count++;
+        // Post peer acknowledgment receipt to relay
+        if (typeof relay.postPeerAck === 'function') {
+          const ackData = new TextEncoder().encode(`${env.itemId}:${env.revision}:${env.updateHash}:${deviceId}`);
+          const ackHash = await globalThis.crypto.subtle.digest('SHA-256', ackData);
+          const receiptSignature = toHex(new Uint8Array(ackHash));
+          await relay.postPeerAck({
+            schemaVersion: 'dex-peer-ack.v1',
+            itemId: env.itemId,
+            revision: env.revision,
+            updateHash: env.updateHash,
+            appliedByDeviceId: deviceId,
+            appliedAt: new Date().toISOString(),
+            receiptSignature,
+          });
+        }
+      }
     }
     lastSyncedSeq = maxSeq;
     return {
       status: 'PEER_APPLIED',
       appliedCount: count,
       cursor: lastSyncedSeq,
+    };
+  }
+
+  async function getItemSyncState(itemId, revision = 1) {
+    const item = await store.getItem(itemId);
+    if (!item) return { state: 'UNKNOWN', itemId, revision };
+
+    // Check if pending frames exist for this item
+    const pending = await getPendingFrames();
+    const isPending = pending.some(f => f.itemId === itemId && f.revision === revision);
+
+    if (isPending) {
+      return {
+        state: 'SAVED_LOCALLY',
+        itemId,
+        revision,
+        pendingUpload: true,
+        relayStored: false,
+        peerApplied: false,
+        details: 'Record saved in local storage; pending relay upload',
+      };
+    }
+
+    // Check peer acknowledgments from relay
+    if (typeof relay.getPeerAcks === 'function') {
+      const acks = await relay.getPeerAcks({ itemId, revision });
+      const peerAck = acks.find(a => a.appliedByDeviceId !== deviceId);
+
+      if (peerAck) {
+        return {
+          state: 'PEER_APPLIED',
+          itemId,
+          revision,
+          pendingUpload: false,
+          relayStored: true,
+          peerApplied: true,
+          appliedByDeviceId: peerAck.appliedByDeviceId,
+          appliedAt: peerAck.appliedAt,
+          receiptSignature: peerAck.receiptSignature,
+          details: `Applied and confirmed by peer device ${peerAck.appliedByDeviceId}`,
+        };
+      }
+    }
+
+    // Pushed to relay, waiting for peer device pull
+    return {
+      state: 'RELAY_STORED',
+      itemId,
+      revision,
+      pendingUpload: false,
+      relayStored: true,
+      peerApplied: false,
+      details: 'Stored on relay; awaiting peer confirmation',
     };
   }
 
@@ -363,6 +448,7 @@ export function createSyncEngine({
     pull,
     sync,
     receiveFrame,
+    getItemSyncState,
     issuePairingToken,
     revokeDevice,
     getBufferedCount: () => bufferedFrames.size,

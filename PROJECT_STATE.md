@@ -54,6 +54,24 @@ Implemented complete Web Crypto API cryptographic subsystem in `src/core/crypto/
 
 Implemented deterministic encrypted synchronization protocol and synthetic relay in `src/core/sync/engine.js` with 8 comprehensive fault-injection tests in `tests/sync-engine.test.mjs`. Verified: (1) offline writing and durable local operations, (2) private ciphertext-only relay transport, (3) scrambled/reordered frame buffering without state corruption, (4) 100x duplicate replay idempotency, (5) interrupted transfer resume from cursor, (6) concurrent offline divergent edit conflict branching with zero data loss, (7) device pairing and immediate revocation enforcement, and (8) truthful acknowledgment distinction (`RELAY_STORED` vs `PEER_APPLIED`). Full test suite passing (53/53 tests). C03 remains marked `planned` until live three-device convergence over Tailscale is verified on physical hardware.
 
-Local evidence: `npm run check` passed (20/20 Node tests, documentation, feature roster and static build). Chromium static render at 1440px and 390px widths passed without horizontal overflow. **Functional browser smoke not run successfully:** the container's Chromium returned `net::ERR_BLOCKED_BY_ADMINISTRATOR` when navigating to localhost, even when routing static responses through Playwright. Native IndexedDB, real Android lifecycle, E2EE, cross-device sync, actual GPT MCP, Standard Notes migration and backup/restore remain unverified/unimplemented.
+### 2026-10-26 — Independent encrypted backup, lost-device recovery & Standard Notes migration delivered
+
+Implemented independent encrypted backup subsystem (`src/core/crypto/backup.js`, `tests/backup-recovery.test.mjs`) and quarantined Standard Notes migration processor (`src/core/migration/standard-notes.js`, `tests/migration-standard-notes.test.mjs`). Verified:
+1. Deterministic encrypted snapshot archives (`dex-backup.v1`) with full bit-level SHA-256 cryptographic checksums binding all records and metadata.
+2. Bit-level tamper detection rejecting modified ciphertext or altered record counts with `CorruptBackupError`.
+3. Independent offline restore into an empty store on an independent client without relay or network dependency.
+4. Lost-device recovery workflow: emergency recovery code unwraps the Vault Key and re-encrypts the master key with a newly chosen user passphrase via `recoverVaultWithCode`.
+5. Consent gating: unencrypted data export strictly requires explicit user confirmation (`ConsentRequiredError`) and attaches a prominent warning banner.
+6. Non-destructive Standard Notes migration: imports unencrypted or decrypted JSON archives, resolves bidirectional tag-to-note references, preserves timestamps and markdown bodies, quarantines unsupported extensions/themes (`SN|Component`, `SN|Theme`) into structured report, and detects encrypted payloads with clear warnings. Full test suite passing (68/68 tests).
+
+### 2026-10-26 — Truthful sync inspector UI & peer-applied confirmation protocol delivered
+
+Implemented peer confirmation receipts (`dex-peer-ack.v1`) and truthful sync inspector in `src/core/sync/engine.js`, `src/ui/app.js`, `index.html`, and `styles.css`. Verified:
+1. Peer-applied confirmation protocol: receiving devices cryptographically sign and register delivery receipts upon applying incoming envelopes, enabling sender devices to observe peer confirmation with device identity and signature proof.
+2. Truthful sync state query: `getItemSyncState` tracks `SAVED_LOCALLY` (pending outbox), `RELAY_STORED` (stored on relay, awaiting peer pull), and `PEER_APPLIED` (confirmed by peer device).
+3. Dedicated interactive UI panel: provides diagnostic visibility into local, relay, and peer states, with push simulation, peer ACK simulation, and offline network interruption toggling.
+4. Automated browser verification: `tests/browser_smoke.py` exercises the full lifecycle on native Chromium against loopback server, proving state transitions across `SAVED_LOCALLY` -> `RELAY_STORED` -> `PEER_APPLIED` -> `Offline (buffered)`, responsive rendering across 1280px and 390px viewports, zero console errors, and zero cross-origin leaks. Full test suite passing (70/70 tests). C24 advanced to `dev-prototype`.
+
+Local evidence: `npm run check` passed (70/70 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
 
 Do **not** infer GitHub publication from local files: wait for a remote commit receipt and source-tree readback. The repo is public and contains no real vault material.

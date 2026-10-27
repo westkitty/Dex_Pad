@@ -170,6 +170,14 @@ Delivered component-level refactors, layout rhythm adjustments, motion curves, a
 6. Durable Commit Timestamp Reassurance (HIP-06): Added dedicated `#save-time` indicator in `index.html` and `src/ui/app.js` confirming the exact local clock time of each durable IndexedDB commit while preserving exact match status string compatibility.
 7. Verification: 133 / 133 Node unit tests PASS (`npm test`), static check and build PASS (`npm run check`).
 
+### 2026-10-27 — Impeccable UI/UX Gauntlet Tier 3 Structural Upgrades delivery
+
+Delivered structural flow enhancements, progressive disclosure, non-modal undo notifications, and responsive mobile card collapsing:
+1. Mobile Collection Collapsing (STR-01): Implemented `#toggle-item-list` button and collapsible `.item-pane` in `index.html`, `styles.css`, and `src/ui/app.js`. On screens $\le 820\text{px}$, users can toggle the item list to dedicate maximum vertical viewport height to the editor, while smooth scrolling transitions to `#editor-panel` upon item selection or creation.
+2. Non-Modal Archive Action with Toast Undo (STR-02): Replaced blocking browser `window.confirm()` during item archiving with an instantaneous soft-delete and non-modal `#toast-shelf` notification in `index.html`, `styles.css`, and `src/ui/app.js`. The toast surfaces an `[Undo]` button with a 6-second timeout that restores the item to its pre-deletion revision state via `workspace.restore()`.
+3. Progressive Disclosure Accordions (STR-03): Converted static field container sections for Project Resume Capsules, Decision Memory, Incident Records, Commitment Trackers, Knowledge Relations & Backlinks, and Record Details into semantic `<details class="lens-disclosure">` accordions with animated disclosure chevrons in `index.html` and `styles.css`. This dramatically reduces visual clutter and cognitive load while preserving instant access to specialized fields.
+4. Verification: 133 / 133 Node unit tests PASS (`npm test`), static check and build PASS (`npm run check`).
+
 Local evidence: `npm run check` passed (133/133 Node tests, documentation checks, feature roster and static build). Native Chromium browser smoke passed across desktop and mobile layouts. Physical multi-device Tailscale sync, external E2EE security audit, and native Android APK packaging remain unverified/planned.
 
 Do **not** infer GitHub publication from local files: wait for a remote commit receipt and source-tree readback. The repo is public and contains no real vault material.

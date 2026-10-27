@@ -48,6 +48,42 @@ function setStatus(value, { error = false } = {}) {
   }
 }
 
+function showToast(message, { actionText, onAction, duration = 6000 } = {}) {
+  const shelf = $('#toast-shelf');
+  if (!shelf) return;
+  const toast = document.createElement('div');
+  toast.className = 'toast-item';
+  toast.setAttribute('role', 'status');
+
+  const msgSpan = document.createElement('span');
+  msgSpan.className = 'toast-msg';
+  msgSpan.textContent = message;
+  toast.append(msgSpan);
+
+  let timerId = null;
+  const dismiss = () => {
+    if (timerId) clearTimeout(timerId);
+    toast.classList.add('is-exiting');
+    toast.addEventListener('animationend', () => toast.remove(), { once: true });
+    setTimeout(() => toast.remove(), 200);
+  };
+
+  if (actionText && typeof onAction === 'function') {
+    const actionBtn = document.createElement('button');
+    actionBtn.type = 'button';
+    actionBtn.className = 'toast-action-btn';
+    actionBtn.textContent = actionText;
+    actionBtn.addEventListener('click', () => {
+      dismiss();
+      void onAction();
+    });
+    toast.append(actionBtn);
+  }
+
+  shelf.append(toast);
+  timerId = setTimeout(dismiss, duration);
+}
+
 async function main() {
   setStatus('Opening local storage...');
   const store = await openIndexedDbStore();
@@ -169,7 +205,12 @@ async function main() {
       meta.append(makeText('span', '', item.deletedAt ? 'Archived' : item.evidence));
       meta.append(makeText('span', '', `${niceTime(item.updatedAt)} / r${item.revision}`));
       card.append(meta);
-      card.addEventListener('click', () => { void openItem(item.id); });
+      card.addEventListener('click', () => {
+        void openItem(item.id);
+        if (window.innerWidth <= 820) {
+          document.getElementById('editor-panel')?.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
       host.append(card);
     }
   }
@@ -507,6 +548,14 @@ async function main() {
       button.setAttribute('aria-current', button.dataset.kind === kind ? 'page' : 'false');
     }
     const host = $('#note-list');
+    const toggleItemListBtn = $('#toggle-item-list');
+    const itemPane = $('.item-pane');
+    if (toggleItemListBtn && itemPane) {
+      itemPane.classList.remove('is-collapsed');
+      toggleItemListBtn.setAttribute('aria-expanded', 'true');
+      const icon = toggleItemListBtn.querySelector('.toggle-icon');
+      if (icon) icon.textContent = '▾';
+    }
     if (host && kind !== 'topology') {
       host.replaceChildren(
         ...Array.from({ length: 3 }, () => {
@@ -547,6 +596,9 @@ async function main() {
       syncState = 'SAVED_LOCALLY';
       updateSyncUi();
       appendSyncLog('New record created locally. Pending relay upload.');
+      if (window.innerWidth <= 820) {
+        document.getElementById('editor-panel')?.scrollIntoView({ behavior: 'smooth' });
+      }
       $('#editor-title').focus();
     } catch (error) { setStatus('Not saved', { error: true }); $('#save-error').textContent = error.message; }
   }
@@ -602,15 +654,39 @@ async function main() {
   }
   async function archiveItem() {
     if (!selected || selected.deletedAt) return;
-    if (!window.confirm('Archive this item? Its revision history will remain available in Archive.')) return;
     setStatus('Archiving...');
     try {
-      selected = await workspace.remove(selected.id, selected.revision);
+      const archivedId = selected.id;
+      const priorRevision = selected.revision;
+      selected = await workspace.remove(archivedId, priorRevision);
+      const postDeleteRevision = selected.revision;
       dirty = false;
+      audio.tick();
       await renderEditor();
       await updateCounts();
       await renderList();
       setStatus('Archived locally');
+
+      showToast('Record moved to Archive', {
+        actionText: 'Undo',
+        duration: 6000,
+        onAction: async () => {
+          setStatus('Restoring...');
+          try {
+            selected = await workspace.restore(archivedId, priorRevision, postDeleteRevision);
+            dirty = false;
+            audio.commit();
+            await renderEditor();
+            await updateCounts();
+            await renderList();
+            setStatus('Saved locally');
+            showToast('Record restored from Archive');
+          } catch (err) {
+            $('#save-error').textContent = err.message;
+            setStatus('Not saved', { error: true });
+          }
+        },
+      });
     } catch (error) { $('#save-error').textContent = error.message; setStatus('Not saved', { error: true }); }
   }
   async function createSyntheticContribution() {
@@ -771,6 +847,18 @@ async function main() {
     audio.tick();
     void changeCollection('topology');
   });
+
+  const toggleItemListBtn = $('#toggle-item-list');
+  const itemPane = $('.item-pane');
+  if (toggleItemListBtn && itemPane) {
+    toggleItemListBtn.addEventListener('click', () => {
+      audio.tick();
+      const isCollapsed = itemPane.classList.toggle('is-collapsed');
+      toggleItemListBtn.setAttribute('aria-expanded', String(!isCollapsed));
+      const icon = toggleItemListBtn.querySelector('.toggle-icon');
+      if (icon) icon.textContent = isCollapsed ? '▸' : '▾';
+    });
+  }
 
   for (const button of document.querySelectorAll('.nav-link')) button.addEventListener('click', () => { void changeCollection(button.dataset.kind); });
   $('#new-note').addEventListener('click', () => { audio.tick(); void createNew(); });

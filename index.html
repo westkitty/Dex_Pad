@@ -51,7 +51,13 @@
       </aside>
       <section class="item-pane" aria-label="Items">
         <div class="pane-heading">
-          <div><h1 id="collection-title">Notes</h1></div>
+          <div class="pane-title-group">
+            <h1 id="collection-title">Notes</h1>
+            <button id="toggle-item-list" class="toggle-list-btn" type="button" aria-label="Toggle collection items" aria-expanded="true">
+              <span class="toggle-icon" aria-hidden="true">▾</span>
+              <span class="toggle-text">Items</span>
+            </button>
+          </div>
           <button id="new-note" class="button button-primary" type="button" title="Create a local note record">+ New Note</button>
         </div>
         <label class="search-box" for="search-input">
@@ -185,8 +191,11 @@
           <input id="editor-title" class="editor-title" type="text" maxlength="180" autocomplete="off" placeholder="Untitled">
           <label class="sr-only" for="editor-body">Content</label>
           <textarea id="editor-body" class="editor-body" maxlength="100000" rows="11" placeholder="Start writing..."></textarea>
-          <div id="project-fields" class="project-fields" hidden>
-            <div class="fields-heading">PROJECT RESUME CAPSULE</div>
+          <details id="project-fields" class="lens-disclosure project-fields" open hidden>
+            <summary class="lens-summary">
+              <span class="fields-heading">PROJECT RESUME CAPSULE</span>
+              <span class="disclosure-chevron" aria-hidden="true">▾</span>
+            </summary>
             <div class="field-row"><label for="project-next">Next action</label><input id="project-next" type="text" maxlength="500" placeholder="What happens next?"></div>
             <div class="field-row"><label for="project-blocker">Current blocker</label><input id="project-blocker" type="text" maxlength="500" placeholder="Anything stopping progress?"></div>
             <div class="field-row"><label for="project-repo">Repository link</label><input id="project-repo" type="text" maxlength="500" placeholder="Optional source reference"></div>
@@ -205,17 +214,23 @@
                 <p class="empty-panel">No synthetic relay events associated with this project.</p>
               </div>
             </div>
-          </div>
-          <div id="decision-fields" class="decision-fields" hidden>
-            <div class="fields-heading">DECISION MEMORY</div>
+          </details>
+          <details id="decision-fields" class="lens-disclosure decision-fields" open hidden>
+            <summary class="lens-summary">
+              <span class="fields-heading">DECISION MEMORY</span>
+              <span class="disclosure-chevron" aria-hidden="true">▾</span>
+            </summary>
             <div class="field-row"><label for="decision-rationale">Rationale &amp; trade-offs</label><textarea id="decision-rationale" rows="3" placeholder="Why this decision was made and what was rejected"></textarea></div>
             <div class="field-row"><label for="decision-alternatives">Alternatives considered (comma-separated)</label><input id="decision-alternatives" type="text" placeholder="Alternative A, Alternative B"></div>
             <div class="field-row"><label for="decision-review">Review date</label><input id="decision-review" type="date"></div>
             <div class="field-row"><label for="decision-superseded-by">Superseded by (Record ID)</label><input id="decision-superseded-by" type="text" placeholder="ID of newer decision record"></div>
             <div class="field-row"><label for="decision-supersedes">Supersedes (Record ID)</label><input id="decision-supersedes" type="text" placeholder="ID of prior decision record"></div>
-          </div>
-          <div id="incident-fields" class="incident-fields" hidden>
-            <div class="fields-heading">INCIDENT RECORD</div>
+          </details>
+          <details id="incident-fields" class="lens-disclosure incident-fields" open hidden>
+            <summary class="lens-summary">
+              <span class="fields-heading">INCIDENT RECORD</span>
+              <span class="disclosure-chevron" aria-hidden="true">▾</span>
+            </summary>
             <div class="field-row"><label for="incident-status">Incident status</label><select id="incident-status"><option value="open">Open</option><option value="investigating">Investigating</option><option value="mitigated">Mitigated</option><option value="resolved">Resolved</option></select></div>
             <div class="field-row"><label for="incident-failure">Failure description</label><textarea id="incident-failure" rows="3" placeholder="Observed defect, error log, or impact"></textarea></div>
             <div class="field-row"><label for="incident-repro">Reproduction steps</label><textarea id="incident-repro" rows="3" placeholder="Deterministic steps to reproduce"></textarea></div>
@@ -230,29 +245,38 @@
                 <strong>STOP CONDITION:</strong> If data corruption or verification failure occurs, stop execution immediately and follow rollback procedures.
               </div>
             </div>
-          </div>
-          <div id="commitment-fields" class="commitment-fields" hidden>
-            <div class="fields-heading">COMMITMENT / PROMISE TRACKER</div>
+          </details>
+          <details id="commitment-fields" class="lens-disclosure commitment-fields" open hidden>
+            <summary class="lens-summary">
+              <span class="fields-heading">COMMITMENT / PROMISE TRACKER</span>
+              <span class="disclosure-chevron" aria-hidden="true">▾</span>
+            </summary>
             <div class="field-row"><label for="commitment-status">Status</label><select id="commitment-status"><option value="pending">Pending</option><option value="in-progress">In progress</option><option value="fulfilled">Fulfilled</option><option value="cancelled">Cancelled</option></select></div>
             <div class="field-row"><label for="commitment-owner">Owner / Assignee</label><input id="commitment-owner" type="text" placeholder="Individual, role, or team"></div>
             <div class="field-row"><label for="commitment-outcome">Expected outcome</label><textarea id="commitment-outcome" rows="2" placeholder="Measurable deliverable or condition"></textarea></div>
             <div class="field-row"><label for="commitment-review">Review / Due date</label><input id="commitment-review" type="date"></div>
-          </div>
-          <div id="backlinks-section" class="backlinks-section">
-            <div class="fields-heading">KNOWLEDGE RELATIONS &amp; BACKLINKS</div>
+          </details>
+          <details id="backlinks-section" class="lens-disclosure backlinks-section" open>
+            <summary class="lens-summary">
+              <span class="fields-heading">KNOWLEDGE RELATIONS &amp; BACKLINKS</span>
+              <span class="disclosure-chevron" aria-hidden="true">▾</span>
+            </summary>
             <div id="backlinks-list" class="backlinks-list" role="list" aria-label="Incoming backlinks">
               <p class="empty-panel">No incoming backlinks pointing to this record.</p>
             </div>
-          </div>
-          <div class="metadata-panel">
-            <div class="fields-heading">RECORD DETAILS</div>
+          </details>
+          <details class="lens-disclosure metadata-panel" open>
+            <summary class="lens-summary">
+              <span class="fields-heading">RECORD DETAILS &amp; EVIDENCE</span>
+              <span class="disclosure-chevron" aria-hidden="true">▾</span>
+            </summary>
             <div class="metadata-grid">
               <div class="field-row"><label for="evidence-state">Evidence state</label><select id="evidence-state"><option value="proposed">Proposed</option><option value="claimed">Claimed</option><option value="observed">Observed</option><option value="verified">Verified</option><option value="stale">Stale</option></select></div>
               <div class="field-row"><label for="evidence-ref">Evidence reference</label><input id="evidence-ref" maxlength="500" placeholder="Required for Verified"></div>
               <div class="field-row full-span"><label for="editor-tags">Tags, separated by commas</label><input id="editor-tags" type="text" placeholder="research, design, backlog"></div>
             </div>
             <p class="fineprint">Evidence labels are manual; "Verified" requires a supporting reference, not just confidence.</p>
-          </div>
+          </details>
           <div id="save-error" class="form-error" role="alert" aria-live="assertive"></div>
           <div class="editor-footer">
             <div class="editor-foot-info">Changes are saved only after a confirmed local transaction.</div>
@@ -265,6 +289,7 @@
         </form>
       </main>
     </div>
+    <div id="toast-shelf" class="toast-shelf" role="status" aria-live="polite"></div>
   </div>
 </body>
 </html>

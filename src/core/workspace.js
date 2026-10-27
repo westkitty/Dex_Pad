@@ -1,12 +1,22 @@
-const KINDS = new Set(['note', 'project', 'decision', 'contribution']);
+const KINDS = new Set(['note', 'project', 'decision', 'contribution', 'incident', 'commitment']);
 const EVIDENCE = new Set(['proposed', 'claimed', 'observed', 'verified', 'stale']);
-const MUTABLE = new Set(['kind', 'title', 'body', 'tags', 'projectId', 'evidence', 'evidenceRef', 'nextAction', 'blocker', 'repoUrl']);
+const MUTABLE = new Set([
+  'kind', 'title', 'body', 'tags', 'projectId', 'evidence', 'evidenceRef',
+  'nextAction', 'blocker', 'repoUrl',
+  'rationale', 'alternatives', 'supersededBy', 'supersedes', 'reviewDate',
+  'failureDescription', 'reproductionSteps', 'confirmedRepair', 'regressionProof',
+  'owner', 'expectedOutcome', 'status',
+]);
 
 function fail(message) { throw new Error(message); }
 function str(value, name, max) {
   if (typeof value !== 'string') fail(`${name} must be text`);
   if (value.length > max) fail(`${name} is too long`);
   return value;
+}
+function optStr(value, name, max) {
+  if (value === undefined || value === null) return null;
+  return str(value, name, max);
 }
 function normalize(input) {
   const kind = input.kind ?? 'note';
@@ -21,6 +31,10 @@ function normalize(input) {
   if (projectId !== null && (typeof projectId !== 'string' || projectId.length > 120)) fail('Invalid project reference');
   const provenance = input.provenance ?? { origin: 'human' };
   if (!provenance || typeof provenance !== 'object' || !['human', 'external-simulation', 'import', 'derived'].includes(provenance.origin)) fail('Invalid provenance');
+
+  const alternatives = input.alternatives ?? [];
+  if (!Array.isArray(alternatives) || alternatives.some(a => typeof a !== 'string' || a.length > 500)) fail('Invalid alternatives');
+
   return {
     kind,
     title: str(input.title ?? '', 'Title', 180),
@@ -33,6 +47,21 @@ function normalize(input) {
     blocker: str(input.blocker ?? '', 'Blocker', 500),
     repoUrl: str(input.repoUrl ?? '', 'Repository link', 500),
     provenance: structuredClone(provenance),
+    // Decision Memory (F03)
+    rationale: optStr(input.rationale, 'rationale', 5_000),
+    alternatives: structuredClone(alternatives),
+    supersededBy: optStr(input.supersededBy, 'supersededBy', 120),
+    supersedes: optStr(input.supersedes, 'supersedes', 120),
+    reviewDate: optStr(input.reviewDate, 'reviewDate', 64),
+    // Incident Cards (F05)
+    failureDescription: optStr(input.failureDescription, 'failureDescription', 10_000),
+    reproductionSteps: optStr(input.reproductionSteps, 'reproductionSteps', 10_000),
+    confirmedRepair: optStr(input.confirmedRepair, 'confirmedRepair', 10_000),
+    regressionProof: optStr(input.regressionProof, 'regressionProof', 2_000),
+    // Commitments (F08)
+    owner: optStr(input.owner, 'owner', 120),
+    expectedOutcome: optStr(input.expectedOutcome, 'expectedOutcome', 5_000),
+    status: optStr(input.status, 'status', 64),
   };
 }
 

@@ -29,6 +29,7 @@ user-data/
 imports/
 exports/
 backups/
+screenshots/
 *.notes
 *.enex
 *.opvault

@@ -127,7 +127,7 @@
       "id": "C11",
       "title": "Backlinks and stable relations",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Knowledge graph / references",
       "dependsOn": [
         "C10"
@@ -138,7 +138,7 @@
       "id": "C12",
       "title": "Original-source ledger",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Evidence and provenance",
       "dependsOn": [
         "C10"
@@ -173,7 +173,7 @@
       "id": "C15",
       "title": "Encrypted attachments",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Client attachment store",
       "dependsOn": [
         "C02"
@@ -228,7 +228,7 @@
       "id": "C20",
       "title": "Optional local semantic retrieval",
       "phase": "P5",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "DexVault adapter / local model",
       "dependsOn": [
         "C11",
@@ -274,7 +274,7 @@
       "id": "C24",
       "title": "Peer-applied confirmation",
       "phase": "P1",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Client sync UI",
       "dependsOn": [
         "C03"
@@ -330,7 +330,7 @@
       "id": "F04",
       "title": "Repository-Anchored Margin Notes",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "GitHub read-only anchor adapter",
       "dependsOn": [
         "C11"
@@ -341,7 +341,7 @@
       "id": "F05",
       "title": "Incident Cards",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Incident record / recovery",
       "dependsOn": [
         "F02"
@@ -352,7 +352,7 @@
       "id": "F06",
       "title": "One-Tap Agent Handoff",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Selective context packet exporter",
       "dependsOn": [
         "F01",
@@ -364,7 +364,7 @@
       "id": "F07",
       "title": "Note to GitHub Issue",
       "phase": "P3",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "GitHub scoped write adapter",
       "dependsOn": [
         "C13",
@@ -376,7 +376,7 @@
       "id": "F08",
       "title": "Outstanding Commitments",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Task/awaiting ledger",
       "dependsOn": [
         "C10"
@@ -387,7 +387,7 @@
       "id": "F09",
       "title": "Interactive Runbook Cards",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Runbook templates",
       "dependsOn": [
         "F08",
@@ -399,7 +399,7 @@
       "id": "F10",
       "title": "Continue on Another Device",
       "phase": "P3",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Session context handoff",
       "dependsOn": [
         "C03",
@@ -411,7 +411,7 @@
       "id": "F11",
       "title": "Deep Citation Anchors",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Source position annotations",
       "dependsOn": [
         "C12"
@@ -422,7 +422,7 @@
       "id": "F12",
       "title": "Image Region Notes",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Media annotation coordinates",
       "dependsOn": [
         "C15"
@@ -433,7 +433,7 @@
       "id": "F13",
       "title": "Timecoded Media Notes",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Media timeline references",
       "dependsOn": [
         "C15"
@@ -444,7 +444,7 @@
       "id": "F14",
       "title": "Evidence Freshness Rules",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Verification policy",
       "dependsOn": [
         "C12"
@@ -455,7 +455,7 @@
       "id": "F15",
       "title": "Contradiction and Duplicate Review",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Human review queue",
       "dependsOn": [
         "C11"
@@ -466,7 +466,7 @@
       "id": "F16",
       "title": "Watch This Source",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Optional external change adapter",
       "dependsOn": [
         "C12",
@@ -478,7 +478,7 @@
       "id": "F17",
       "title": "Project Reading Radar",
       "phase": "P4",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "RSS/source digest adapter",
       "dependsOn": [
         "C12"
@@ -489,7 +489,7 @@
       "id": "F18",
       "title": "What Changed Since I Was Here",
       "phase": "P2",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Event timeline / resume diff",
       "dependsOn": [
         "C23",
@@ -501,7 +501,7 @@
       "id": "F19",
       "title": "Remember This Later",
       "phase": "P5",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Lightweight review scheduling",
       "dependsOn": [
         "F08"
@@ -512,7 +512,7 @@
       "id": "F20",
       "title": "Downstream Review Hints",
       "phase": "P5",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Dependency links / change detection",
       "dependsOn": [
         "C11",
@@ -524,7 +524,7 @@
       "id": "F21",
       "title": "DEX//REACH Result Receipts",
       "phase": "P3",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Scoped execution receipt adapter",
       "dependsOn": [
         "C13",
@@ -536,7 +536,7 @@
       "id": "F22",
       "title": "DexDictate Capture Route",
       "phase": "P3",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "External transcription ingest",
       "dependsOn": [
         "C13",
@@ -548,7 +548,7 @@
       "id": "F23",
       "title": "Selective Git Publication",
       "phase": "P3",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Approved GitHub export adapter",
       "dependsOn": [
         "C13",
@@ -560,7 +560,7 @@
       "id": "F24",
       "title": "Portable Offline Project Kits",
       "phase": "P5",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Device pin/export bundle",
       "dependsOn": [
         "C15",
@@ -572,7 +572,7 @@
       "id": "F25",
       "title": "Quiet, Actionable Alerts",
       "phase": "P5",
-      "status": "planned",
+      "status": "dev-prototype",
       "surface": "Notification adapter",
       "dependsOn": [
         "F08",

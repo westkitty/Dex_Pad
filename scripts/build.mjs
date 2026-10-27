@@ -10,9 +10,19 @@ try {
 } catch (error) { if (error.code !== 'ENOENT') throw error; }
 const allow = [
   'index.html', 'styles.css',
-  'src/core/workspace.js', 'src/core/contributions.js',
+  'src/core/workspace.js', 'src/core/contributions.js', 'src/core/relations.js',
+  'src/core/handoff.js', 'src/core/resume-diff.js',
+  'src/core/sources.js', 'src/core/radar.js',
+  'src/core/media-annotations.js', 'src/core/review-queue.js',
+  'src/core/github-anchors.js', 'src/core/runbooks.js',
+  'src/core/attachments.js', 'src/core/local-retrieval.js', 'src/core/scheduling.js',
+  'src/core/capture-publish.js', 'src/core/kits-alerts.js',
+  'src/core/crypto/primitives.js', 'src/core/crypto/vault.js', 'src/core/crypto/backup.js',
+  'src/core/sync/engine.js',
+  'src/core/migration/standard-notes.js',
   'src/storage/indexeddb.js', 'src/storage/memory.js',
-  'src/ui/app.js',
+  'src/ui/app.js', 'src/ui/audio.js', 'src/ui/graph-lens.js',
+  'src/integrations/relay/bridge.js', 'src/integrations/relay/validator.js',
 ];
 for (const path of allow) {
   const file = resolve(target, path);

@@ -29,3 +29,7 @@ This supersedes the mismatched DEX//Cast-sourced illustrations in the previous D
 DEX//Pad is a local-first notes workspace. This is a **design-reference-only** delivery; no application assets are hooked up, no UI behavior is changed, and there is no effect on encryption or sync claims. If using these crops in the UI later, keep them small and contextual; content entry and truthful saved/sync status always take precedence. New renders require their own provenance and continuity review.
 
 These are illustrated design references, not original photographs of Dexter and not automatic registration into an external visual identity ledger.
+
+## Optional transparent UI derivatives
+
+A separate [transparent cutout set](derived/transparent/README.md) contains 14 source-extracted images for optional future app use. The untouched sheet and exact rectangular crops above retain visual authority. The opacity mattes are derived and approximate; they are not new canonical artwork, and no production UI is changed.

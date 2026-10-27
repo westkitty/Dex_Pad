@@ -1,0 +1,283 @@
+{
+  "schema_version": "2.0",
+  "subject": "Dexter",
+  "product": "DEX//Pad",
+  "reference_kind": "user-supplied-illustrated-design-sheet",
+  "approval": "project-design-reference-not-biometric-canon",
+  "source": {
+    "path": "../../dexter-reference-sheet.png",
+    "sha256": "11ef564036aac813a02b1b3290bfab4225a5926bd5387c5987231868e55fa668",
+    "size_px": [
+      1055,
+      1491
+    ]
+  },
+  "extraction": {
+    "script": "extract_sheet.py (included with the standalone download bundle)",
+    "method": "pixel-preserving crops and conservative opacity mattes",
+    "notes": "These are illustration extractions, not independently generated images. Skin/fur markings preserved from source; matte edges approximate. The controlling references remain the exact, unmodified source sheet and rectangular crops in the parent repository directory. These alpha mattes are approximate, not new source art."
+  },
+  "palette_from_sheet": {
+    "charcoal": "#2E2E2E",
+    "warm-tan": "#D1A068",
+    "ivory": "#EADCC3",
+    "warm-gray": "#A59B91",
+    "cool-gray": "#696868"
+  },
+  "assets": [
+    {
+      "id": "main-neutral",
+      "path": "main-neutral.png",
+      "source_bbox_xyxy": [
+        42,
+        115,
+        475,
+        503
+      ],
+      "category": "hero",
+      "description": "full body standing at three-quarter angle, front-facing head",
+      "size_px": [
+        433,
+        388
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "06bb8984b2d21c0d0f49e0df0a0f4b5cd021fb722718625a29c60cc36b2c6f6f"
+    },
+    {
+      "id": "neutral",
+      "path": "expressions/neutral.png",
+      "source_bbox_xyxy": [
+        40,
+        556,
+        241,
+        769
+      ],
+      "category": "expression",
+      "description": "neutral",
+      "size_px": [
+        201,
+        213
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "c2998635cd427847f5628be2e59f951623074c26ae59b346f902866923738fba"
+    },
+    {
+      "id": "annoyed",
+      "path": "expressions/annoyed.png",
+      "source_bbox_xyxy": [
+        280,
+        556,
+        484,
+        769
+      ],
+      "category": "expression",
+      "description": "annoyed",
+      "size_px": [
+        204,
+        213
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "22912ad2f835f48a43e895b6490e2156494d6e093c0097a509e7acefd9b6222e"
+    },
+    {
+      "id": "determined",
+      "path": "expressions/determined.png",
+      "source_bbox_xyxy": [
+        523,
+        557,
+        725,
+        768
+      ],
+      "category": "expression",
+      "description": "determined",
+      "size_px": [
+        202,
+        211
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "a0a28f8a3b33ba88fd2649a3eacfa205b29ddcdf9e3ac68062bc872099d63499"
+    },
+    {
+      "id": "contemptuous",
+      "path": "expressions/contemptuous.png",
+      "source_bbox_xyxy": [
+        752,
+        555,
+        972,
+        768
+      ],
+      "category": "expression",
+      "description": "contemptuous",
+      "size_px": [
+        220,
+        213
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "1d26b215fb4afa7190759e839f1de1aba70331fc908ba37700db08150c6a1ae4"
+    },
+    {
+      "id": "joyful",
+      "path": "expressions/joyful.png",
+      "source_bbox_xyxy": [
+        38,
+        810,
+        241,
+        1019
+      ],
+      "category": "expression",
+      "description": "joyful",
+      "size_px": [
+        203,
+        209
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "51c3a56acb7eace1506f4c828fd0ddbc6becd1218d4d946db6e69549f63d6e89"
+    },
+    {
+      "id": "sleepy",
+      "path": "expressions/sleepy.png",
+      "source_bbox_xyxy": [
+        280,
+        808,
+        486,
+        1019
+      ],
+      "category": "expression",
+      "description": "sleepy",
+      "size_px": [
+        206,
+        211
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "76b2dc8c3cde41cc6bb2ca2e1de575d10edb96b5ae99b56dbf13f9116eaf4212"
+    },
+    {
+      "id": "concerned",
+      "path": "expressions/concerned.png",
+      "source_bbox_xyxy": [
+        523,
+        809,
+        725,
+        1019
+      ],
+      "category": "expression",
+      "description": "concerned",
+      "size_px": [
+        202,
+        210
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "660ff811b9ebea5c28b3273b1e9c2c748b0acff88880f3df72671e70fe74a846"
+    },
+    {
+      "id": "calm",
+      "path": "expressions/calm.png",
+      "source_bbox_xyxy": [
+        757,
+        810,
+        972,
+        1019
+      ],
+      "category": "expression",
+      "description": "calm",
+      "size_px": [
+        215,
+        209
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "4f80223165eead818b835fb8208e2258df1b401cc6a522a6dd8b59453bc8a3c7"
+    },
+    {
+      "id": "sitting",
+      "path": "poses/sitting.png",
+      "source_bbox_xyxy": [
+        35,
+        1102,
+        239,
+        1397
+      ],
+      "category": "pose",
+      "description": "sitting",
+      "size_px": [
+        204,
+        295
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "dac43c04e0b188b89e3d7d51e5206a32c49dcab0d9c809c48ecfbd9b5aa7a20d"
+    },
+    {
+      "id": "lying-down",
+      "path": "poses/lying-down.png",
+      "source_bbox_xyxy": [
+        250,
+        1137,
+        475,
+        1397
+      ],
+      "category": "pose",
+      "description": "lying down, sphinx position",
+      "size_px": [
+        225,
+        260
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "b9853f86c04e3dbeb3b953efa64367c432906791f93b2ad433b29e8479ef019e"
+    },
+    {
+      "id": "play-bow",
+      "path": "poses/play-bow.png",
+      "source_bbox_xyxy": [
+        492,
+        1098,
+        720,
+        1399
+      ],
+      "category": "pose",
+      "description": "play-bow/stretch",
+      "size_px": [
+        228,
+        301
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "7ba0cc36f1730f7e606df3f2b00b47e5300b9e01b7460d3ae7016732953886af"
+    },
+    {
+      "id": "relaxed-standing",
+      "path": "poses/relaxed-standing.png",
+      "source_bbox_xyxy": [
+        741,
+        1100,
+        1039,
+        1397
+      ],
+      "category": "pose",
+      "description": "relaxed standing",
+      "size_px": [
+        298,
+        297
+      ],
+      "alpha_treatment": "foreground-isolated-from-reference",
+      "sha256": "bd2168c1a9e0e523fa02fba050c35107b6abb2e984ce929b4cfe5c183fc0289f"
+    },
+    {
+      "id": "rear-fur-markings",
+      "path": "details/rear-fur-markings.png",
+      "source_bbox_xyxy": [
+        767,
+        314,
+        947,
+        484
+      ],
+      "category": "detail",
+      "description": "cream markings across back of neck",
+      "size_px": [
+        180,
+        170
+      ],
+      "alpha_treatment": "source-background-retained",
+      "sha256": "b5c64093214a3358599741ceeadb877fbaa5010c271a7cbd1488d91feec241c8"
+    }
+  ],
+  "manifest_kind": "optional-ui-cutout-derivatives",
+  "authority": "UI derivative only; do not supersede source/pixel-exact crops or actual app state"
+}

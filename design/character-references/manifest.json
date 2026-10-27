@@ -1,37 +1,270 @@
 {
-  "schema_version": "1.0",
-  "status": "illustrated_design_references_not_identity_canon",
-  "source_repository": "westkitty/DexCast",
-  "target_repository": "westkitty/Dex_Pad",
-  "note": "Existing artwork is preserved byte-for-byte. These are illustrated mascot references, not verified real photographic likeness anchors. No generated art and no app UI changes.",
+  "schema_version": "2.0",
+  "project": "DEX//Pad",
+  "reference_authority": "user-supplied character reference sheet in the 2026-10-27 conversation",
+  "authority_limit": "Use as project illustration source; not a claim of real-pet photographic verification or registration in an identity/canon ledger.",
+  "source": {
+    "file": "dexter-reference-sheet.png",
+    "width_px": 1055,
+    "height_px": 1491,
+    "sha256": "11ef564036aac813a02b1b3290bfab4225a5926bd5387c5987231868e55fa668",
+    "modified": false,
+    "mode": "RGBA"
+  },
+  "derived_asset_policy": "Each PNG is an exact rectangular crop from the source, without resampling, redrawing, background removal, palette modifications, or AI re-generation. Crop positions are measured in original image pixels.",
+  "style": {
+    "species": "small long-haired dog as depicted in supplied sheet",
+    "head": "round face with floppy down-angled ear fringes",
+    "markings": "charcoal/black coat, tan eyebrow points and cheek patches, narrow cream forehead blaze, cream-white muzzle/chest/feet, cream-tipped curled feathery tail; retain source sheet placement",
+    "expression": "default restrained and unimpressed; eyelids, brow angle and muzzle drive expression",
+    "palette_swatch_samples": [
+      "#2F2F2D",
+      "#CF9F69",
+      "#EBDEC4",
+      "#A59C91",
+      "#676666"
+    ],
+    "palette_sample_points_px": [
+      [
+        777,
+        214
+      ],
+      [
+        830,
+        214
+      ],
+      [
+        884,
+        214
+      ],
+      [
+        936,
+        214
+      ],
+      [
+        988,
+        214
+      ]
+    ],
+    "do_not_infer": "Do not introduce standing human anatomy, pointy upright ears, breed substitutions, extra markings, accessories, or an invented uniform."
+  },
   "assets": [
     {
-      "id": "dexter-setup",
-      "path": "design/character-references/dexter-setup.png",
-      "source_path": "assets/dexter_setup.png",
-      "git_blob_sha": "c07b4b533de4a48839bde48b9ae79794b3ef983b",
-      "role": "full-body, onboarding and empty-state illustration"
+      "id": "neutral-standing",
+      "file": "crops/neutral-standing.png",
+      "bbox_px": [
+        41,
+        119,
+        485,
+        512
+      ],
+      "width_px": 444,
+      "height_px": 393,
+      "sha256": "66f3fba732476b88a3936071a2ab99df3b483a04dc71e287087979b3f64cd1aa",
+      "role": "pose reference"
     },
     {
-      "id": "dexter-attentive",
-      "path": "design/character-references/dexter-attentive.png",
-      "source_path": "assets/dexter_connecting.png",
-      "git_blob_sha": "f02c90dc9da98861841580fd4c808c3fef88bc38",
-      "role": "quiet, attentive, contextual help"
+      "id": "fur-back-marking",
+      "file": "crops/fur-back-marking.png",
+      "bbox_px": [
+        792,
+        325,
+        978,
+        503
+      ],
+      "width_px": 186,
+      "height_px": 178,
+      "sha256": "7e7a0594f7bc0ff93fa188f8b6dcbec830e821e33cef020ddceb7f762768082c",
+      "role": "fur topology detail"
     },
     {
-      "id": "dexter-exasperated",
-      "path": "design/character-references/dexter-exasperated.png",
-      "source_path": "assets/dexter_failed.png",
-      "git_blob_sha": "ff21b7ee829ae9ae6b4f968dce6ce6d8b163f179",
-      "role": "non-destructive errors and conflict review"
+      "id": "palette-swatches",
+      "file": "crops/palette-swatches.png",
+      "bbox_px": [
+        752,
+        188,
+        1009,
+        240
+      ],
+      "width_px": 257,
+      "height_px": 52,
+      "sha256": "7fc9b6ac3780750e1a0d718cb6f5ff3a34d855a00e4ad17dbf3604623f0391d5",
+      "role": "palette only"
     },
     {
-      "id": "dexter-speaking",
-      "path": "design/character-references/dexter-speaking.png",
-      "source_path": "assets/dexter_success.png",
-      "git_blob_sha": "397f50cf66951d79e6a46f0902fc0062d298b885",
-      "role": "optional explanations and hints; NOT proof of successful save or sync"
+      "id": "expression-neutral",
+      "file": "crops/expression-neutral.png",
+      "bbox_px": [
+        40,
+        577,
+        258,
+        794
+      ],
+      "width_px": 218,
+      "height_px": 217,
+      "sha256": "85aa46333094fd752125c4cf996a1066c894ae648a948412be909c03a8357a78",
+      "role": "expression reference"
+    },
+    {
+      "id": "expression-annoyed",
+      "file": "crops/expression-annoyed.png",
+      "bbox_px": [
+        286,
+        577,
+        507,
+        794
+      ],
+      "width_px": 221,
+      "height_px": 217,
+      "sha256": "1e84a992c271ed241fc7372ef431a9ece0ac9f6c9def9e50de0bfbe3ce01a249",
+      "role": "expression reference"
+    },
+    {
+      "id": "expression-determined",
+      "file": "crops/expression-determined.png",
+      "bbox_px": [
+        535,
+        577,
+        757,
+        794
+      ],
+      "width_px": 222,
+      "height_px": 217,
+      "sha256": "392bf3972512f03f44b69b57021fd4fbdfe2dc7ecb612001a84edf4d71fc57d2",
+      "role": "expression reference"
+    },
+    {
+      "id": "expression-contemptuous",
+      "file": "crops/expression-contemptuous.png",
+      "bbox_px": [
+        791,
+        577,
+        1019,
+        794
+      ],
+      "width_px": 228,
+      "height_px": 217,
+      "sha256": "f0146d75b37fe4799f3e8efa13d494f7c928fdf879c85fee2894966525f7fe0d",
+      "role": "expression reference"
+    },
+    {
+      "id": "expression-joyful",
+      "file": "crops/expression-joyful.png",
+      "bbox_px": [
+        39,
+        832,
+        258,
+        1050
+      ],
+      "width_px": 219,
+      "height_px": 218,
+      "sha256": "e9790c29657f262c0fafbbf7d812bbbc99054ec7d8a226d3d7f058aab204a951",
+      "role": "expression reference"
+    },
+    {
+      "id": "expression-sleepy",
+      "file": "crops/expression-sleepy.png",
+      "bbox_px": [
+        286,
+        832,
+        507,
+        1050
+      ],
+      "width_px": 221,
+      "height_px": 218,
+      "sha256": "446cd4509673936f122d59b6b4e25a5bd7706b335fb1e35943a0039a2bb318b3",
+      "role": "expression reference"
+    },
+    {
+      "id": "expression-concerned",
+      "file": "crops/expression-concerned.png",
+      "bbox_px": [
+        535,
+        832,
+        757,
+        1050
+      ],
+      "width_px": 222,
+      "height_px": 218,
+      "sha256": "012dfa04cb228408f3cf90e74e98045fc4d8d9c480cac261585bb932bb4b6127",
+      "role": "expression reference"
+    },
+    {
+      "id": "expression-calm",
+      "file": "crops/expression-calm.png",
+      "bbox_px": [
+        791,
+        832,
+        1019,
+        1050
+      ],
+      "width_px": 228,
+      "height_px": 218,
+      "sha256": "7489e100d38129efe4aeffa0006cc4891c2d49ed2595b00c36aa375c268c4ab6",
+      "role": "expression reference"
+    },
+    {
+      "id": "pose-sitting",
+      "file": "crops/pose-sitting.png",
+      "bbox_px": [
+        30,
+        1142,
+        256,
+        1397
+      ],
+      "width_px": 226,
+      "height_px": 255,
+      "sha256": "56300f900a194999255f4309efc26eaf9b7a9aa02bac3b80b90260b65cc333a3",
+      "role": "pose reference"
+    },
+    {
+      "id": "pose-sphinx",
+      "file": "crops/pose-sphinx.png",
+      "bbox_px": [
+        264,
+        1142,
+        491,
+        1397
+      ],
+      "width_px": 227,
+      "height_px": 255,
+      "sha256": "83d08d0c9f6e1eeef679ca67c29aef253e2c69e5369fb85296f3ea491220038b",
+      "role": "pose reference"
+    },
+    {
+      "id": "pose-play-bow",
+      "file": "crops/pose-play-bow.png",
+      "bbox_px": [
+        503,
+        1134,
+        735,
+        1397
+      ],
+      "width_px": 232,
+      "height_px": 263,
+      "sha256": "74892939580efc5ebc0bffcb1865ebc6a36f71e361c8e03b6eca8efacca6dfe7",
+      "role": "pose reference"
+    },
+    {
+      "id": "pose-relaxed-standing",
+      "file": "crops/pose-relaxed-standing.png",
+      "bbox_px": [
+        760,
+        1134,
+        1036,
+        1397
+      ],
+      "width_px": 276,
+      "height_px": 263,
+      "sha256": "9935ede26d57270b79481c4b6fc61dbbe9967663de4f65fa36f4086e17844377",
+      "role": "pose reference"
     }
+  ],
+  "in_app_use": "For later asset adaptation only. Do not add large persistent characters over the capture/editor UI or claim a note is saved/synced from illustration state. No production runtime changes in this reference pack.",
+  "supersedes": [
+    "DEX//Cast-sourced dexter-setup.png",
+    "dexter-attentive.png",
+    "dexter-exasperated.png",
+    "dexter-speaking.png"
   ]
 }

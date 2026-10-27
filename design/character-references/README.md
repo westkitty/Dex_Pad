@@ -1,23 +1,31 @@
-# DEX//Pad — Dexter illustration reference pack
+# DEX//Pad — Dexter character reference pack
 
-Four **existing** illustrated Dexter images sourced from [DEX//Cast](https://github.com/westkitty/DexCast), copied without transformation to establish visual direction for DEX//Pad. Their source Git blob SHAs are recorded in `manifest.json`. No artwork here is a verified photograph or a canonical identity approval.
+**Reference source:** the single Dexter Character Reference Sheet supplied by the project owner on October 27, 2026. The original image is copied byte-for-byte as `dexter-reference-sheet.png`; every file in `crops/` is a pixel-exact crop, not a regeneration. The original is the visual design authority for this pack.
 
-## Visual direction
-- Black/dark coat, tan eyebrow and cheek markings, cream-white muzzle and ruff, floppy downturned ears; unimpressed expression. Preserve proportions and exact markings **as portrayed in the selected source art**.
-- Drawn, slightly textured, expressive look. Avoid generic corgi/Shiba-style pointy ears, a mascot costume, artificial grin, or humanoid body.
-- Dark-blue and muted-amber DEX//Pad UI colors may frame artwork; **do not recolor Dexter's fur**.
-- Keep the note editor functional and visually quiet. No persistent large mascot, no blocking overlay, no animation or image load required for note capture.
-- The current app brand mark is an abstract four-cell symbol. Do not replace it automatically.
+This supersedes the mismatched DEX//Cast-sourced illustrations in the previous DEX//Pad draft branch. Do **not** combine the old and new sets or treat a filename, memory, or arbitrary DEX logo as identity evidence.
 
-## Asset roles
-| Asset | Suggested use | Never imply |
-| --- | --- | --- |
-| `dexter-setup.png` | Onboarding, about screen, first-run illustration | Product security is active |
-| `dexter-attentive.png` | Empty state, inline helper | A note is durably saved |
-| `dexter-exasperated.png` | Recoverable conflict, import warning | Data was lost |
-| `dexter-speaking.png` | Optional help, guided explanation | Sync completed or cryptographic verification passed |
+## Source-backed appearance
 
-## Guardrails
-These illustrations are references, not authoritative new character generations. The images show differing render treatments; before commissioning new artwork use independently verified real subject photos or an approved visual canon with proven image transport. In DEX//Pad, error/success/sync copy must be driven by actual state, never by an expression image.
+- **Shape:** small, compact, long-haired quadrupedal dog; floppy, down-angled ears framing the face; plume-like curled tail.
+- **Face:** warm amber/brown eyes; dark expressive upper lids; small centered black nose; cream forehead blaze. Neutral expression is controlled, slightly unimpressed rather than smiling.
+- **Markings:** black/charcoal dorsal coat; tan eyebrow points and cheek patches; light cream-white muzzle, chest ruff, belly/feet details, and tail tip. Preserve left/right marking placements from the source.
+- **Rendering:** clean softly textured cartoon/model-sheet linework; charcoal, warm tan, ivory palette on a neutral gray sheet; consistent anatomy between head portraits and poses.
+- **Negative locks:** no upright pointy ears; no generic Shiba/corgi substitution; no broad white face mask; no humanoid posing or clothes; no additional animals or characters; no gratuitous smile or costume.
 
-No app source, test, storage or encryption behavior is changed here. This branch is a **review proposal**, not a production deployment. The public DEX//Pad repository contains only art already present in the public DEX//Cast repository; source ownership/licensing remains subject to the project's unresolved license decision.
+## Files and use
+
+| Source | Intended reference use |
+| --- | --- |
+| `dexter-reference-sheet.png` | Master source: the complete, unmodified reference sheet |
+| `crops/neutral-standing.png` | Default full-body proportions and neutral mood |
+| `crops/fur-back-marking.png` | Back/neck marking topology |
+| `crops/palette-swatches.png` | Swatches as provided; HEX samples are approximate source pixel readings |
+| `crops/expression-*.png` | Neutral, annoyed, determined, contemptuous, joyful, sleepy, concerned, calm |
+| `crops/pose-*.png` | Sitting, sphinx, play bow, relaxed standing |
+| `manifest.json` | File hashes, exact crop coordinates, provenance, and constraints |
+
+## DEX//Pad implementation boundary
+
+DEX//Pad is a local-first notes workspace. This is a **design-reference-only** delivery; no application assets are hooked up, no UI behavior is changed, and there is no effect on encryption or sync claims. If using these crops in the UI later, keep them small and contextual; content entry and truthful saved/sync status always take precedence. New renders require their own provenance and continuity review.
+
+These are illustrated design references, not original photographs of Dexter and not automatic registration into an external visual identity ledger.
